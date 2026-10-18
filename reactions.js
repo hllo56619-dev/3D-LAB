@@ -1,6 +1,5 @@
-// Chemistry Lab 3D — reaction data, separated from index.html.
-// The simulation loads this file before initializing the reaction engine.
-// Contains all existing reaction rules plus the Tollens silver-mirror reaction.
+// Chemistry Lab 3D — complete reaction rule data separated from index.html.
+// 247 rules preserved from the previous inline library, plus expanded coverage.
 window.CHEM_RX = [
   {
     "id": "fe_hcl",
@@ -4047,5 +4046,655 @@ window.CHEM_RX = [
     "dur": 9,
     "bub": 0.08,
     "explain": "Phản ứng tráng bạc của glucozơ khi có thuốc thử bạc amoniac trong môi trường kiềm; NH3 tạo phức với Ag(I), không xuất hiện ở phương trình tổng quát."
+  },
+  {
+    "id": "hcl_cooh2",
+    "need": [
+      "HCl",
+      "Co(OH)2"
+    ],
+    "eq": "2HCl + Co(OH)2 → CoCl2 + 2H2O",
+    "out": [
+      "CoCl2",
+      "H2O"
+    ],
+    "col": "#d8c6bb",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "hcl_cr3oh",
+    "need": [
+      "HCl",
+      "Cr(OH)3"
+    ],
+    "eq": "3HCl + Cr(OH)3 → CrCl3 + 3H2O",
+    "out": [
+      "CrCl3",
+      "H2O"
+    ],
+    "col": "#8d6cb0",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "hcl_nioh2",
+    "need": [
+      "HCl",
+      "Ni(OH)2"
+    ],
+    "eq": "2HCl + Ni(OH)2 → NiCl2 + 2H2O",
+    "out": [
+      "NiCl2",
+      "H2O"
+    ],
+    "col": "#e3e3e0",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "hcl_mnoh2",
+    "need": [
+      "HCl",
+      "Mn(OH)2"
+    ],
+    "eq": "2HCl + Mn(OH)2 → MnCl2 + 2H2O",
+    "out": [
+      "MnCl2",
+      "H2O"
+    ],
+    "col": "#d9b6b8",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "h2so4_cooh2",
+    "need": [
+      "H2SO4",
+      "Co(OH)2"
+    ],
+    "eq": "H2SO4 + Co(OH)2 → CoSO4 + 2H2O",
+    "out": [
+      "CoSO4",
+      "H2O"
+    ],
+    "col": "#d8c6bb",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "h2so4_nioh2",
+    "need": [
+      "H2SO4",
+      "Ni(OH)2"
+    ],
+    "eq": "H2SO4 + Ni(OH)2 → NiSO4 + 2H2O",
+    "out": [
+      "NiSO4",
+      "H2O"
+    ],
+    "col": "#b9d4d0",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "h2so4_mnoh2",
+    "need": [
+      "H2SO4",
+      "Mn(OH)2"
+    ],
+    "eq": "H2SO4 + Mn(OH)2 → MnSO4 + 2H2O",
+    "out": [
+      "MnSO4",
+      "H2O"
+    ],
+    "col": "#f0eeee",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "hno3_cooh2",
+    "need": [
+      "HNO3",
+      "Co(OH)2"
+    ],
+    "eq": "2HNO3 + Co(OH)2 → Co(NO3)2 + 2H2O",
+    "out": [
+      "Co(NO3)2",
+      "H2O"
+    ],
+    "col": "#d8c6bb",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "hno3_nioh2",
+    "need": [
+      "HNO3",
+      "Ni(OH)2"
+    ],
+    "eq": "2HNO3 + Ni(OH)2 → Ni(NO3)2 + 2H2O",
+    "out": [
+      "Ni(NO3)2",
+      "H2O"
+    ],
+    "col": "#e8e9e9",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "hno3_mnoh2",
+    "need": [
+      "HNO3",
+      "Mn(OH)2"
+    ],
+    "eq": "2HNO3 + Mn(OH)2 → Mn(NO3)2 + 2H2O",
+    "out": [
+      "Mn(NO3)2",
+      "H2O"
+    ],
+    "col": "#e8e9e9",
+    "dur": 5,
+    "bub": 0.1
+  },
+  {
+    "id": "co_cl2_naoh",
+    "need": [
+      "CoCl2",
+      "NaOH"
+    ],
+    "eq": "CoCl2 + 2NaOH → Co(OH)2↓ + 2NaCl",
+    "out": [
+      "Co(OH)2",
+      "NaCl"
+    ],
+    "col": "#d8c6bb",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#d8c6bb"
+  },
+  {
+    "id": "ni_cl2_naoh",
+    "need": [
+      "NiCl2",
+      "NaOH"
+    ],
+    "eq": "NiCl2 + 2NaOH → Ni(OH)2↓ + 2NaCl",
+    "out": [
+      "Ni(OH)2",
+      "NaCl"
+    ],
+    "col": "#77a69a",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#77a69a"
+  },
+  {
+    "id": "mn_cl2_naoh",
+    "need": [
+      "MnCl2",
+      "NaOH"
+    ],
+    "eq": "MnCl2 + 2NaOH → Mn(OH)2↓ + 2NaCl",
+    "out": [
+      "Mn(OH)2",
+      "NaCl"
+    ],
+    "col": "#d9b6b8",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#d9b6b8"
+  },
+  {
+    "id": "cr_cl3_naoh",
+    "need": [
+      "CrCl3",
+      "NaOH"
+    ],
+    "eq": "CrCl3 + 3NaOH → Cr(OH)3↓ + 3NaCl",
+    "out": [
+      "Cr(OH)3",
+      "NaCl"
+    ],
+    "col": "#8d6cb0",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#8d6cb0"
+  },
+  {
+    "id": "pbno3_naoh",
+    "need": [
+      "Pb(NO3)2",
+      "NaOH"
+    ],
+    "eq": "Pb(NO3)2 + 2NaOH → Pb(OH)2↓ + 2NaNO3",
+    "out": [
+      "Pb(OH)2",
+      "NaNO3"
+    ],
+    "col": "#e5e3dc",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#f0eee8"
+  },
+  {
+    "id": "agno3_naoh",
+    "need": [
+      "AgNO3",
+      "NaOH"
+    ],
+    "eq": "2AgNO3 + 2NaOH → Ag2O↓ + 2NaNO3 + H2O",
+    "out": [
+      "Ag2O",
+      "NaNO3",
+      "H2O"
+    ],
+    "col": "#9e806b",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#5f5145"
+  },
+  {
+    "id": "agno3_na2co3",
+    "need": [
+      "AgNO3",
+      "Na2CO3"
+    ],
+    "eq": "2AgNO3 + Na2CO3 → Ag2CO3↓ + 2NaNO3",
+    "out": [
+      "Ag2CO3",
+      "NaNO3"
+    ],
+    "col": "#dfd6b8",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#dfd6b8"
+  },
+  {
+    "id": "bacl2_na2co3",
+    "need": [
+      "BaCl2",
+      "Na2CO3"
+    ],
+    "eq": "BaCl2 + Na2CO3 → BaCO3↓ + 2NaCl",
+    "out": [
+      "BaCO3",
+      "NaCl"
+    ],
+    "col": "#eeeeea",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#eeeeea"
+  },
+  {
+    "id": "bacl2_na2so3",
+    "need": [
+      "BaCl2",
+      "Na2SO3"
+    ],
+    "eq": "BaCl2 + Na2SO3 → BaSO3↓ + 2NaCl",
+    "out": [
+      "BaSO3",
+      "NaCl"
+    ],
+    "col": "#eeeeea",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#eeeeea"
+  },
+  {
+    "id": "bacl2_k2cro4",
+    "need": [
+      "BaCl2",
+      "K2CrO4"
+    ],
+    "eq": "BaCl2 + K2CrO4 → BaCrO4↓ + 2KCl",
+    "out": [
+      "BaCrO4",
+      "KCl"
+    ],
+    "col": "#e1c52e",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#e1c52e"
+  },
+  {
+    "id": "mgcl2_na2co3",
+    "need": [
+      "MgCl2",
+      "Na2CO3"
+    ],
+    "eq": "MgCl2 + Na2CO3 → MgCO3↓ + 2NaCl",
+    "out": [
+      "MgCO3",
+      "NaCl"
+    ],
+    "col": "#f0f0e9",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#f0f0e9"
+  },
+  {
+    "id": "fecl2_na2co3",
+    "need": [
+      "FeCl2",
+      "Na2CO3"
+    ],
+    "eq": "FeCl2 + Na2CO3 → FeCO3↓ + 2NaCl",
+    "out": [
+      "FeCO3",
+      "NaCl"
+    ],
+    "col": "#a9a58a",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#a9a58a"
+  },
+  {
+    "id": "znno3_na2s",
+    "need": [
+      "Zn(NO3)2",
+      "Na2S"
+    ],
+    "eq": "Zn(NO3)2 + Na2S → ZnS↓ + 2NaNO3",
+    "out": [
+      "ZnS",
+      "NaNO3"
+    ],
+    "col": "#333333",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#222222"
+  },
+  {
+    "id": "fecl2_na2s",
+    "need": [
+      "FeCl2",
+      "Na2S"
+    ],
+    "eq": "FeCl2 + Na2S → FeS↓ + 2NaCl",
+    "out": [
+      "FeS",
+      "NaCl"
+    ],
+    "col": "#3a342e",
+    "dur": 6,
+    "bub": 0.08,
+    "precip": "#3a342e"
+  },
+  {
+    "id": "mg_znso4",
+    "need": [
+      "Mg",
+      "ZnSO4"
+    ],
+    "eq": "Mg + ZnSO4 → MgSO4 + Zn",
+    "out": [
+      "MgSO4",
+      "Zn"
+    ],
+    "col": "#e7e8e7",
+    "dur": 8,
+    "bub": 0.12
+  },
+  {
+    "id": "mg_feso4",
+    "need": [
+      "Mg",
+      "FeSO4"
+    ],
+    "eq": "Mg + FeSO4 → MgSO4 + Fe",
+    "out": [
+      "MgSO4",
+      "Fe"
+    ],
+    "col": "#a9c8a0",
+    "dur": 8,
+    "bub": 0.12
+  },
+  {
+    "id": "zn_niso4",
+    "need": [
+      "Zn",
+      "NiSO4"
+    ],
+    "eq": "Zn + NiSO4 → ZnSO4 + Ni",
+    "out": [
+      "ZnSO4",
+      "Ni"
+    ],
+    "col": "#b9d4d0",
+    "dur": 8,
+    "bub": 0.12
+  },
+  {
+    "id": "fe_niso4",
+    "need": [
+      "Fe",
+      "NiSO4"
+    ],
+    "eq": "Fe + NiSO4 → FeSO4 + Ni",
+    "out": [
+      "FeSO4",
+      "Ni"
+    ],
+    "col": "#a9c8a0",
+    "dur": 8,
+    "bub": 0.12
+  },
+  {
+    "id": "fe_pbno3",
+    "need": [
+      "Fe",
+      "Pb(NO3)2"
+    ],
+    "eq": "Fe + Pb(NO3)2 → Fe(NO3)2 + Pb",
+    "out": [
+      "Fe(NO3)2",
+      "Pb"
+    ],
+    "col": "#b8d8a4",
+    "dur": 8,
+    "bub": 0.12
+  },
+  {
+    "id": "zn_pbno3",
+    "need": [
+      "Zn",
+      "Pb(NO3)2"
+    ],
+    "eq": "Zn + Pb(NO3)2 → Zn(NO3)2 + Pb",
+    "out": [
+      "Zn(NO3)2",
+      "Pb"
+    ],
+    "col": "#e7e8e7",
+    "dur": 8,
+    "bub": 0.12
+  },
+  {
+    "id": "al_agno3",
+    "need": [
+      "Al",
+      "AgNO3"
+    ],
+    "eq": "Al + 3AgNO3 → Al(NO3)3 + 3Ag",
+    "out": [
+      "Al(NO3)3",
+      "Ag"
+    ],
+    "col": "#c6c6c8",
+    "dur": 8,
+    "bub": 0.12,
+    "precip": "#c6c6c8"
+  },
+  {
+    "id": "cu_fecl3",
+    "need": [
+      "Cu",
+      "FeCl3"
+    ],
+    "eq": "Cu + 2FeCl3 → CuCl2 + 2FeCl2",
+    "out": [
+      "CuCl2",
+      "FeCl2"
+    ],
+    "col": "#5fae9c",
+    "dur": 7,
+    "bub": 0.05
+  },
+  {
+    "id": "h2s_oxygen",
+    "need": [
+      "H2S",
+      "O2"
+    ],
+    "eq": "2H2S + 3O2 → 2SO2 + 2H2O",
+    "out": [
+      "SO2",
+      "H2O"
+    ],
+    "col": "#d8d8d8",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "SO2",
+    "heat": 70,
+    "heating": true
+  },
+  {
+    "id": "so2_h2s",
+    "need": [
+      "SO2",
+      "H2S"
+    ],
+    "eq": "SO2 + 2H2S → 3S + 2H2O",
+    "out": [
+      "S",
+      "H2O"
+    ],
+    "col": "#d9d84a",
+    "dur": 7,
+    "bub": 0.12,
+    "precip": "#d9d84a"
+  },
+  {
+    "id": "so2_h2o2",
+    "need": [
+      "SO2",
+      "H2O2"
+    ],
+    "eq": "SO2 + H2O2 → H2SO4",
+    "out": [
+      "H2SO4"
+    ],
+    "col": "#e8e9e9",
+    "dur": 6,
+    "bub": 0.05
+  },
+  {
+    "id": "acetic_nahco3",
+    "need": [
+      "CH3COOH",
+      "NaHCO3"
+    ],
+    "eq": "CH3COOH + NaHCO3 → CH3COONa + CO2↑ + H2O",
+    "out": [
+      "CH3COONa",
+      "CO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 6,
+    "bub": 0.8,
+    "gas": "CO2"
+  },
+  {
+    "id": "glucose_fehling",
+    "need": [
+      "Glucose",
+      "Cu(OH)2",
+      "NaOH"
+    ],
+    "eq": "C6H12O6 + 2Cu(OH)2 + NaOH → C6H11O7Na + Cu2O↓ + 3H2O",
+    "out": [
+      "C6H11O7Na",
+      "Cu2O",
+      "H2O"
+    ],
+    "col": "#b65a45",
+    "dur": 8,
+    "bub": 0.1,
+    "precip": "#b65a45",
+    "heat": 70,
+    "heating": true,
+    "fire": 0,
+    "explain": "Phản ứng khử đồng(II) thành đồng(I) oxit đỏ gạch khi đun nóng trong môi trường kiềm."
+  },
+  {
+    "id": "h2o2_ki_acid",
+    "need": [
+      "H2O2",
+      "KI",
+      "H2SO4"
+    ],
+    "eq": "H2O2 + 2KI + H2SO4 → I2 + K2SO4 + 2H2O",
+    "out": [
+      "I2",
+      "K2SO4",
+      "H2O"
+    ],
+    "col": "#514080",
+    "dur": 7,
+    "bub": 0.12
+  },
+  {
+    "id": "kmno4_h2o2_acid",
+    "need": [
+      "KMnO4",
+      "H2O2",
+      "H2SO4"
+    ],
+    "eq": "2KMnO4 + 5H2O2 + 3H2SO4 → K2SO4 + 2MnSO4 + 8H2O + 5O2↑",
+    "out": [
+      "K2SO4",
+      "MnSO4",
+      "H2O",
+      "O2"
+    ],
+    "col": "#4e8b58",
+    "dur": 8,
+    "bub": 0.8,
+    "gas": "O2"
+  },
+  {
+    "id": "p_combustion",
+    "need": [
+      "P (white)",
+      "O2"
+    ],
+    "eq": "4P + 5O2 → P4O10",
+    "out": [
+      "P4O10"
+    ],
+    "col": "#eeeeea",
+    "dur": 8,
+    "bub": 0.3,
+    "heat": 60,
+    "heating": true,
+    "fire": 1
+  },
+  {
+    "id": "p4o10_water",
+    "need": [
+      "P4O10",
+      "H2O"
+    ],
+    "eq": "P4O10 + 6H2O → 4H3PO4",
+    "out": [
+      "H3PO4"
+    ],
+    "col": "#e8e9e9",
+    "dur": 6,
+    "bub": 0.05
   }
 ];
