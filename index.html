@@ -406,7 +406,10 @@ Ca(HCO3)2|l|f2f2f2|calcium bicarbonate canxi hiđrocacbonat
 NH4HCO3|c|f2f2f2|ammonium bicarbonate amoni hiđrocacbonat
 NaI|c|f2f2f2|sodium iodide natri iodua
 NaIO3|c|f2f2f2|sodium iodate natri iodat
-NaClO3|c|f2f2f2|sodium chlorate natri clorat`;
+NaClO3|c|f2f2f2|sodium chlorate natri clorat
+NaBrO3|c|f2f2f2|sodium bromate natri bromat
+Na[Al(OH)4]|l|f2f2f2|sodium tetrahydroxoaluminate natri tetrahiđroxoaluminat
+Na2[Zn(OH)4]|l|f2f2f2|sodium tetrahydroxozincate natri tetrahiđroxozincat`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
