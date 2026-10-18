@@ -4986,6 +4986,182 @@ window.CHEM_RX = [
     "dur": 10,
     "bub": 0.08,
     "explain": "Mô hình hóa đơn giản quá trình ăn mòn sắt trong không khí ẩm; gỉ thực tế có thành phần phức tạp."
+  },
+  {
+    "id": "nitrogen_dioxide_alkali_oxidation",
+    "need": [
+      "NO2",
+      "O2",
+      "NaOH"
+    ],
+    "eq": "4NO2 + O2 + 4NaOH → 4NaNO3 + 2H2O",
+    "out": [
+      "NaNO3",
+      "H2O"
+    ],
+    "col": "#e1d3a7",
+    "dur": 8,
+    "bub": 0.1,
+    "explain": "NO₂ được oxi hóa trong môi trường kiềm tạo nitrat; phương trình mô phỏng tổng quát."
+  },
+  {
+    "id": "sulfur_dioxide_alkali_oxidation",
+    "need": [
+      "SO2",
+      "NaOH",
+      "O2"
+    ],
+    "eq": "2SO2 + O2 + 4NaOH → 2Na2SO4 + 2H2O",
+    "out": [
+      "Na2SO4",
+      "H2O"
+    ],
+    "col": "#e8e9e9",
+    "dur": 8,
+    "bub": 0.08,
+    "explain": "Sunfit trung gian bị oxi hóa tiếp thành sunfat trong môi trường kiềm."
+  },
+  {
+    "id": "cao_so2_oxygen",
+    "need": [
+      "CaO",
+      "SO2",
+      "O2"
+    ],
+    "eq": "2CaO + 2SO2 + O2 → 2CaSO4",
+    "out": [
+      "CaSO4"
+    ],
+    "heat": 80,
+    "heating": true,
+    "col": "#e9e6df",
+    "precip": "#e9e6df",
+    "dur": 8,
+    "bub": 0.05,
+    "explain": "Oxi hóa SO₂ có mặt CaO tạo canxi sunfat trong mô hình ở điều kiện nóng."
+  },
+  {
+    "id": "sulfur_hot_alkali",
+    "need": [
+      "S",
+      "NaOH",
+      "H2O"
+    ],
+    "eq": "3S + 6NaOH → 2Na2S + Na2SO3 + 3H2O",
+    "out": [
+      "Na2S",
+      "Na2SO3",
+      "H2O"
+    ],
+    "heat": 80,
+    "heating": true,
+    "col": "#d9d84a",
+    "dur": 8,
+    "bub": 0.05,
+    "explain": "Lưu huỳnh bị tự oxi hóa–khử trong kiềm nóng, tạo sunfua và sunfit."
+  },
+  {
+    "id": "bromine_hot_alkali",
+    "need": [
+      "Br2",
+      "NaOH",
+      "H2O"
+    ],
+    "eq": "3Br2 + 6NaOH → 5NaBr + NaBrO3 + 3H2O",
+    "out": [
+      "NaBr",
+      "NaBrO3",
+      "H2O"
+    ],
+    "heat": 80,
+    "heating": true,
+    "col": "#d8d8d8",
+    "dur": 8,
+    "bub": 0.08,
+    "explain": "Brom trong kiềm nóng bị tự oxi hóa–khử tạo bromua và bromat."
+  },
+  {
+    "id": "aluminium_alkali_water",
+    "need": [
+      "Al",
+      "NaOH",
+      "H2O"
+    ],
+    "eq": "2Al + 2NaOH + 6H2O → 2Na[Al(OH)4] + 3H2↑",
+    "out": [
+      "Na[Al(OH)4]",
+      "H2"
+    ],
+    "col": "#e8e9e9",
+    "dur": 8,
+    "bub": 0.8,
+    "gas": "H2",
+    "explain": "Nhôm tan trong kiềm nước, tạo phức aluminat và giải phóng khí hiđro."
+  },
+  {
+    "id": "zinc_alkali_water",
+    "need": [
+      "Zn",
+      "NaOH",
+      "H2O"
+    ],
+    "eq": "Zn + 2NaOH + 2H2O → Na2[Zn(OH)4] + H2↑",
+    "out": [
+      "Na2[Zn(OH)4]",
+      "H2"
+    ],
+    "col": "#e8e9e9",
+    "dur": 8,
+    "bub": 0.7,
+    "gas": "H2",
+    "explain": "Kẽm lưỡng tính phản ứng với kiềm nước tạo phức zincat và giải phóng hiđro."
+  },
+  {
+    "id": "ammonia_catalytic_oxidation",
+    "need": [
+      "NH3",
+      "O2",
+      "Pt"
+    ],
+    "preserve": [
+      "Pt"
+    ],
+    "eq": "4NH3 + 5O2 → 4NO + 6H2O",
+    "out": [
+      "NO",
+      "H2O"
+    ],
+    "heat": 70,
+    "heating": true,
+    "arrowLabel": "Pt, t°",
+    "col": "#d8d8d8",
+    "dur": 8,
+    "bub": 0.2,
+    "gas": "NO",
+    "explain": "Oxi hóa xúc tác amoniac theo nguyên lý quá trình Ostwald; Pt đóng vai trò xúc tác, không bị tiêu hao."
+  },
+  {
+    "id": "carbon_monoxide_catalytic_oxidation",
+    "need": [
+      "CO",
+      "O2",
+      "Pt"
+    ],
+    "preserve": [
+      "Pt"
+    ],
+    "eq": "2CO + O2 → 2CO2",
+    "out": [
+      "CO2"
+    ],
+    "heat": 40,
+    "heating": true,
+    "arrowLabel": "Pt, t°",
+    "col": "#d8d8d8",
+    "dur": 7,
+    "bub": 0.3,
+    "gas": "CO2",
+    "explain": "CO bị oxi hóa thành CO₂ trên xúc tác platin; mô phỏng giữ Pt lại làm xúc tác."
   }
 ];
 
