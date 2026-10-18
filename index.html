@@ -726,7 +726,7 @@ $('#b1').onclick=()=>{st.heat=!st.heat;$('#b1').classList.toggle('on',st.heat);c
 $('#b2').onclick=()=>{clearAll();st.heat=false;st.temp=25;$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
 
 addEventListener('keydown',e=>{if(e.key==='Escape')openCat(false)});
-renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz,pairAudit:()=>window.CHEM_PAIR_AUDIT(DB,RX)};
+renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz,pairAudit:()=>window.CHEM_PAIR_AUDIT(DB,RX),tripleAudit:()=>window.CHEM_TRIPLE_AUDIT(DB,RX)};
  document.title=`Thí nghiệm hóa học 3D · ${DB.length} chất · ${RX.length} quy tắc phản ứng`;
  })();
 }).catch(error => {
