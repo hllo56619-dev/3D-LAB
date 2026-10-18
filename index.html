@@ -1,92 +1,470 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#020204">
-<title>Chemistry Lab — Virtual Experiment</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>Thí nghiệm hóa học 3D</title>
 <style>
-:root{color-scheme:dark;--panel:rgba(48,49,51,.96);--white:#f2f3f4;--muted:#aeb1b4;--accent:#f43c45}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#020204;color:var(--white);font-family:Arial,Helvetica,sans-serif}body{display:flex;justify-content:center}.app-shell{position:relative;width:min(100vw,560px);height:100dvh;overflow:hidden;background:#020204;isolation:isolate}.scene{position:absolute;inset:0;width:100%;height:100%;display:block;z-index:0;touch-action:pan-y}.fallback{position:absolute;inset:0;display:none;z-index:0;background:#020204}.equation{position:absolute;z-index:2;top:16px;left:7%;width:86%;text-align:center;font:11px Georgia,'Times New Roman',serif;letter-spacing:.2px;color:#eee;opacity:.92;pointer-events:none;text-shadow:0 1px 3px #000}.substance-labels{position:absolute;left:8px;top:44%;z-index:2;display:flex;flex-direction:column;gap:2px;max-width:60px;color:#f0f0f0;font:10px/1.05 Georgia,'Times New Roman',serif;white-space:pre-line;text-shadow:0 1px 3px #000;pointer-events:none}.caption{position:absolute;left:0;right:0;top:44%;z-index:1;text-align:center;pointer-events:none;font-size:18px;font-weight:700;color:#fff;opacity:0;transition:opacity .2s}.bottom-bar{position:absolute;z-index:8;bottom:max(12px,env(safe-area-inset-bottom));left:5.5%;width:89%;height:44px;background:#303236;border-radius:4px;display:flex;align-items:center;justify-content:space-around;box-shadow:0 2px 10px #0008}.tool{width:25%;height:100%;display:grid;place-items:center;border:0;background:transparent;border-radius:3px;padding:0;color:#eee}.tool svg{width:23px;height:23px;display:block}.tool:active{background:#55585d}.tool.heat svg{color:#fb2839}.tool.active{background:#47494e}.tool.active svg{filter:drop-shadow(0 0 5px currentColor)}.modal{position:absolute;z-index:7;top:14px;left:5.5%;width:89%;height:min(76dvh,720px);background:var(--panel);box-shadow:0 8px 25px #0005;display:none;flex-direction:column;border-radius:2px;overflow:hidden}.modal.open{display:flex}.search-head{height:43px;min-height:43px;display:flex;align-items:center;padding:0 8px 0 10px;gap:8px}.search-wrap{flex:1;position:relative;height:34px;display:flex;align-items:center;border-bottom:1px solid #bfc1c3}.search-wrap input{width:100%;border:0;outline:0;background:transparent;color:#f6f6f6;padding:6px 0;font:12px Arial,sans-serif}.search-wrap input::placeholder{color:#b7b7b7;font-style:italic}.close{border:0;background:none;color:#fff;font-size:26px;line-height:1;width:27px;height:33px;padding:0;font-weight:200}.catalog{overflow:auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-content:start;gap:2px 1px;padding:4px 2px 10px;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#686a6b transparent}.chem-item{height:72px;min-width:0;border:0;background:transparent;border-radius:3px;padding:4px 1px 1px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:4px;color:white}.chem-item:active,.chem-item:hover{background:#62646770}.chem-icon{width:33px;height:34px;display:block;overflow:visible}.chem-formula{width:100%;text-align:center;font:10px Arial,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:clip;color:#efefef;line-height:1.05}.no-results{grid-column:1/-1;text-align:center;color:#d0d0d0;font-size:12px;padding:32px 8px}.hud{position:absolute;z-index:3;bottom:68px;left:8px;font:9px Arial,sans-serif;color:#9c9c9c;opacity:0;pointer-events:none}.toast{position:absolute;z-index:10;bottom:68px;left:8%;right:8%;padding:9px 11px;text-align:center;border-radius:3px;background:#282a2ddd;color:#f7f7f7;font-size:11px;opacity:0;pointer-events:none;transition:opacity .2s}.toast.show{opacity:1}.info-panel{position:absolute;z-index:9;left:5.5%;right:5.5%;bottom:68px;max-height:38%;overflow:auto;background:#252629f5;border:1px solid #595b5e;padding:12px;font-size:12px;display:none}.info-panel.open{display:block}.info-panel h3{margin:0 0 7px;font-size:13px}.info-panel p{color:#d5d5d5;line-height:1.45;margin:5px 0}.info-panel button{float:right;background:#555;border:0;color:#fff;padding:5px 10px}
-@media(min-width:561px){.app-shell{border-left:1px solid #101012;border-right:1px solid #101012;box-shadow:0 0 50px #000}}@media(max-height:580px){.modal{height:calc(100dvh - 76px)}.chem-item{height:61px}.chem-icon{width:28px;height:29px}.bottom-bar{height:38px}}
+:root{color-scheme:dark;--bg:#000;--panel:#262626;--bar:#2c2c2c;--fg:#f2f2f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:Georgia,"Times New Roman",serif;overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:none}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+#eq{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:8%;right:8%;text-align:center;font-size:12px;line-height:1.35;color:#e8e8e8;pointer-events:none}
+#lab{position:fixed;left:6%;top:56%;font-size:11px;line-height:1.5;color:#cfcfcf;pointer-events:none}
+sub{font-size:.72em;line-height:0}
+#bar{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);height:48px;background:rgba(44,44,44,.94);border-radius:8px;display:flex;justify-content:space-around;align-items:center;z-index:5;max-width:520px;margin:0 auto}
+#bar button{background:none;border:0;width:56px;height:44px;display:grid;place-items:center;cursor:pointer;border-radius:8px;-webkit-tap-highlight-color:transparent}
+#bar button.on{background:rgba(255,255,255,.12)}
+button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
+#cat{position:fixed;left:50%;transform:translateX(-50%);top:calc(env(safe-area-inset-top,0px) + 14px);bottom:calc(env(safe-area-inset-bottom,0px) + 70px);width:min(94vw,520px);background:rgba(34,34,34,.96);border-radius:10px;z-index:4;display:none;flex-direction:column;overflow:hidden;touch-action:pan-y}
+#cat.open{display:flex}
+#top{display:flex;align-items:flex-end;gap:8px;padding:10px 12px 8px}
+#sw{flex:1;border-bottom:1.5px solid #eee;padding-bottom:2px}
+#sw i{display:block;font-size:9px;color:#bbb}
+#q{width:100%;background:none;border:0;outline:0;color:#fff;font:15px Georgia,serif;padding:2px 0;-webkit-user-select:text;user-select:text}
+#x{background:none;border:0;cursor:pointer;width:36px;height:36px;display:grid;place-items:center}
+#filters{display:flex;gap:5px;padding:0 8px 7px;overflow-x:auto;scrollbar-width:none;flex-shrink:0;touch-action:pan-x}#filters::-webkit-scrollbar{display:none}#filters button{white-space:nowrap;background:transparent;border:1px solid #444;color:#bfbfbf;border-radius:99px;padding:5px 9px;font:11px Georgia,serif}#filters button.active{background:#dedede;border-color:#dedede;color:#111}
+#grid{overflow-y:auto;flex:1;display:grid;grid-template-columns:repeat(4,1fr);gap:6px 2px;padding:8px 8px 14px;align-content:start;touch-action:pan-y;overscroll-behavior:contain}
+.t{background:none;border:0;color:#ddd;font:12px Georgia,serif;text-align:center;cursor:pointer;padding:4px 0;min-width:0;overflow-wrap:anywhere}
+.t svg{width:46px;height:46px;display:block;margin:0 auto 2px}
+#none{grid-column:1/-1;text-align:center;color:#888;font-size:13px;padding:30px 0}
+#err{position:fixed;inset:0;display:none;place-items:center;text-align:center;padding:24px;background:#000;z-index:9;font-size:15px}
 </style>
 </head>
 <body>
-<div class="app-shell" id="app">
-<canvas id="scene" class="scene" aria-label="Mô phỏng phòng thí nghiệm hóa học 3D"></canvas>
-<div class="equation" id="equation"></div><div class="substance-labels" id="labels"></div>
-<div class="modal" id="catalog" aria-label="Danh mục hóa chất"><div class="search-head"><div class="search-wrap"><input type="search" id="search" placeholder="What do you want..." autocomplete="off" spellcheck="false" aria-label="Tìm công thức hóa học"></div><button class="close" id="closeCatalog" aria-label="Đóng danh mục">×</button></div><div class="catalog" id="catalogGrid"></div></div>
-<div class="info-panel" id="info"><button id="closeInfo">Đóng</button><h3>CHEMISTRY LAB</h3><p>Chọn một chất trong danh mục để đưa vào cốc. Có thể tìm theo công thức như <b>h2</b>, <b>cl</b>, <b>fe</b> hoặc <b>k</b>.</p><p>Nút ngọn lửa bật/tắt gia nhiệt; mũi tên tròn làm mới thí nghiệm. Một số phản ứng sẽ hiển thị phương trình, đổi màu dung dịch, tạo bọt khí hoặc hiệu ứng lửa.</p><p>Đây là mô phỏng trực quan phục vụ học tập, không phải dự đoán phản ứng thực nghiệm chính xác.</p></div>
-<div class="bottom-bar" role="toolbar" aria-label="Công cụ thí nghiệm">
-<button class="tool" id="menuBtn" aria-label="Mở danh mục hóa chất" title="Danh mục hóa chất"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 5h18v2H3zm0 6h18v2H3zm0 6h18v2H3z"/></svg></button>
-<button class="tool heat" id="heatBtn" aria-label="Bật hoặc tắt gia nhiệt" title="Gia nhiệt"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.6 2.2c.6 3.4-1.9 4.7-1.8 7.1.1 1.2.9 1.8 1.6 2.1-.1-2.2 1.8-3 2-5.4 2.9 3.1 5 6.3 3.5 10.2-1 2.8-3.3 4.7-6.4 4.7-3.8 0-6.6-2.5-6.6-6.5 0-3.2 2-5.6 4.8-8.1-.2 2.6.4 3.5 1.3 4.1-.2-3.1 2-4.1 1.6-8.2z"/></svg></button>
-<button class="tool" id="resetBtn" aria-label="Làm mới thí nghiệm" title="Làm mới"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 0 0-14.9-3L3 11"/><path d="M3 5v6h6"/><path d="M4 13a8 8 0 0 0 14.9 3L21 13"/><path d="M21 19v-6h-6"/></svg></button>
-<button class="tool" id="soundBtn" aria-label="Bật hoặc tắt âm thanh hiệu ứng" title="Âm thanh"><svg id="soundIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6.5a9 9 0 0 1 0 11"/></svg></button>
-</div><div class="toast" id="toast"></div>
+<canvas id="c"></canvas>
+<div id="eq"></div><div id="lab"></div>
+<div id="cat" aria-hidden="true">
+ <div id="top"><div id="sw"><i>What do you want...</i><input id="q" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Tìm hóa chất"></div>
+ <button id="x" aria-label="Đóng"><svg width="22" height="22" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></svg></button></div>
+ <div id="grid"></div>
 </div>
+<div id="bar">
+ <button id="b0" aria-label="Danh mục hóa chất"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+ <button id="b1" aria-label="Đun nóng"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 1.5c.6 4.2 6.2 6.4 6.2 12.4a6.2 6.2 0 0 1-12.4 0c0-2.6 1.3-4.1 2.4-5.6.3 1.6 1 2.5 1.8 2.9C9.6 8 11.2 5.2 12 1.5z" fill="#ff2a1a"/><path d="M12 12c.4 2 2.6 2.8 2.6 5.2a2.6 2.6 0 0 1-5.2 0c0-1.3.8-1.8 1.2-2.6.4.6.8.9 1.1.9-.1-1 .1-2.3.3-3.5z" fill="#ff8a3a"/></svg></button>
+ <button id="b2" aria-label="Đặt lại thí nghiệm"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.6-5.7M19.8 3.5v4.8h-4.8"/></svg></button>
+ <button id="b3" aria-label="Đổ bỏ dung dịch"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M9 3h10v18H9M9 3v4M9 17v4M3 12h9M9 9l3 3-3 3"/></svg></button>
+</div>
+<div id="err">Trình duyệt này không hỗ trợ WebGL nên không thể hiển thị cốc 3D. Hãy thử Chrome hoặc Safari bản mới.</div>
+<svg width="0" height="0" style="position:absolute"><defs><radialGradient id="sm"><stop offset="0" stop-color="#cfcfcf" stop-opacity=".9"/><stop offset="1" stop-color="#999" stop-opacity="0"/></radialGradient></defs></svg>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
-(function(){
-'use strict';
-const $=id=>document.getElementById(id);
-const data=[
-// Simple elements and solids as shown in the element search grid
-['Fe','Iron','solid','#858a8c'],['CH₄','Methane','gas','#afb4b7'],['Li','Lithium','solid','#b1b5bc'],['C','Carbon','solid','#101114'],['Na','Sodium','solid','#e5e6e8'],['Mg','Magnesium','solid','#a9b0b7'],['Al','Aluminium','solid','#b7bac0'],['Si','Silicon','solid','#a3a7ac'],['P (white)','White phosphorus','solid','#e9ecee'],['S','Sulfur','solid','#c7df27'],['K','Potassium','solid','#9c9fa7'],['Ca','Calcium','solid','#c5c8cb'],['Cr','Chromium','solid','#aeb4ba'],['Mn','Manganese','solid','#91969c'],['Co','Cobalt','solid','#868c91'],['Ni','Nickel','solid','#b9bdc2'],['Cu','Copper','solid','#b95e45'],['Zn','Zinc','solid','#a3a9b0'],['Ag','Silver','solid','#d8dce0'],['Sn','Tin','solid','#b7bdc3'],['Ba','Barium','solid','#9ca2aa'],['Hg','Mercury','liquid','#e1e7ef'],['Br₂','Bromine','liquid','#8d3524'],['I₂','Iodine','solid','#6f526e'],
-// hydrogen and common acids/water
-['H₂SO₄','Sulfuric acid','liquid','#f4f4ef'],['H₂S','Hydrogen sulfide','gas','#bfc0c3'],['H₂','Hydrogen','gas','#bfc0c3'],['H','Hydrogen atom','gas','#bfc0c3'],['H₂O','Water','liquid','#e7eaf0'],['H₂SO₄ (conc.)','Concentrated sulfuric acid','liquid','#f2efe7'],['H₂CO₃','Carbonic acid','liquid','#e8edf4'],['H₂SiO₃','Silicic acid','solid','#9caeab'],['H₂O₂','Hydrogen peroxide','liquid','#f0f1ef'],['HCl','Hydrochloric acid','liquid','#f0f0ed'],['HNO₃','Nitric acid','liquid','#eee9d9'],['CH₃COOH','Acetic acid','liquid','#f1eddf'],['H₃PO₄','Phosphoric acid','liquid','#f3f0dc'],['HBr','Hydrobromic acid','liquid','#d4a6a0'],['HF','Hydrofluoric acid','liquid','#eef1eb'],['HClO','Hypochlorous acid','liquid','#d9eed6'],['HClO₃','Chloric acid','liquid','#e1f0cf'],['H₂SO₃','Sulfurous acid','liquid','#f1efe3'],['H₂O (conc.)','Water','liquid','#e6edf2'],['H₂CO₃','Carbonic acid','liquid','#e9edf0'],
-// chloride compounds matching the visible cl search
-['NaCl','Sodium chloride','solid','#f1f2f5'],['KCl','Potassium chloride','solid','#f1f2f5'],['Cl₂','Chlorine','gas','#cad4d2'],['AgCl','Silver chloride','solid','#eee5d1'],['CuCl','Copper(I) chloride','solid','#a4b8b6'],['CuCl₂','Copper(II) chloride','solid','#54846a'],['NaClO₃','Sodium chlorate','solid','#f0f2ed'],['KClO₃','Potassium chlorate','solid','#ecefe9'],['MgCl₂','Magnesium chloride','solid','#d7ddd9'],['CaCl₂','Calcium chloride','solid','#e8ece7'],['BaCl₂','Barium chloride','solid','#d5dcd9'],['CrCl₃','Chromium(III) chloride','solid','#609d62'],['MnCl₂','Manganese(II) chloride','solid','#b4b6bd'],['FeCl₂','Iron(II) chloride','solid','#a7b8a6'],['FeCl₃','Iron(III) chloride','solid','#b99c70'],['AlCl₃','Aluminium chloride','solid','#e4e4e4'],['ZnCl₂','Zinc chloride','solid','#e4e7e6'],['NH₄Cl','Ammonium chloride','solid','#ecedee'],['HClO₄','Perchloric acid','liquid','#f4f0e8'],['NiCl₂·H₂O','Nickel chloride hydrate','solid','#75a887'],
-// iron and iron compounds visible in the Fe search
-['FeSO₄','Iron(II) sulfate','solution','#6ce58e'],['Fe₂(SO₄)₃','Iron(III) sulfate','solution','#39ad6b'],['Fe(OH)₃','Iron(III) hydroxide','solid','#92b7a4'],['FeO','Iron(II) oxide','solid','#797d7e'],['FeS','Iron(II) sulfide','solid','#17191b'],['Fe₂S₃','Iron(III) sulfide','solid','#222325'],['Fe₂O₃','Iron(III) oxide','solid','#9a4f3c'],['Fe₃O₄','Iron oxide','solid','#3b4147'],['Fe(NO₃)₂','Iron(II) nitrate','solution','#5cc986'],['Fe(NO₃)₃','Iron(III) nitrate','solution','#65c986'],['FeCO₃','Iron(II) carbonate','solid','#7eaa87'],['Fe₃(PO₄)₂','Iron(II) phosphate','solid','#668f91'],['FePO₄','Iron(III) phosphate','solid','#6aa5a2'],['FeBr₂','Iron(II) bromide','solid','#9b8168'],['FeBr₃','Iron(III) bromide','solid','#ab634e'],['FeI₂','Iron(II) iodide','solid','#765e63'],['FeI₃','Iron(III) iodide','solid','#76464a'],['FeCl₃ aq','Iron(III) chloride solution','solution','#c0af67'],
-// bases and salts
-['NaOH','Sodium hydroxide','solid','#edf0f2'],['KOH','Potassium hydroxide','solution','#e7eaee'],['Ca(OH)₂','Calcium hydroxide','solid','#ecefed'],['Cu(OH)₂','Copper(II) hydroxide','solid','#4d91e5'],['Ba(OH)₂','Barium hydroxide','solid','#e8e9e9'],['CuSO₄','Copper(II) sulfate','solution','#277ce2'],['CuSO₄·5H₂O','Copper sulfate pentahydrate','solid','#3184e2'],['AgNO₃','Silver nitrate','solution','#e4e8ed'],['NaNO₃','Sodium nitrate','solid','#f0f1ee'],['KNO₃','Potassium nitrate','solid','#eff1ec'],['CaCO₃','Calcium carbonate','solid','#e4e6e3'],['BaSO₄','Barium sulfate','solid','#eeefeb'],['Na₂CO₃','Sodium carbonate','solid','#e8ece8'],['NaHCO₃','Sodium bicarbonate','solid','#ebefed'],['KMnO₄','Potassium permanganate','solution','#703e9b'],['K₂Cr₂O₇','Potassium dichromate','solution','#ee7a2c'],['NH₃','Ammonia','gas','#d8e4de'],['CO₂','Carbon dioxide','gas','#bec6ce'],['O₂','Oxygen','gas','#bfcfe5'],['N₂','Nitrogen','gas','#c6cbd1'],['SO₂','Sulfur dioxide','gas','#b9b9a8'],['H₂ (gas)','Hydrogen gas','gas','#d8dce0'],
-// additional compounds visible in the wide catalogue
-['H₂CO₃','Carbonic acid','liquid','#e1e7e8'],['BaH₂','Barium hydride','solid','#b8bdc2'],['H₂SiF₆','Fluorosilicic acid','liquid','#e6e9e6'],['H₂C₂O₄','Oxalic acid','solid','#e5e7e3'],['H₂CrO₄','Chromic acid','liquid','#e3b53a'],['Na₂O₂','Sodium peroxide','solid','#ecece7'],['MgO','Magnesium oxide','solid','#e3e5e5'],['Al₂O₃','Aluminium oxide','solid','#dedfdf'],['SiO₂','Silicon dioxide','solid','#dadbd9'],['P₂O₅','Phosphorus pentoxide','solid','#eee9d9'],['SO₃','Sulfur trioxide','liquid','#e5e5dc'],['CaO','Calcium oxide','solid','#e7e8e6'],['MnO₂','Manganese dioxide','solid','#44494e'],['CuO','Copper(II) oxide','solid','#242729'],['Cu₂O','Copper(I) oxide','solid','#a24d3d'],['ZnO','Zinc oxide','solid','#e6e6e4'],['Pb(NO₃)₂','Lead nitrate','solid','#e6e8e7'],['PbI₂','Lead iodide','solid','#e0ca39'],['KI','Potassium iodide','solid','#eceeea'],['Na₂SO₄','Sodium sulfate','solid','#e8ebe8'],['K₂SO₄','Potassium sulfate','solid','#e6e8e5'],['MgSO₄','Magnesium sulfate','solid','#e8eae8'],['Al₂(SO₄)₃','Aluminium sulfate','solid','#e8ebe8'],['Na₃PO₄','Sodium phosphate','solid','#e8ebe8'],['Ca₃(PO₄)₂','Calcium phosphate','solid','#e3e7e3'],['Na₂S','Sodium sulfide','solid','#e5e7e2'],['ZnS','Zinc sulfide','solid','#e9e5ca'],['PbS','Lead sulfide','solid','#252629'],['BaCO₃','Barium carbonate','solid','#e5e8e4'],['H₂O₂ (aq)','Hydrogen peroxide solution','liquid','#e4e8ed']
-].map(([f,n,p,c])=>({formula:f,name:n,phase:p,color:c}));
-// Deduplicate identical formulas while preserving the first catalogue position.
-const catalogData=[...new Map(data.map(x=>[x.formula,x])).values()];
-let state={contents:[],baseColor:'#9da9b4',volume:0,bubbles:false,fire:false,formula:'',reactionTitle:'',sound:true,heatLevel:0};
-let renderer,scene,camera,glassGroup,liquidMesh,liquidTop,streamGroup,bubbleGroup,flameGroup,liquidMaterial;let clock=0, pourUntil=0, toastTimer;
-const app=$('app');
-function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2100)}
-function formulaPlain(s){return s.replace(/₂/g,'2').replace(/₃/g,'3').replace(/₄/g,'4').replace(/₅/g,'5').replace(/₆/g,'6').replace(/₇/g,'7').replace(/₈/g,'8').replace(/₉/g,'9').replace(/₁/g,'1').replace(/·/g,'.')}
-function miniIcon(c){const col=c.color;let shape='';if(c.phase==='solid'){shape=`<path d="M7 24 10 10 20 4 30 11 27 26 16 31Z" fill="${col}" stroke="#ffffff35" stroke-width="1"/><path d="M10 10 19 15 30 11M19 15 16 31M19 15 27 26" fill="none" stroke="#fff" stroke-opacity=".2"/>`}else if(c.phase==='gas'){shape=`<g fill="${col}" opacity=".9"><circle cx="18" cy="7" r="3"/><circle cx="10" cy="18" r="3"/><circle cx="25" cy="17" r="3"/><circle cx="18" cy="28" r="3"/></g><g stroke="#cbd3d8" stroke-width="1" stroke-dasharray="2 2"><path d="M17 10 11 15M13 18 22 17M23 20 19 25"/></g>`}else if(c.phase==='liquid'){shape=`<path d="M18 2 C15 8 6 16 6 22a12 12 0 0 0 24 0C30 16 21 8 18 2Z" fill="${col}" stroke="#fff" stroke-opacity=".45" stroke-width="1.2"/><ellipse cx="13" cy="21" rx="4" ry="6" fill="#fff" opacity=".2"/>`}else{shape=`<path d="M12 3h12v6l5 15q1 5-4 6H11q-5-1-3-6l5-15Z" fill="#d4dade" fill-opacity=".88" stroke="#fff" stroke-opacity=".6"/><path d="M10 20Q18 16 28 20l2 5q0 3-5 3H11q-4-1-2-4Z" fill="${col}"/><path d="M13 4h10" stroke="#fff" stroke-width="2"/>`}
-return `<svg class="chem-icon" viewBox="0 0 36 36" aria-hidden="true">${shape}</svg>`}
-function renderCatalog(query='') {const grid=$('catalogGrid');const q=formulaPlain(query.trim().toLowerCase());const matches=catalogData.filter(c=>!q||formulaPlain((c.formula+' '+c.name).toLowerCase()).includes(q));grid.innerHTML=matches.length?matches.map((c,i)=>`<button class="chem-item" type="button" data-index="${catalogData.indexOf(c)}" aria-label="Thêm ${c.formula}">${miniIcon(c)}<span class="chem-formula">${c.formula}</span></button>`).join(''):'<div class="no-results">Không tìm thấy chất phù hợp</div>';grid.querySelectorAll('[data-index]').forEach(btn=>btn.addEventListener('click',()=>choose(catalogData[+btn.dataset.index])))}
-function openCatalog(){ $('info').classList.remove('open');$('catalog').classList.add('open');$('search').value='';renderCatalog('');$('catalogGrid').scrollTop=0;setTimeout(()=>$('search').focus({preventScroll:true}),80)}
-function closeCatalog(){ $('catalog').classList.remove('open');$('search').blur() }
-$('menuBtn').onclick=openCatalog;$('closeCatalog').onclick=closeCatalog;$('search').addEventListener('input',e=>renderCatalog(e.target.value));$('search').addEventListener('keydown',e=>{if(e.key==='Escape')closeCatalog()});
-$('resetBtn').onclick=()=>{state={contents:[],baseColor:'#9da9b4',volume:0,bubbles:false,fire:false,formula:'',reactionTitle:'',sound:state.sound,heatLevel:0};$('equation').textContent='';$('labels').textContent='';$('heatBtn').classList.remove('active');closeCatalog();$('info').classList.remove('open');refreshLiquid();clearParticles();toast('Đã làm mới thí nghiệm')};
-$('heatBtn').onclick=()=>{state.fire=!state.fire;$('heatBtn').classList.toggle('active',state.fire);if(state.fire){makeFlames();toast('Đã bật gia nhiệt')}else{clearGroup(flameGroup);toast('Đã tắt gia nhiệt')}if(state.contents.some(c=>c.formula==='Fe')&&state.contents.some(c=>c.formula==='H₂SO₄ (conc.)')){runConcentratedReaction()}};
-$('soundBtn').onclick=()=>{state.sound=!state.sound;$('soundIcon').innerHTML=state.sound?'<path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M18.5 6.5a9 9 0 0 1 0 11"/>':'<path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="m17 9 5 6m0-6-5 6"/>';toast(state.sound?'Âm thanh hiệu ứng đã bật':'Âm thanh hiệu ứng đã tắt')};
-$('closeInfo').onclick=()=>$('info').classList.remove('open');
-$('app').addEventListener('dblclick',e=>{if(e.target===$('scene')){$('info').classList.toggle('open')}});
-function setup3D(){if(!window.THREE){fallback2D();return}const T=THREE;try{renderer=new T.WebGLRenderer({canvas:$('scene'),antialias:true,alpha:false});renderer.setPixelRatio(Math.min(devicePixelRatio||1,2));renderer.setSize(app.clientWidth,app.clientHeight,false);renderer.setClearColor(0x020204,1);renderer.outputEncoding=T.sRGBEncoding;renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;scene=new T.Scene();scene.background=new T.Color(0x020204);camera=new T.PerspectiveCamera(31,app.clientWidth/app.clientHeight,.1,100);camera.position.set(0,.1,7.9);camera.lookAt(0,-.02,0);scene.add(new T.AmbientLight(0x9aaabd,.75));let key=new T.DirectionalLight(0xd7e8ff,1.8);key.position.set(-3,4,4);scene.add(key);let rimLight=new T.DirectionalLight(0x9dcaff,1.1);rimLight.position.set(3,2,-3);scene.add(rimLight);let front=new T.PointLight(0xa9daff,.6);front.position.set(0,1.2,4);scene.add(front);glassGroup=new T.Group();scene.add(glassGroup);
-// Hollow-walled glass vessel with rounded base and the characteristic small pouring lip.
-const pts=[[0,-1.24],[.43,-1.24],[.57,-1.22],[.66,-1.15],[.69,-1.04],[.70,.80],[.73,.88],[.79,.90],[.82,.94],[.78,.98],[.70,.96],[.68,.88],[.65,.78],[.64,-1.00],[.58,-1.10],[.43,-1.13],[0,-1.13]].map(p=>new T.Vector2(p[0],p[1]));let glassGeo=new T.LatheGeometry(pts,96);glassGeo.computeVertexNormals();let glassMat=new T.MeshPhysicalMaterial({color:0xc4d7e8,metalness:.16,roughness:.11,transparent:true,opacity:.21,side:T.DoubleSide,depthWrite:false,clearcoat:1,clearcoatRoughness:.05});let glass=new T.Mesh(glassGeo,glassMat);glassGroup.add(glass);
-const ringMat=new T.MeshStandardMaterial({color:0xabbdd0,metalness:.5,roughness:.22,transparent:true,opacity:.62});const rim=new T.Mesh(new T.TorusGeometry(.76,.027,10,96),ringMat);rim.rotation.x=Math.PI/2;rim.position.y=.94;rim.position.z=0;glassGroup.add(rim);const baseRing=new T.Mesh(new T.TorusGeometry(.57,.023,8,80),ringMat);baseRing.rotation.x=Math.PI/2;baseRing.position.y=-1.19;glassGroup.add(baseRing);
-// Thin reflective front edge and spout highlight lines.
-for(const x of [-.66,.66]){const line=new T.Mesh(new T.CylinderGeometry(.009,.009,1.91,8),new T.MeshBasicMaterial({color:x<0?0xc5e4ff:0x8caac5,transparent:true,opacity:x<0?.38:.25}));line.position.set(x,-.03,.02);glassGroup.add(line)}
-const spoutCurve=new T.CatmullRomCurve3([new T.Vector3(.59,.87,.02),new T.Vector3(.70,.93,.025),new T.Vector3(.79,.96,.02),new T.Vector3(.84,.91,.02)]);glassGroup.add(new T.Mesh(new T.TubeGeometry(spoutCurve,24,.018,6,false),new T.MeshBasicMaterial({color:0xc8e7ff,transparent:true,opacity:.48})));
-const floor=new T.Mesh(new T.CircleGeometry(.76,48),new T.MeshBasicMaterial({color:0x101a28,transparent:true,opacity:.45}));floor.rotation.x=-Math.PI/2;floor.position.y=-1.24;floor.position.z=0;glassGroup.add(floor);
-liquidMaterial=new T.MeshPhysicalMaterial({color:0x9da9b4,transparent:true,opacity:.62,roughness:.16,metalness:.05,side:T.DoubleSide,depthWrite:false});liquidMesh=new T.Mesh(new T.CylinderGeometry(.64,.57,.08,72,1,false),liquidMaterial);liquidMesh.position.y=-1.08;glassGroup.add(liquidMesh);liquidTop=new T.Mesh(new T.CircleGeometry(.64,72),new T.MeshPhysicalMaterial({color:0xbecbd7,transparent:true,opacity:.30,roughness:.13,side:T.DoubleSide,depthWrite:false}));liquidTop.rotation.x=-Math.PI/2;liquidTop.position.y=-1.04;glassGroup.add(liquidTop);
-streamGroup=new T.Group();scene.add(streamGroup);bubbleGroup=new T.Group();scene.add(bubbleGroup);flameGroup=new T.Group();scene.add(flameGroup);
-const shadow=new T.Mesh(new T.CircleGeometry(.96,48),new T.MeshBasicMaterial({color:0x07101c,transparent:true,opacity:.85}));shadow.rotation.x=-Math.PI/2;shadow.position.set(0,-1.31,.05);glassGroup.add(shadow);
-const onResize=()=>{renderer.setSize(app.clientWidth,app.clientHeight,false);camera.aspect=app.clientWidth/app.clientHeight;camera.updateProjectionMatrix()};window.addEventListener('resize',onResize);refreshLiquid();animate();}catch(e){console.warn('WebGL init failed',e);fallback2D()}}
-function fallback2D(){const c=$('scene'),ctx=c.getContext('2d');function draw(){let w=c.width=c.clientWidth*(devicePixelRatio||1),h=c.height=c.clientHeight*(devicePixelRatio||1);ctx.fillStyle='#020204';ctx.fillRect(0,0,w,h);let cx=w/2,top=h*.28,bottom=h*.69,rx=Math.min(w*.29,145)*(devicePixelRatio||1);ctx.strokeStyle='#9fb6ca';ctx.lineWidth=2;ctx.fillStyle='#e2ebf2';ctx.globalAlpha=.14;ctx.beginPath();ctx.moveTo(cx-rx*.9,top);ctx.lineTo(cx-rx*.85,bottom-rx*.2);ctx.quadraticCurveTo(cx,bottom+rx*.1,cx+rx*.85,bottom-rx*.2);ctx.lineTo(cx+rx*.9,top);ctx.closePath();ctx.fill();ctx.globalAlpha=.7;ctx.stroke();ctx.beginPath();ctx.ellipse(cx,top,rx*.9,rx*.16,0,0,Math.PI*2);ctx.stroke();ctx.globalAlpha=.8;if(state.volume>0){let ly=bottom-Math.min(.48,state.volume/360)*h;ctx.fillStyle=state.baseColor;ctx.globalAlpha=.5;ctx.beginPath();ctx.moveTo(cx-rx*.8,ly);ctx.lineTo(cx+rx*.8,ly);ctx.lineTo(cx+rx*.77,bottom-rx*.18);ctx.quadraticCurveTo(cx,bottom,cx-rx*.77,bottom-rx*.18);ctx.closePath();ctx.fill();ctx.globalAlpha=1}if(state.fire){ctx.fillStyle='#ff6935';ctx.beginPath();ctx.moveTo(cx,bottom+25);ctx.quadraticCurveTo(cx-rx*.4,bottom-10,cx,bottom-25);ctx.quadraticCurveTo(cx+rx*.3,bottom,cx,bottom+25);ctx.fill()}ctx.globalAlpha=1;requestAnimationFrame(draw)}draw()}
-function clearGroup(g){if(!g)return;while(g.children.length){let o=g.children.pop();if(o.geometry)o.geometry.dispose();if(o.material){if(Array.isArray(o.material))o.material.forEach(m=>m.dispose());else o.material.dispose()}}}
-function clearParticles(){clearGroup(streamGroup);clearGroup(bubbleGroup);clearGroup(flameGroup)}
-function refreshLiquid(){if(!renderer||!liquidMesh)return;const T=THREE;const h=Math.max(.035,Math.min(1.72,state.volume/160*1.55));const y=-1.14+h/2;liquidMesh.geometry.dispose();liquidMesh.geometry=new T.CylinderGeometry(.64,.57,h,72,1,false);liquidMesh.position.y=y;liquidTop.position.y=-1.14+h+.006;liquidTop.scale.set(1,1,1);liquidMaterial.color.set(state.baseColor);liquidMaterial.opacity=state.volume>0?.58:0;liquidTop.material.color.set(state.baseColor);liquidTop.material.opacity=state.volume>0?.32:0;liquidMesh.visible=state.volume>0;liquidTop.visible=state.volume>0;if(state.volume===0){liquidMesh.visible=true;liquidMaterial.opacity=.1;liquidMesh.scale.y=.08;liquidMesh.position.y=-1.085;liquidTop.position.y=-1.04}else liquidMesh.scale.y=1}
-function streamIn(color,phase){if(!renderer)return;const T=THREE;clearGroup(streamGroup);const c=new T.Color(color||'#e8edf2');const mat=new T.MeshBasicMaterial({color:c,transparent:true,opacity:.8});for(let i=0;i<17;i++){const r=phase==='gas'?.018+Math.random()*.014:.009+Math.random()*.008;let p=new T.Mesh(new T.SphereGeometry(r,8,8),mat);p.position.set((Math.random()-.5)*.11,2.8+Math.random()*.8,(Math.random()-.5)*.08+.12);p.userData.speed=2.5+Math.random()*1.8;p.userData.offset=Math.random()*.12;streamGroup.add(p)}pourUntil=clock+2.8;}
-function addBubbles(n=22,color='#dce9f5'){if(!renderer)return;const T=THREE;const mat=new T.MeshBasicMaterial({color,transparent:true,opacity:.65});for(let i=0;i<n;i++){const r=.012+Math.random()*.025;const m=new T.Mesh(new T.SphereGeometry(r,8,8),mat);m.position.set((Math.random()-.5)*.8,-.95+Math.random()*.1,(Math.random()-.5)*.42);m.userData={speed:.25+Math.random()*.42,phase:Math.random()*Math.PI*2,baseX:m.position.x,baseZ:m.position.z};bubbleGroup.add(m)}}
-function makeFlames(){if(!renderer)return;clearGroup(flameGroup);const T=THREE;for(let i=0;i<34;i++){const sprite=new T.Mesh(new T.SphereGeometry(.045+Math.random()*.09,8,8),new T.MeshBasicMaterial({color:i%3===0?0xffe17c:i%3===1?0xff6a2d:0xd92627,transparent:true,opacity:.65}));sprite.position.set((Math.random()-.5)*.65,-1.6-Math.random()*.25,(Math.random()-.5)*.28);sprite.userData={baseY:sprite.position.y,phase:Math.random()*Math.PI*2,speed:.5+Math.random()*.8};flameGroup.add(sprite)}}
-function animate(){requestAnimationFrame(animate);if(!renderer)return;clock+=.016;streamGroup.children.forEach(p=>{p.position.y-=p.userData.speed*.016;p.position.x=Math.sin(clock*2+p.userData.offset)*.03;if(p.position.y<-1.1)p.position.y=2.5+Math.random()*.5});if(clock>pourUntil)clearGroup(streamGroup);bubbleGroup.children.forEach(p=>{p.position.y+=p.userData.speed*.016;if(p.position.y>.15){p.position.y=-1.02;p.position.x=p.userData.baseX;p.position.z=p.userData.baseZ}p.position.x=p.userData.baseX+Math.sin(clock*2+p.userData.phase)*.06});flameGroup.children.forEach(p=>{p.position.y=p.userData.baseY+Math.abs(Math.sin(clock*6+p.userData.phase))*.62;p.scale.setScalar(.65+Math.abs(Math.sin(clock*9+p.userData.phase))*.75);p.material.opacity=.36+Math.abs(Math.sin(clock*8+p.userData.phase))*.45});if(glassGroup){glassGroup.rotation.y=Math.sin(clock*.22)*.025}renderer.render(scene,camera)}
-function find(formula){return catalogData.find(c=>c.formula===formula)}function has(formula){return state.contents.some(c=>c.formula===formula)}function updateLabels(){const c=[...new Set(state.contents.map(x=>x.formula))];$('labels').innerHTML=c.slice(-4).map(x=>`<span>${x}</span>`).join('');}
-function choose(c){closeCatalog();state.contents.push(c);state.volume=Math.min(200,state.volume+(c.phase==='solid'?18:c.phase==='gas'?10:46));state.baseColor=c.color;streamIn(c.color,c.phase);if(c.phase==='gas')addBubbles(16,c.color);updateLabels();const reaction=detectReaction(c);if(reaction){state.formula=reaction.eq;$('equation').textContent=reaction.eq;state.reactionTitle=reaction.title;state.baseColor=reaction.color||c.color;state.volume=Math.max(state.volume,88);state.bubbles=!!reaction.bubbles;if(reaction.bubbles)addBubbles(32,reaction.color||'#dce8ed');if(reaction.fire){state.fire=true;$('heatBtn').classList.add('active');makeFlames()}if(reaction.title==='K + H₂O'){state.fire=true;$('heatBtn').classList.add('active');makeFlames();addBubbles(38,'#ffb77a')}toast(reaction.title)}else{if(!state.formula)$('equation').textContent='';if(c.formula==='Fe'&&has('HCl')){state.baseColor='#a5bca9';addBubbles(24,'#e9f5fa')}toast(`${c.formula} · ${c.name}`)}refreshLiquid();}
-function detectReaction(c){const all=new Set(state.contents.map(x=>x.formula));if(all.has('Fe')&&all.has('HCl'))return {title:'Fe + HCl',eq:'Fe + 2HCl → FeCl₂ + H₂ ↑',color:'#a3b9a7',bubbles:true};if(all.has('K')&&all.has('H₂O'))return {title:'K + H₂O',eq:'2K + 2H₂O → 2KOH + H₂ ↑',color:'#dce1e4',bubbles:true,fire:true};if(all.has('Fe')&&all.has('H₂SO₄ (conc.)')&&state.fire)return {title:'Fe + H₂SO₄ (conc.)',eq:'2Fe + 6H₂SO₄ (conc.) → Fe₂(SO₄)₃ + 3SO₂ ↑ + 6H₂O',color:'#873d4c',bubbles:true};if(all.has('Fe')&&all.has('H₂SO₄ (conc.)'))return {title:'Fe + H₂SO₄ (conc.)',eq:'Fe + H₂SO₄ (conc.) · cần gia nhiệt trong mô phỏng',color:'#d8d6ce',bubbles:false};if(all.has('AgNO₃')&&all.has('NaCl'))return {title:'AgNO₃ + NaCl',eq:'AgNO₃ + NaCl → AgCl ↓ + NaNO₃',color:'#e4e7e6',bubbles:false};if(all.has('CuSO₄')&&all.has('NaOH'))return {title:'CuSO₄ + NaOH',eq:'CuSO₄ + 2NaOH → Cu(OH)₂ ↓ + Na₂SO₄',color:'#377dd0',bubbles:false};if(all.has('HCl')&&all.has('NaOH'))return {title:'HCl + NaOH',eq:'HCl + NaOH → NaCl + H₂O',color:'#d1dce4',bubbles:false};if(all.has('Mg')&&all.has('HCl'))return {title:'Mg + HCl',eq:'Mg + 2HCl → MgCl₂ + H₂ ↑',color:'#d4e0dd',bubbles:true};if(all.has('Zn')&&all.has('HCl'))return {title:'Zn + HCl',eq:'Zn + 2HCl → ZnCl₂ + H₂ ↑',color:'#d6dfe2',bubbles:true};if(all.has('CuSO₄')&&all.has('Fe'))return {title:'Fe + CuSO₄',eq:'Fe + CuSO₄ → FeSO₄ + Cu ↓',color:'#7fb78d',bubbles:false};if(all.has('BaCl₂')&&all.has('Na₂SO₄'))return {title:'BaCl₂ + Na₂SO₄',eq:'BaCl₂ + Na₂SO₄ → BaSO₄ ↓ + 2NaCl',color:'#e9ece8',bubbles:false};if(all.size>1)return {title:'Đã trộn các chất',eq:[...all].join(' + ')+' → hỗn hợp',color:c.color,bubbles:false};return null}
-function runConcentratedReaction(){if(!has('Fe')||!has('H₂SO₄ (conc.)'))return;$('equation').textContent='2Fe + 6H₂SO₄ (conc.) → Fe₂(SO₄)₃ + 3SO₂ ↑ + 6H₂O';state.baseColor='#873d4c';state.volume=Math.max(state.volume,94);state.bubbles=true;addBubbles(34,'#d5b8b1');refreshLiquid();toast('Gia nhiệt: dung dịch chuyển đỏ nâu trong mô phỏng')}
-// Clicking the flame control can activate the concentrated-acid demonstration after both materials are present.
-const originalHeat=$('heatBtn').onclick;$('heatBtn').onclick=()=>{originalHeat();if(state.fire&&has('Fe')&&has('H₂SO₄ (conc.)'))runConcentratedReaction()};
-// The list is available on demand with the same grid-and-search interaction as the reference clip.
-renderCatalog();setup3D();
+(()=>{'use strict';
+const $=s=>document.querySelector(s),rnd=(a,b)=>b===undefined?Math.random()*a:a+Math.random()*(b-a);
+const sub=f=>f.replace(/(?<=[A-Za-z)])(\d+)/g,'<sub>$1</sub>').replace(/-&gt;/g,'→');
+if(typeof THREE==='undefined'){$('#err').style.display='grid';return}
+
+const L=`Fe|e|8d8d8d|iron sắt sat kim loại
+CH4|g|aaaaaa|methane metan khí gas
+Li|e|bfc3c8|lithium liti kim loại
+C|e|252525|carbon cacbon than
+Na|e|b9bec4|sodium natri kim loại
+Mg|e|b0b4ba|magnesium magie kim loại
+Al|e|c4c8cc|aluminium aluminum nhôm kim loại
+Si|e|a9adb5|silicon silic
+P (white)|c|efefef|white phosphorus photpho trắng
+S|e|d9d84a|sulfur sulphur lưu huỳnh
+K|e|b4b8bf|potassium kali kim loại
+Ca|e|c9ccd0|calcium canxi kim loại
+Cr|e|b7bfcc|chromium crom kim loại
+Mn|e|a8a8ac|manganese mangan kim loại
+Co|e|a7a7ab|cobalt coban kim loại
+Ni|e|bdbdbf|nickel niken kim loại
+Cu|e|b5493b|copper đồng kim loại
+Zn|e|a6a9ad|zinc kẽm kim loại
+Ag|e|c6c6c8|silver bạc kim loại
+Sn|e|b5b8bb|tin thiếc kim loại
+Ba|e|a9aaae|barium bari kim loại
+Pt|e|b8bbc0|platinum bạch kim
+Au|e|d8c13a|gold vàng kim loại
+Hg|l|d4d6d8|mercury thủy ngân
+Pb|e|8f969d|lead chì kim loại
+H2|g|d8e2ee|hydrogen hiđro hidro khí
+O2|g|d8e2ee|oxygen oxy oxi khí
+N2|g|cfd8df|nitrogen nitơ nito khí
+Cl2|g|a9b79a|chlorine clo khí
+I2|c|514080|iodine iốt tinh thể
+Br2|l|8a3824|bromine brom lỏng
+F2|g|e7e0a0|fluorine flo khí
+He|g|e8e8ec|helium heli khí
+Ne|g|e8b5ac|neon khí
+H2O|l|f2f2f2|water nước nuoc dung môi
+H2O2|l|f2f2f2|hydrogen peroxide nước oxy già peroxide
+HCl|l|f2f2f2|hydrochloric acid axit clohiđric axit clohidric muriatic acid
+H2SO4|l|f2f2f2|sulfuric acid axit sunfuric loãng dilute
+H2SO4 (đặc)|l|f0ece6|concentrated sulfuric acid axit sunfuric đặc dac conc nóng
+HNO3|l|f2f2f2|nitric acid axit nitric axit nitrit
+HNO3 (đặc)|l|f2f2f2|concentrated nitric acid axit nitric đặc dac conc
+H3PO4|l|f2f2f2|phosphoric acid axit photphoric
+H2CO3|l|f2f2f2|carbonic acid axit cacbonic
+CH3COOH|l|f2f2f2|acetic acid axit axetic giấm
+H2SO3|l|f2f2f2|sulfurous acid axit sunfurơ
+HBr|l|f2f2f2|hydrobromic acid axit bromhiđric
+HF|l|f2f2f2|hydrofluoric acid axit flohiđric
+HClO|l|f2f2f2|hypochlorous acid axit hipoclorơ
+HClO3|l|f2f2f2|chloric acid axit cloric
+HClO4|l|f2f2f2|perchloric acid axit pecloric
+H2S|g|aaaaaa|hydrogen sulfide hiđro sunfua khí
+H2SiO3|l|f2f2f2|silicic acid axit silicic
+SO2|g|c8c8c0|sulfur dioxide lưu huỳnh đioxit sulfur dioxide khí
+SO3|g|d1d1d1|sulfur trioxide lưu huỳnh trioxit
+CO2|g|d8e2ee|carbon dioxide cacbon đioxit khí co2
+CO|g|bcbcbc|carbon monoxide cacbon monoxit
+NO|g|dddddd|nitric oxide nitrogen monoxide nitơ monoxit
+NO2|g|9c542e|nitrogen dioxide nitrogen dioxide nitơ đioxit khói nâu
+NH3|g|dddddd|ammonia amoniac khí
+NH3(aq)|l|f2f2f2|aqueous ammonia amoniac dung dịch ammonium hydroxide
+LiOH|l|f2f2f2|lithium hydroxide liti hiđroxit
+NaOH|l|f2f2f2|sodium hydroxide natri hiđroxit xút
+KOH|l|f2f2f2|potassium hydroxide kali hiđroxit
+Ca(OH)2|l|f2f2f2|calcium hydroxide canxi hiđroxit nước vôi
+Ba(OH)2|l|f2f2f2|barium hydroxide bari hiđroxit
+Mg(OH)2|c|f0f0f0|magnesium hydroxide magie hiđroxit
+Al(OH)3|c|eeeeea|aluminum hydroxide aluminium hydroxide nhôm hiđroxit
+Fe(OH)2|c|b5c49a|iron ii hydroxide sắt ii hiđroxit
+Fe(OH)3|c|a4552c|iron iii hydroxide sắt iii hiđroxit
+Cu(OH)2|c|4d83d7|copper ii hydroxide đồng ii hiđroxit
+Zn(OH)2|c|f0f0e8|zinc hydroxide kẽm hiđroxit
+NaCl|c|d8d8dc|sodium chloride salt muối ăn natri clorua
+KCl|c|d8d8dc|potassium chloride kali clorua
+LiCl|c|e5e5e5|lithium chloride liti clorua
+AgCl|c|e4e4e6|silver chloride bạc clorua kết tủa trắng
+CuCl|c|d6dcd0|copper i chloride đồng i clorua
+CuCl2|c|5fae9c|copper ii chloride đồng ii clorua
+MgCl2|c|d8d8dc|magnesium chloride magie clorua
+CaCl2|c|d8d8dc|calcium chloride canxi clorua
+BaCl2|l|f2f2f2|barium chloride bari clorua
+CrCl3|c|8d6cb0|chromium iii chloride crom iii clorua
+MnCl2|c|d9b6b8|manganese ii chloride mangan ii clorua
+FeCl2|l|b8d8a4|iron ii chloride sắt ii clorua dung dịch xanh lục nhạt
+FeCl3|l|d6a34a|iron iii chloride sắt iii clorua
+ZnCl2|l|f2f2f2|zinc chloride kẽm clorua
+AlCl3|l|f2f2f2|aluminium chloride aluminum chloride nhôm clorua
+PbCl2|c|f0eee8|lead ii chloride chì ii clorua
+Na2SO4|l|f2f2f2|sodium sulfate natri sunfat
+K2SO4|l|f2f2f2|potassium sulfate kali sunfat
+CuSO4|l|278ce0|copper ii sulfate đồng sunfat đồng ii sunfat xanh lam
+FeSO4|l|a9c8a0|iron ii sulfate sắt ii sunfat xanh lục nhạt
+Fe2(SO4)3|l|d6b276|iron iii sulfate sắt iii sunfat
+ZnSO4|l|f2f2f2|zinc sulfate kẽm sunfat
+MgSO4|l|f2f2f2|magnesium sulfate magie sunfat epsom
+BaSO4|c|f4f2ed|barium sulfate bari sunfat kết tủa trắng
+CaSO4|c|e9e6df|calcium sulfate canxi sunfat
+Na2CO3|c|f2f2ed|sodium carbonate natri cacbonat soda ash
+NaHCO3|c|f2f2ed|sodium hydrogen carbonate sodium bicarbonate natri hiđrocacbonat baking soda
+CaCO3|c|eeeeea|calcium carbonate canxi cacbonat đá vôi
+CuCO3|c|55a477|copper ii carbonate đồng cacbonat
+FeCO3|c|a9a58a|iron ii carbonate sắt ii cacbonat
+Na2SO3|c|eeeeea|sodium sulfite natri sunfit
+Na2S2O3|c|eeeeea|sodium thiosulfate natri thiosunfat
+Na2S|c|e5e0ce|sodium sulfide natri sunfua
+FeS|c|3a342e|iron ii sulfide sắt ii sunfua
+Fe2S3|c|2d2a28|iron iii sulfide sắt iii sunfua
+CuS|c|222222|copper ii sulfide đồng sunfua kết tủa đen
+PbS|c|222222|lead ii sulfide chì sunfua kết tủa đen
+AgNO3|l|f2f2f2|silver nitrate bạc nitrat
+NaNO3|l|f2f2f2|sodium nitrate natri nitrat
+KNO3|c|f2f2f2|potassium nitrate kali nitrat
+Cu(NO3)2|l|278ce0|copper ii nitrate đồng ii nitrat
+Pb(NO3)2|l|f2f2f2|lead ii nitrate chì ii nitrat
+Zn(NO3)2|l|f2f2f2|zinc nitrate kẽm nitrat
+Mg(NO3)2|l|f2f2f2|magnesium nitrate magie nitrat
+Fe(NO3)2|l|b8d8a4|iron ii nitrate sắt ii nitrat
+Fe(NO3)3|l|d6a34a|iron iii nitrate sắt iii nitrat
+Na3PO4|l|f2f2f2|sodium phosphate natri photphat
+Ca3(PO4)2|c|eeeeea|calcium phosphate canxi photphat
+Fe3(PO4)2|c|7a8ca8|iron ii phosphate sắt ii photphat
+FePO4|c|d6c9a0|iron iii phosphate sắt iii photphat
+KI|c|f2f2f2|potassium iodide kali iodua
+KBr|c|f2f2f2|potassium bromide kali bromua
+NaBr|c|f2f2f2|sodium bromide natri bromua
+PbI2|c|f1d342|lead ii iodide chì ii iodua kết tủa vàng
+K2CrO4|l|e1c52e|potassium chromate kali cromat vàng
+K2Cr2O7|c|db802b|potassium dichromate kali đicromat da cam
+KMnO4|l|7d36a8|potassium permanganate kali pemanganat tím
+KSCN|l|f2f2f2|potassium thiocyanate kali thiocyanat
+NH4Cl|c|f2f2f2|ammonium chloride amoni clorua
+(NH4)2SO4|c|f2f2f2|ammonium sulfate amoni sunfat
+NH4NO3|c|f2f2f2|ammonium nitrate amoni nitrat
+CaO|c|e7e4de|calcium oxide vôi sống canxi oxit
+MgO|c|eeeeea|magnesium oxide magie oxit
+CuO|c|222222|copper ii oxide đồng ii oxit
+Cu2O|c|b65a45|copper i oxide đồng i oxit
+FeO|c|2a2a2a|iron ii oxide sắt ii oxit
+Fe2O3|c|8b4230|iron iii oxide hematite sắt iii oxit
+Fe3O4|c|333333|iron ii iii oxide magnetite sắt từ oxit
+ZnO|c|f1f1eb|zinc oxide kẽm oxit
+Al2O3|c|eeeeea|aluminum oxide nhôm oxit
+MnO2|c|292929|manganese dioxide mangan đioxit catalyst xúc tác
+SiO2|c|eeeeea|silicon dioxide silica silic đioxit cát
+Na2O|c|ece9e2|sodium oxide natri oxit
+Na2O2|c|f2f0e8|sodium peroxide natri peoxit
+K2O|c|e8e4dc|potassium oxide kali oxit
+CaSO3|c|eeeeea|calcium sulfite canxi sunfit
+KClO3|c|eeeeea|potassium chlorate kali clorat
+FeBr2|c|c9a85a|iron ii bromide sắt ii bromua
+FeBr3|c|8a4a2a|iron iii bromide sắt iii bromua
+CH3OH|l|f2f2f2|methanol metanol
+C2H5OH|l|f2f2f2|ethanol etanol cồn
+Glucose|c|eeeeea|glucose glucozo đường nho
+Starch|c|eeeeea|starch tinh bột
+Phenolphthalein|l|f2f2f2|phenolphthalein phenolphtalein indicator chỉ thị
+Universal indicator|l|e0b45f|universal indicator chỉ thị vạn năng
+H2SiF6|l|f2f2f2|fluorosilicic acid axit silicoflohiđric
+CuSO4·5H2O|c|278ce0|copper sulfate pentahydrate đồng sunfat ngậm nước phèn xanh
+CH3COONa|l|f2f2f2|sodium acetate natri axetat
+PbCrO4|c|e1c52e|lead ii chromate chì cromat kết tủa vàng
+CuI|c|eeeeea|copper i iodide đồng i iodua kết tủa trắng
+[FeSCN]²⁺|l|b51625|iron thiocyanate complex phức sắt thiocyanat đỏ máu
+[Cu(NH3)4]²⁺|l|173bdb|tetraamminecopper complex phức đồng amoniac xanh thẫm
+Iodine-starch complex|l|222044|iodine starch complex phức iốt tinh bột xanh tím`;
+const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
+const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
+const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
+const DB=L.split('\n').map(l=>{const[f,t,c,a]=l.split('|');const nf=nz(f).replace(/[\s().·]/g,'');return{id:f,f,t,c:'#'+c,nf,a:nz(f+' '+(a||'')),aliases:(a||'').split(/\s+/)}});
+const BY=Object.fromEntries(DB.map(d=>[d.id,d]));
+/* ============ DATA: reactions.js ============ */
+// Rules are data-driven. heat is the minimum simulated temperature (°C); heating=true requires the flame to be on.
+const RX=[
+ {id:'fe_hcl',need:['Fe','HCl'],eq:'Fe + 2HCl → FeCl2 + H2↑',out:['FeCl2','H2'],col:'#b8d8a4',dur:8,bub:1,gas:'H2'},
+ {id:'zn_hcl',need:['Zn','HCl'],eq:'Zn + 2HCl → ZnCl2 + H2↑',out:['ZnCl2','H2'],col:'#ededed',dur:7,bub:1,gas:'H2'},
+ {id:'mg_hcl',need:['Mg','HCl'],eq:'Mg + 2HCl → MgCl2 + H2↑',out:['MgCl2','H2'],col:'#ededed',dur:5,bub:1.5,gas:'H2'},
+ {id:'al_hcl',need:['Al','HCl'],eq:'2Al + 6HCl → 2AlCl3 + 3H2↑',out:['AlCl3','H2'],col:'#ededed',dur:8,bub:1.2,gas:'H2'},
+ {id:'fe_h2so4',need:['Fe','H2SO4'],eq:'Fe + H2SO4 → FeSO4 + H2↑',out:['FeSO4','H2'],col:'#a9c8a0',dur:8,bub:1,gas:'H2'},
+ {id:'zn_h2so4',need:['Zn','H2SO4'],eq:'Zn + H2SO4 → ZnSO4 + H2↑',out:['ZnSO4','H2'],col:'#ededed',dur:7,bub:1,gas:'H2'},
+ {id:'mg_h2so4',need:['Mg','H2SO4'],eq:'Mg + H2SO4 → MgSO4 + H2↑',out:['MgSO4','H2'],col:'#ededed',dur:5,bub:1.4,gas:'H2'},
+ ...['Li','Na','K'].map((m)=>({id:m.toLowerCase()+'_water',need:[m,'H2O'],eq:`2${m} + 2H2O → 2${m}OH + H2↑`,out:[m+'OH','H2'],col:'#d8dce1',dur:m==='K'?5:7,bub:1.6,fire:1,gas:'H2'})),
+ {id:'calcium_water',need:['Ca','H2O'],eq:'Ca + 2H2O → Ca(OH)2 + H2↑',out:['Ca(OH)2','H2'],col:'#dfe4e8',dur:8,bub:1.1,gas:'H2'},
+ {id:'hcl_naoh',need:['HCl','NaOH'],eq:'HCl + NaOH → NaCl + H2O',out:['NaCl','H2O'],col:'#e8e9e9',dur:4,bub:.12,heatRise:3,explain:'Phản ứng trung hòa tạo muối và nước.'},
+ {id:'hcl_koh',need:['HCl','KOH'],eq:'HCl + KOH → KCl + H2O',out:['KCl','H2O'],col:'#e8e9e9',dur:4,bub:.1,heatRise:3},
+ {id:'h2so4_naoh',need:['H2SO4','NaOH'],eq:'H2SO4 + 2NaOH → Na2SO4 + 2H2O',out:['Na2SO4','H2O'],col:'#e8e9e9',dur:5,bub:.1,heatRise:4},
+ {id:'hno3_naoh',need:['HNO3','NaOH'],eq:'HNO3 + NaOH → NaNO3 + H2O',out:['NaNO3','H2O'],col:'#e8e9e9',dur:4,bub:.1,heatRise:3},
+ {id:'acetic_naoh',need:['CH3COOH','NaOH'],eq:'CH3COOH + NaOH → CH3COONa + H2O',out:['CH3COONa','H2O'],col:'#e8e9e9',dur:4,bub:.1,heatRise:2,explain:'Mô hình minh họa trung hòa axit yếu với bazơ mạnh.'},
+ {id:'agno3_nacl',need:['AgNO3','NaCl'],eq:'AgNO3 + NaCl → AgCl↓ + NaNO3',out:['AgCl','NaNO3'],col:'#dce4e9',precip:'#f0f0ea',dur:6,bub:.08},
+ {id:'agno3_kcl',need:['AgNO3','KCl'],eq:'AgNO3 + KCl → AgCl↓ + KNO3',out:['AgCl','KNO3'],col:'#e2e5e7',precip:'#f1f1eb',dur:6,bub:.08},
+ {id:'bacl2_na2so4',need:['BaCl2','Na2SO4'],eq:'BaCl2 + Na2SO4 → BaSO4↓ + 2NaCl',out:['BaSO4','NaCl'],col:'#e6e7e6',precip:'#f4f2ed',dur:6,bub:.08},
+ {id:'cuso4_naoh',need:['CuSO4','NaOH'],eq:'CuSO4 + 2NaOH → Cu(OH)2↓ + Na2SO4',out:['Cu(OH)2','Na2SO4'],col:'#4d83d7',precip:'#4d83d7',dur:7,bub:.08},
+ {id:'fecl3_naoh',need:['FeCl3','NaOH'],eq:'FeCl3 + 3NaOH → Fe(OH)3↓ + 3NaCl',out:['Fe(OH)3','NaCl'],col:'#a4552c',precip:'#a4552c',dur:7,bub:.08},
+ {id:'feso4_naoh',need:['FeSO4','NaOH'],eq:'FeSO4 + 2NaOH → Fe(OH)2↓ + Na2SO4',out:['Fe(OH)2','Na2SO4'],col:'#b5c49a',precip:'#b5c49a',dur:7,bub:.08},
+ {id:'pbno3_ki',need:['Pb(NO3)2','KI'],eq:'Pb(NO3)2 + 2KI → PbI2↓ + 2KNO3',out:['PbI2','KNO3'],col:'#f1d342',precip:'#f1d342',dur:7,bub:.08},
+ {id:'cacl2_na2co3',need:['CaCl2','Na2CO3'],eq:'CaCl2 + Na2CO3 → CaCO3↓ + 2NaCl',out:['CaCO3','NaCl'],col:'#e6e5de',precip:'#efeee8',dur:7,bub:.08},
+ {id:'cucl2_naoh',need:['CuCl2','NaOH'],eq:'CuCl2 + 2NaOH → Cu(OH)2↓ + 2NaCl',out:['Cu(OH)2','NaCl'],col:'#4d83d7',precip:'#4d83d7',dur:6,bub:.08},
+ {id:'alcl3_naoh',need:['AlCl3','NaOH'],eq:'AlCl3 + 3NaOH → Al(OH)3↓ + 3NaCl',out:['Al(OH)3','NaCl'],col:'#e8e8e2',precip:'#eeeeea',dur:6,bub:.08},
+ {id:'znso4_naoh',need:['ZnSO4','NaOH'],eq:'ZnSO4 + 2NaOH → Zn(OH)2↓ + Na2SO4',out:['Zn(OH)2','Na2SO4'],col:'#eeeeea',precip:'#eeeeea',dur:6,bub:.08},
+ {id:'mgcl2_naoh',need:['MgCl2','NaOH'],eq:'MgCl2 + 2NaOH → Mg(OH)2↓ + 2NaCl',out:['Mg(OH)2','NaCl'],col:'#eeeeea',precip:'#f0f0e9',dur:6,bub:.08},
+ {id:'cuno3_naoh',need:['Cu(NO3)2','NaOH'],eq:'Cu(NO3)2 + 2NaOH → Cu(OH)2↓ + 2NaNO3',out:['Cu(OH)2','NaNO3'],col:'#4d83d7',precip:'#4d83d7',dur:6,bub:.08},
+ {id:'na2co3_hcl',need:['Na2CO3','HCl'],eq:'Na2CO3 + 2HCl → 2NaCl + H2O + CO2↑',out:['NaCl','H2O','CO2'],col:'#e7e8e7',dur:7,bub:1.3,gas:'CO2'},
+ {id:'caco3_hcl',need:['CaCO3','HCl'],eq:'CaCO3 + 2HCl → CaCl2 + H2O + CO2↑',out:['CaCl2','H2O','CO2'],col:'#e7e8e7',dur:8,bub:1.3,gas:'CO2'},
+ {id:'nahco3_hcl',need:['NaHCO3','HCl'],eq:'NaHCO3 + HCl → NaCl + H2O + CO2↑',out:['NaCl','H2O','CO2'],col:'#e7e8e7',dur:6,bub:1.3,gas:'CO2'},
+ {id:'co2_limewater',need:['CO2','Ca(OH)2'],eq:'CO2 + Ca(OH)2 → CaCO3↓ + H2O',out:['CaCO3','H2O'],col:'#dfdfd9',precip:'#eeeeea',dur:8,bub:.15},
+ {id:'so2_limewater',need:['SO2','Ca(OH)2'],eq:'SO2 + Ca(OH)2 → CaSO3↓ + H2O',out:['CaSO3','H2O'],col:'#dfdfd9',precip:'#eeeeea',dur:7,bub:.12},
+ {id:'fe_cuso4',need:['Fe','CuSO4'],eq:'Fe + CuSO4 → FeSO4 + Cu',out:['FeSO4','Cu'],col:'#a9c8a0',precip:'#b5493b',dur:9,bub:.12},
+ {id:'zn_cuso4',need:['Zn','CuSO4'],eq:'Zn + CuSO4 → ZnSO4 + Cu',out:['ZnSO4','Cu'],col:'#e7e8e7',precip:'#b5493b',dur:8,bub:.12},
+ {id:'cu_agno3',need:['Cu','AgNO3'],eq:'Cu + 2AgNO3 → Cu(NO3)2 + 2Ag',out:['Cu(NO3)2','Ag'],col:'#69a2d7',precip:'#c6c6c8',dur:9,bub:.1},
+ {id:'zn_agno3',need:['Zn','AgNO3'],eq:'Zn + 2AgNO3 → Zn(NO3)2 + 2Ag',out:['Zn(NO3)2','Ag'],col:'#e7e8e7',precip:'#c6c6c8',dur:8,bub:.1},
+ {id:'cl2_ki',need:['Cl2','KI'],eq:'Cl2 + 2KI → 2KCl + I2',out:['KCl','I2'],col:'#7c5a91',precip:'#514080',dur:7,bub:.12},
+ {id:'br2_ki',need:['Br2','KI'],eq:'Br2 + 2KI → 2KBr + I2',out:['KBr','I2'],col:'#6a4b83',precip:'#514080',dur:7,bub:.12},
+ {id:'cl2_nabr',need:['Cl2','NaBr'],eq:'Cl2 + 2NaBr → 2NaCl + Br2',out:['NaCl','Br2'],col:'#8a3824',dur:7,bub:.1},
+ {id:'cuso4_na2s',need:['CuSO4','Na2S'],eq:'CuSO4 + Na2S → CuS↓ + Na2SO4',out:['CuS','Na2SO4'],col:'#252525',precip:'#222222',dur:7,bub:.08},
+ {id:'h2s_pbno3',need:['H2S','Pb(NO3)2'],eq:'H2S + Pb(NO3)2 → PbS↓ + 2HNO3',out:['PbS','HNO3'],col:'#252525',precip:'#222222',dur:7,bub:.08},
+ {id:'k2cro4_pbno3',need:['K2CrO4','Pb(NO3)2'],eq:'K2CrO4 + Pb(NO3)2 → PbCrO4↓ + 2KNO3',out:['PbCrO4','KNO3'],col:'#e1c52e',precip:'#e1c52e',dur:7,bub:.08,explain:'Kết tủa chì(II) cromat màu vàng.'},
+ {id:'hcl_nh3',need:['HCl','NH3'],eq:'HCl + NH3 → NH4Cl',out:['NH4Cl'],col:'#ededed',precip:'#f0f0ea',dur:6,bub:.1},
+ {id:'nh4cl_naoh',need:['NH4Cl','NaOH'],eq:'NH4Cl + NaOH → NH3↑ + NaCl + H2O',out:['NH3','NaCl','H2O'],heat:40,heating:true,col:'#e9e9e8',dur:8,bub:.8,gas:'NH3'},
+ {id:'na2so3_hcl',need:['Na2SO3','HCl'],eq:'Na2SO3 + 2HCl → 2NaCl + SO2↑ + H2O',out:['NaCl','SO2','H2O'],col:'#e7e8e7',dur:7,bub:1,gas:'SO2'},
+ {id:'na2s2o3_hcl',need:['Na2S2O3','HCl'],eq:'Na2S2O3 + 2HCl → 2NaCl + SO2↑ + S↓ + H2O',out:['NaCl','SO2','S','H2O'],col:'#d6d0a4',precip:'#d9d84a',dur:8,bub:1,gas:'SO2'},
+ {id:'cuso4_ki',need:['CuSO4','KI'],eq:'2CuSO4 + 4KI → 2CuI↓ + I2 + 2K2SO4',out:['CuI','I2','K2SO4'],col:'#75619a',precip:'#eeeeea',dur:8,bub:.12},
+ {id:'fecl3_ki',need:['FeCl3','KI'],eq:'2FeCl3 + 2KI → 2FeCl2 + 2KCl + I2',out:['FeCl2','KCl','I2'],col:'#8a6b97',precip:'#514080',dur:8,bub:.12},
+ {id:'h2o2_mno2',need:['H2O2','MnO2'],preserve:['MnO2'],eq:'2H2O2 → 2H2O + O2↑  (MnO2 xúc tác)',out:['H2O','O2'],col:'#e7e8e7',dur:8,bub:1.2,gas:'O2'},
+ {id:'mg_combustion',need:['Mg','O2'],eq:'2Mg + O2 → 2MgO',out:['MgO'],heat:70,heating:true,col:'#eee9df',precip:'#eee9df',dur:6,bub:.15,fire:1},
+ {id:'carbon_combustion',need:['C','O2'],eq:'C + O2 → CO2',out:['CO2'],heat:80,heating:true,col:'#d8d8d8',dur:6,bub:.4,fire:1,gas:'CO2'},
+ {id:'sulfur_combustion',need:['S','O2'],eq:'S + O2 → SO2',out:['SO2'],heat:60,heating:true,col:'#d8d8d8',dur:6,bub:.5,fire:1,gas:'SO2'},
+ {id:'methane_combustion',need:['CH4','O2'],eq:'CH4 + 2O2 → CO2 + 2H2O',out:['CO2','H2O'],heat:70,heating:true,col:'#e4e4e4',dur:7,bub:.5,fire:1,gas:'CO2'},
+ {id:'cuo_h2',need:['CuO','H2'],eq:'CuO + H2 → Cu + H2O',out:['Cu','H2O'],heat:80,heating:true,col:'#b5493b',precip:'#b5493b',dur:7,bub:.1},
+ {id:'cao_water',need:['CaO','H2O'],eq:'CaO + H2O → Ca(OH)2',out:['Ca(OH)2'],col:'#e9e6df',dur:6,heatRise:8,bub:.15},
+ {id:'caco3_thermal',need:['CaCO3'],eq:'CaCO3 → CaO + CO2↑',out:['CaO','CO2'],heat:110,heating:true,col:'#d6d6d0',dur:8,bub:.6,gas:'CO2'},
+ {id:'cuco3_thermal',need:['CuCO3'],eq:'CuCO3 → CuO + CO2↑',out:['CuO','CO2'],heat:90,heating:true,col:'#3b684f',dur:8,bub:.6,gas:'CO2'},
+ {id:'nahco3_thermal',need:['NaHCO3'],eq:'2NaHCO3 → Na2CO3 + CO2↑ + H2O',out:['Na2CO3','CO2','H2O'],heat:75,heating:true,col:'#e4e4e0',dur:8,bub:.7,gas:'CO2'},
+ {id:'kclo3_decomp',need:['KClO3','MnO2'],preserve:['MnO2'],eq:'2KClO3 → 2KCl + 3O2↑  (MnO2 xúc tác)',out:['KCl','O2'],heat:100,heating:true,col:'#e6e6e1',dur:8,bub:1,gas:'O2'},
+ {id:'cu_h2so4_hot',need:['Cu','H2SO4 (đặc)'],eq:'Cu + 2H2SO4 (đặc, nóng) → CuSO4 + SO2↑ + 2H2O',out:['CuSO4','SO2','H2O'],heat:100,heating:true,col:'#287ac5',dur:10,bub:.8,gas:'SO2'},
+ {id:'fe_h2so4_hot',need:['Fe','H2SO4 (đặc)'],eq:'2Fe + 6H2SO4 (đặc, nóng) → Fe2(SO4)3 + 3SO2↑ + 6H2O',out:['Fe2(SO4)3','SO2','H2O'],heat:100,heating:true,col:'#7b1c20',dur:12,bub:.8,gas:'SO2'},
+ {id:'cu_hno3_conc',need:['Cu','HNO3 (đặc)'],eq:'Cu + 4HNO3 (đặc) → Cu(NO3)2 + 2NO2↑ + 2H2O',out:['Cu(NO3)2','NO2','H2O'],col:'#8f4f2b',dur:10,bub:.8,gas:'NO2'},
+ {id:'fe_oxygen_hot',need:['Fe','O2'],eq:'4Fe + 3O2 → 2Fe2O3',out:['Fe2O3'],heat:90,heating:true,col:'#8b4230',precip:'#8b4230',dur:8,bub:.15,fire:1},
+ {id:'iron_thiocyanate',need:['FeCl3','KSCN'],eq:'Fe³⁺ + SCN⁻ ⇌ [FeSCN]²⁺',out:['[FeSCN]²⁺'],col:'#b51625',dur:6,bub:.05,explain:'Phức chất sắt(III)-thiocyanat tạo màu đỏ máu đặc trưng.'},
+ {id:'copper_ammonia',need:['CuSO4','NH3(aq)'],eq:'Cu²⁺ + 4NH3 ⇌ [Cu(NH3)4]²⁺',out:['[Cu(NH3)4]²⁺'],col:'#173bdb',dur:7,bub:.05,explain:'Mô phỏng sự tạo phức xanh thẫm của đồng(II) với amoniac.'},
+ {id:'iodine_starch',need:['I2','Starch'],eq:'I2 + tinh bột → phức màu xanh tím',out:['Iodine-starch complex'],col:'#222044',dur:5,bub:.02,explain:'Phức iốt–tinh bột tạo màu xanh tím đậm.'}
+];
+/* ============ reactionEngine.js ============ */
+// The engine requires every listed reagent and checks heat conditions before firing.
+const findReaction=(contents,temp,heatOn)=>RX.find(r=>r.need.every(n=>contents.includes(n))&&(!r.heat||temp>=r.heat)&&(!r.heating||heatOn));
+/* ============ scene.js ============ */
+let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});}catch(e){$('#err').style.display='grid';return}
+R.setClearColor(0x000000,1);
+const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
+S.add(new THREE.AmbientLight(0xffffff,.75));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);S.add(dl);
+const bk=new THREE.Group();S.add(bk);
+const H=3.2,pts=[[0,0],[1.25,0],[1.38,.03],[1.43,.12],[1.6,H]].map(p=>new THREE.Vector2(p[0],p[1]));
+const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
+ vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
+ fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=mix(vec3(.55,.62,.72),vec3(1.,.5,.2),uW*.55)+vec3(.25)*f;gl_FragColor=vec4(c,.05+.7*f);}'});
+const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.62,.045,10,64),new THREE.MeshBasicMaterial({color:0xb4c0d0,transparent:true,opacity:.85,depthWrite:false}));
+rim.rotation.x=Math.PI/2;rim.position.y=H;rim.renderOrder=4;bk.add(rim);
+const nsh=new THREE.Shape([new THREE.Vector2(-.34,.14),new THREE.Vector2(.34,.14),new THREE.Vector2(0,-.1)]);
+const notch=new THREE.Mesh(new THREE.ShapeGeometry(nsh),new THREE.MeshBasicMaterial({color:0x000000}));notch.position.set(0,H+.04,1.64);notch.renderOrder=6;bk.add(notch);
+const nl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-.36,H+.18,1.64),new THREE.Vector3(0,H-.06,1.66),new THREE.Vector3(.36,H+.18,1.64)]),new THREE.LineBasicMaterial({color:0xb4c0d0}));nl.renderOrder=7;bk.add(nl);
+const LR=1.43,liqMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false});
+const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
+const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
+const topMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.97,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
+top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
+ const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+addEventListener('resize',fit);fit();
+
+/* ============ effects.js ============ */
+const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
+function tex(kind){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);
+ if(kind){g.addColorStop(0,'rgba(255,255,255,.06)');g.addColorStop(.7,'rgba(255,255,255,.18)');g.addColorStop(.9,'rgba(255,255,255,.95)');g.addColorStop(1,'rgba(255,255,255,0)')}
+ else{g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(255,255,255,0)')}
+ x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)}
+const T0=tex(0),T1=tex(1);
+function Pool(n,add,tx,kill){
+ const g=new THREE.BufferGeometry(),P=new Float32Array(n*3),Cl=new Float32Array(n*3),Z=new Float32Array(n),A=new Float32Array(n);
+ [['position',P,3],['col',Cl,3],['sz',Z,1],['al',A,1]].forEach(([k,a,s])=>g.setAttribute(k,new THREE.BufferAttribute(a,s)));
+ const m=new THREE.ShaderMaterial({uniforms:{map:{value:tx},sc:SC},transparent:true,depthWrite:false,blending:add?THREE.AdditiveBlending:THREE.NormalBlending,
+  vertexShader:'attribute vec3 col;attribute float sz,al;uniform float sc;varying vec3 vc;varying float va;void main(){vc=col;va=al;vec4 m=modelViewMatrix*vec4(position,1.);gl_PointSize=sz*sc/-m.z;gl_Position=projectionMatrix*m;}',
+  fragmentShader:'uniform sampler2D map;varying vec3 vc;varying float va;void main(){gl_FragColor=vec4(vc,texture2D(map,gl_PointCoord).a*va);}'});
+ const o=new THREE.Points(g,m);o.frustumCulled=false;o.renderOrder=8;S.add(o);
+ const V=new Float32Array(n*3),Lf=new Float32Array(n),Mx=new Float32Array(n),S0=new Float32Array(n),G=new Float32Array(n),C0=new Float32Array(n*3),C1=new Float32Array(n*3),A0=new Float32Array(n),GR=new Float32Array(n);let k=0;
+ return{emit(e){const i=k=(k+1)%n;P.set([e.x,e.y,e.z],i*3);V.set([e.vx||0,e.vy||0,e.vz||0],i*3);Lf[i]=Mx[i]=e.life;S0[i]=e.size;C0.set(e.c0,i*3);C1.set(e.c1||e.c0,i*3);A0[i]=e.a===undefined?1:e.a;G[i]=e.g||0;GR[i]=e.grow||0},
+ update(dt){for(let i=0;i<n;i++){if(Lf[i]<=0){A[i]=0;continue}Lf[i]-=dt;const j=i*3;
+  if(Lf[i]<=0||(kill&&kill(P[j],P[j+1],P[j+2]))){Lf[i]=0;A[i]=0;continue}
+  const t=1-Lf[i]/Mx[i];V[j+1]+=G[i]*dt;P[j]+=V[j]*dt;P[j+1]+=V[j+1]*dt;P[j+2]+=V[j+2]*dt;
+  for(let q=0;q<3;q++)Cl[j+q]=C0[j+q]+(C1[j+q]-C0[j+q])*t;
+  A[i]=A0[i]*(t<.1?t/.1:1-(t-.1)/.9);Z[i]=S0[i]*(1+GR[i]*t)}
+  ['position','col','sz','al'].forEach(a=>g.attributes[a].needsUpdate=true)}}}
+let lv=0,lvT=0;
+const fire=Pool(900,true,T0),spark=Pool(300,true,T0),bub=Pool(220,false,T1,(x,y)=>y>lv),grain=Pool(700,false,T0);
+const rings=[];
+function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
+ m.rotation.x=-Math.PI/2;m.position.set(x,lv+.02,z);m.scale.setScalar(.1);m.renderOrder=9;S.add(m);rings.push({m,t:0})}
+
+/* ============ state ============ */
+const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null};
+const rocks=[];
+let sediment=null;
+function clearSediment(){if(sediment){bk.remove(sediment);sediment.geometry.dispose();sediment.material.dispose();sediment=null}}
+const eqEl=$('#eq'),labEl=$('#lab');
+const labels=()=>{labEl.innerHTML=st.contents.map(sub).join('<br>')};
+function liquidTarget(){if(st.ovr)return new THREE.Color(st.ovr);const ls=st.contents.filter(i=>BY[i]&&BY[i].t==='l');if(!ls.length)return st.col.clone();
+ const c=new THREE.Color(0,0,0);ls.forEach(i=>c.add(new THREE.Color(BY[i].c)));return c.multiplyScalar(1/ls.length).lerp(new THREE.Color('#cdd0d5'),.15)}
+function startReaction(r){
+ if(st.rx)return;
+ st.rx={r,t:0,col0:st.col.clone()};st.ovr=r.col;st.gasType=r.gas||null;eqEl.innerHTML=sub(r.eq);
+ const keep=new Set(r.preserve||[]),consume=new Set(r.need.filter(i=>!keep.has(i)));
+ st.contents=st.contents.filter(i=>!consume.has(i)).concat(r.out||[]);
+ if(r.heatRise)st.temp=Math.min(130,st.temp+r.heatRise);
+ labels();
+ if(r.precip){
+  clearSediment();
+  const m=new THREE.Mesh(new THREE.CylinderGeometry(.78,.92,.085,40),new THREE.MeshBasicMaterial({color:r.precip,transparent:true,opacity:.82,depthWrite:false}));
+  m.position.set(0,.12,0);m.renderOrder=2;bk.add(m);sediment=m;
+ }
+ rocks.forEach(k=>{if(r.need.includes(k.id)&&!keep.has(k.id)){k.dis=true;if(r.fire)k.st='float'}});
+}
+function check(){if(st.rx)return;const r=findReaction(st.contents,st.temp,st.heat);if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}}
+
+function add(id){const d=BY[id];if(!d)return;if(st.ovr&&!st.rx)st.ovr=null;
+ if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.7,lvT+.8);labels();check()},900)}
+ else if(d.t==='g'){const c=rgb(d.c);for(let i=0;i<70;i++)setTimeout(()=>grain.emit({x:rnd(.3,1.3),y:5.5,z:rnd(-.3,.3),vx:rnd(-.6,0),vy:-rnd(1,2.5),life:rnd(1.2,2),size:rnd(.3,.6),c0:c,a:.4,grow:1.5}),i*14);
+  setTimeout(()=>{st.contents.push(id);labels();for(let i=0;i<14;i++)bub.emit({x:rnd(-.8,.8),y:.2,z:rnd(-.8,.8),vy:rnd(.6,1),life:6,size:rnd(.08,.16),c0:[1,1,1],a:.7});check()},1100)}
+ else{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
+  m.scale.set(rnd(.9,1.3),rnd(.7,1),rnd(.9,1.3));m.position.set(.5,6.2,0);S.add(m);rocks.push({m,id,vy:0,st:'fall',t:0,dis:false,pushed:false})}}
+
+function clearAll(){st.contents=[];lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';labels();
+ rocks.splice(0).forEach(k=>{S.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
+
+/* ============ main loop ============ */
+let last=performance.now(),time=0;
+function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;time+=dt;if(document.hidden)return;
+ lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
+ liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=lv;
+ const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(1.12);
+ st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
+ if((st.chk-=dt)<=0){st.chk=.25;check()}
+ /* dòng chất lỏng */
+ if(st.stream>0){st.stream-=dt;const c=[st.sc.r,st.sc.g,st.sc.b],tx=.1,tz=0,ty=lv+.05;
+  for(let i=0;i<9;i++){const sx=1.25+rnd(-.12,.12),sy=6.4,dx=tx-sx,dy=ty-sy,L2=Math.hypot(dx,dy),sp=7.5;
+   grain.emit({x:sx,y:sy,z:rnd(-.1,.1),vx:dx/L2*sp,vy:dy/L2*sp,vz:0,life:L2/sp,size:rnd(.06,.11),c0:c,a:.9})}
+  if(Math.random()<.35){ripple(rnd(-.15,.25),rnd(-.1,.1))}
+  for(let i=0;i<2;i++)grain.emit({x:tx+rnd(-.1,.1),y:ty,z:rnd(-.1,.1),vx:rnd(-.8,.8),vy:rnd(1,2),vz:rnd(-.8,.8),life:.5,size:.05,c0:c,a:.8,g:-7})}
+ /* chất rắn */
+ for(let i=rocks.length-1;i>=0;i--){const k=rocks[i],m=k.m;k.t+=dt;
+  if(k.st==='fall'){k.vy-=16*dt;m.position.y+=k.vy*dt;m.position.x+=(0-m.position.x)*dt*3;m.rotation.x+=dt*5;m.rotation.z+=dt*3;
+   if(m.position.y<=lv+.1&&lv>.1){ripple(m.position.x,0);for(let j=0;j<14;j++)grain.emit({x:m.position.x,y:lv,z:0,vx:rnd(-1.2,1.2),vy:rnd(1.5,3),vz:rnd(-1.2,1.2),life:.7,size:.06,c0:[.9,.95,1],g:-9,a:.8});k.st='sink';k.vy=-.4}
+   else if(m.position.y<=.3){m.position.y=.27;k.st='rest'}
+   if(k.st!=='fall'&&!k.pushed){k.pushed=true;st.contents.push(k.id);labels();check()}}
+  else if(k.st==='sink'){m.position.y+=k.vy*dt*1.5;m.rotation.y+=dt;if(m.position.y<=.28){m.position.y=.27;k.st='rest'}}
+  else if(k.st==='float'){m.position.y=lv+.1;m.position.x=Math.sin(time*5)*.6*Math.cos(time*1.7);m.position.z=Math.cos(time*4.1)*.5;m.rotation.y+=dt*8}
+  if(k.dis&&st.rx){const f=Math.max(0,1-st.rx.t/(st.rx.r.dur*.9));m.scale.setScalar(Math.max(.001,f))}
+  if(k.dis&&!st.rx){S.remove(m);m.geometry.dispose();m.material.dispose();rocks.splice(i,1)}}
+ /* phản ứng đang diễn ra */
+ if(st.rx){const r=st.rx.r;st.rx.t+=dt;const p=Math.min(1,st.rx.t/r.dur);
+  st.bub=Math.sin(Math.PI*Math.min(1,p*1.1))**.7*(r.bub||0);st.fire=r.fire?Math.max(0,Math.sin(Math.PI*Math.min(1,p*1.05)**.6)):0;
+  if(r.precip&&lv>.1){const count=Math.max(1,Math.floor(22*dt));for(let i=0;i<count;i++)grain.emit({x:rnd(-.82,.82),y:rnd(.12,Math.max(.18,lv*.82)),z:rnd(-.7,.7),vx:rnd(-.12,.12),vy:rnd(-.05,.12),vz:rnd(-.12,.12),life:rnd(2.8,5.5),size:rnd(.07,.15),c0:rgb(r.precip),a:.95,g:-.20})}
+  if(p>=1){st.rx=null;st.fire=0;st.hint=3}}
+ else if(st.hint>0){st.hint-=dt;st.bub=Math.max(0,st.bub-dt*.4)}else st.bub=Math.max(0,st.bub-dt*.5);
+ /* bọt khí trong dung dịch */
+ if(lv>.2){const n=st.bub*(st.heat?55:40)*dt+Math.random();const gasColors={H2:'#dbe8f5',CO2:'#d8e0e8',O2:'#bfeaff',SO2:'#d7cfb5',NO2:'#a95b31',NH3:'#e4e0d5'};const gc=rgb(gasColors[st.gasType]||'#e7f1fb');for(let i=0;i<Math.floor(n*(st.bub>.02?1:0));i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*1.25;
+  bub.emit({x:Math.cos(a)*rr,y:rnd(.15,Math.max(.2,lv*.6)),z:Math.sin(a)*rr,vx:rnd(-.1,.1),vy:rnd(.4,1.1)+st.bub*.3,life:8,size:rnd(.05,.17),c0:gc,a:.75})}}
+ /* lửa trên miệng cốc (kim loại kiềm) */
+ if(st.fire>.02){const n=Math.round(340*st.fire*dt*(.5+Math.random()));for(let i=0;i<n;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*.9*(.4+st.fire*.6);
+  fire.emit({x:Math.cos(a)*rr,y:lv+.1,z:Math.sin(a)*rr,vx:rnd(-.3,.3),vy:rnd(2.2,4),vz:rnd(-.3,.3),life:rnd(.9,1.6),size:rnd(.7,1.3),c0:[1,.75,.3],c1:[.75,.08,.04],a:.4*st.fire+.1,grow:.4})}
+  for(let i=0;i<Math.round(80*st.fire*dt*60/60);i++)spark.emit({x:rnd(-.7,.7),y:lv+.2,z:rnd(-.7,.7),vx:rnd(-1.5,1.5),vy:rnd(2,6),vz:rnd(-1.5,1.5),life:rnd(1,2.2),size:rnd(.05,.1),c0:[1,.85,.5],c1:[1,.2,.1],g:-1.5,a:.9})}
+ /* ngọn lửa đun dưới đáy cốc */
+ if(st.heat){const n=Math.round(220*dt*(.7+Math.random()*.6));for(let i=0;i<n;i++)fire.emit({x:rnd(-.3,.3),y:-.9,z:rnd(-.2,.2),vx:rnd(-.1,.1),vy:rnd(1.2,2.2),vz:rnd(-.1,.1),life:rnd(.45,.8),size:rnd(.45,.8),c0:[1,.88,.45],c1:[.9,.25,.05],a:.5,grow:-.3})}
+ for(let i=rings.length-1;i>=0;i--){const g=rings[i];g.t+=dt*1.4;g.m.scale.setScalar(.1+g.t*1.3);g.m.material.opacity=.5*(1-g.t);g.m.position.y=lv+.02;
+  if(g.t>=1){S.remove(g.m);g.m.geometry.dispose();g.m.material.dispose();rings.splice(i,1)}}
+ /* đổ bỏ dung dịch (nút cửa) */
+ if(st.pour){const p=st.pour;p.t+=dt;const a=Math.min(.85,p.t<.8?p.t/.8*.85:p.t<2.6?.85:(3.4-p.t)/.8*.85);bk.rotation.x=Math.max(0,a);
+  if(p.t>.8&&!p.go){p.go=1;lvT=0;st.rx=null;st.fire=0;st.contents=[];st.ovr=null;st.gasType=null;clearSediment();labels();eqEl.innerHTML='';rocks.splice(0).forEach(k=>{S.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
+  if(p.t>.8&&p.t<2.4&&lv>.05){const c=[st.col.r,st.col.g,st.col.b];for(let i=0;i<10;i++)grain.emit({x:rnd(-.2,.2),y:1.15,z:3.45,vx:0,vy:-.5,vz:rnd(.8,1.6),life:1.2,size:rnd(.07,.12),c0:c,g:-9,a:.9})}
+  if(p.t>3.4){st.pour=null;bk.rotation.x=0}}
+ fire.update(dt);spark.update(dt);bub.update(dt);grain.update(dt);R.render(S,cam)}
+requestAnimationFrame(frame);
+
+/* ============ ui.js ============ */
+const cat=$('#cat'),grid=$('#grid'),q=$('#q'),shade=(h,k)=>'#'+[1,3,5].map(i=>Math.min(255,Math.round(parseInt(h.slice(i,i+2),16)*k)).toString(16).padStart(2,'0')).join('');
+function icon(d){const c=d.c;
+ if(d.t==='l')return`<svg viewBox="0 0 44 44"><path d="M17 3h10v13l11 19a4.5 4.5 0 0 1-4 6.5H10A4.5 4.5 0 0 1 6 35l11-19z" fill="${c}"/><path d="M19 5h2v12L10 36" stroke="#fff" stroke-opacity=".55" stroke-width="2" fill="none"/><ellipse cx="22" cy="3.5" rx="6" ry="1.6" fill="${shade(c,.8)}"/></svg>`;
+ if(d.t==='g')return`<svg viewBox="0 0 44 44"><circle cx="20" cy="30" r="9" fill="url(#sm)"/><circle cx="26" cy="19" r="8" fill="url(#sm)"/><circle cx="19" cy="9" r="6" fill="url(#sm)"/><circle cx="24" cy="38" r="5" fill="url(#sm)"/></svg>`;
+ const pg=d.t==='e'?['6,28 14,10 30,5 40,19 34,36 14,38','14,10 30,5 26,22 6,28','26,22 40,19 34,36 14,38 6,28']:['5,26 15,8 31,8 40,26 24,39','15,8 31,8 27,24 5,26','27,24 40,26 24,39 5,26'];
+ return`<svg viewBox="0 0 44 44"><polygon points="${pg[0]}" fill="${c}"/><polygon points="${pg[1]}" fill="${shade(c,1.25)}"/><polygon points="${pg[2]}" fill="${shade(c,.72)}"/></svg>`}
+const filters=$('#filters');
+let activeCategory='all';
+const acidIds=new Set(['HCl','H2SO4','H2SO4 (đặc)','HNO3','HNO3 (đặc)','H3PO4','H2CO3','CH3COOH','H2SO3','HBr','HF','HClO','HClO3','HClO4','H2SiO3','H2SiF6','H2S']);
+const oxideIds=new Set(['H2O','H2O2','CO2','CO','SO2','SO3','NO','NO2','CaO','MgO','CuO','Cu2O','FeO','Fe2O3','Fe3O4','ZnO','Al2O3','MnO2','SiO2','Na2O','Na2O2','K2O']);
+const baseIds=new Set(['LiOH','NaOH','KOH','Ca(OH)2','Ba(OH)2','Mg(OH)2','Al(OH)3','Fe(OH)2','Fe(OH)3','Cu(OH)2','Zn(OH)2','NH3(aq)','NH3']);
+const elementalMolecules=new Set(['H2','O2','N2','Cl2','I2','Br2','F2','P (white)','S']);
+function categoryOf(d){if(acidIds.has(d.id))return'acids';if(baseIds.has(d.id))return'bases';if(oxideIds.has(d.id))return'oxides';if(d.t==='e'||elementalMolecules.has(d.id))return'elements';if(d.t==='g')return'gases';return'salts'}
+const categoryList=[['all','Tất cả'],['elements','Nguyên tố'],['acids','Axit'],['bases','Bazơ'],['salts','Muối'],['oxides','Oxit'],['gases','Chất khí']];
+function renderFilters(){filters.innerHTML=categoryList.map(([id,label])=>`<button type="button" data-cat="${id}" class="${activeCategory===id?'active':''}">${label}</button>`).join('')}
+filters.addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!b)return;activeCategory=b.dataset.cat;renderFilters();render()});
+function render(){const raw=q.value.trim(),s=nz(raw),sn=s.replace(/[\s().·]/g,''),f0=nz(raw).replace(/[\s().·]/g,'');
+ const l=DB.filter(d=>(!s||d.nf.includes(sn)||d.a.includes(s)||nz(d.f).replace(/[\s().·]/g,'').includes(f0))&&(activeCategory==='all'||categoryOf(d)===activeCategory));
+ grid.innerHTML=l.length?l.map(d=>`<button class="t" data-id="${d.id}">${icon(d)}<span>${sub(d.f)}</span></button>`).join(''):'<div id="none">Không tìm thấy chất nào</div>'}
+function openCat(o){cat.classList.toggle('open',o);cat.setAttribute('aria-hidden',!o);$('#b0').classList.toggle('on',o);if(o){render();grid.scrollTop=0}else q.blur()}
+q.addEventListener('input',render);
+grid.addEventListener('click',e=>{const b=e.target.closest('.t');if(!b)return;openCat(false);q.value='';add(b.dataset.id)});
+$('#x').onclick=()=>openCat(false);
+$('#b0').onclick=()=>openCat(!cat.classList.contains('open'));
+$('#b1').onclick=()=>{st.heat=!st.heat;$('#b1').classList.toggle('on',st.heat)};
+$('#b2').onclick=()=>{clearAll();st.heat=false;$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
+$('#b3').onclick=()=>{if(!st.pour&&(lv>.05||st.contents.length||rocks.length)){st.heat=false;$('#b1').classList.remove('on');st.pour={t:0}}};
+addEventListener('keydown',e=>{if(e.key==='Escape')openCat(false)});
+renderFilters();render();
+  document.title=`Thí nghiệm hóa học 3D · ${DB.length} chất · ${RX.length} quy tắc phản ứng`;
 })();
 </script>
 </body>
