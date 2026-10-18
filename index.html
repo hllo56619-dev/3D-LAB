@@ -129,6 +129,15 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 #c{cursor:grab;touch-action:none}
 #c:active{cursor:grabbing}
 @media(max-width:480px){#cat{width:96vw;border-radius:12px}#grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;padding:7px}.t{min-height:76px}.t svg{width:32px;height:32px}.t .chem-label{font-size:11px}}
+/* Temperature control in the bottom toolbar */
+#bar{height:56px;gap:7px;padding:0 8px;box-sizing:border-box}
+#bar button{flex:0 0 44px;width:44px}
+#temp-control{flex:1 1 140px;min-width:112px;max-width:190px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 4px;box-sizing:border-box}
+#temp-head{display:flex;align-items:center;justify-content:space-between;gap:6px;font:10px/1.1 system-ui,sans-serif;color:#cbd5e1;white-space:nowrap}
+#temp-value{font:700 11px/1 system-ui,sans-serif;color:#fbbf24;font-variant-numeric:tabular-nums}
+#temp-slider{display:block;width:100%;height:17px;margin:0;accent-color:#f59e0b;cursor:pointer;touch-action:pan-x}
+#temp-slider:focus-visible{outline:2px solid #fbbf24;outline-offset:2px}
+@media(max-width:390px){#bar{left:6px;right:6px;gap:3px;padding:0 5px}#bar button{flex-basis:40px;width:40px}#temp-control{min-width:100px;padding:0 2px}#temp-head{font-size:9px}#temp-value{font-size:10px}}
 </style>
 </head>
 <body>
@@ -158,6 +167,10 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 <div id="bar">
  <button id="b0" aria-label="Danh mục hóa chất"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
  <button id="b1" aria-label="Đun nóng"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 1.5c.6 4.2 6.2 6.4 6.2 12.4a6.2 6.2 0 0 1-12.4 0c0-2.6 1.3-4.1 2.4-5.6.3 1.6 1 2.5 1.8 2.9C9.6 8 11.2 5.2 12 1.5z" fill="#ff2a1a"/><path d="M12 12c.4 2 2.6 2.8 2.6 5.2a2.6 2.6 0 0 1-5.2 0c0-1.3.8-1.8 1.2-2.6.4.6.8.9 1.1.9-.1-1 .1-2.3.3-3.5z" fill="#ff8a3a"/></svg></button>
+ <div id="temp-control" title="Điều chỉnh nhiệt độ môi trường">
+  <div id="temp-head"><label for="temp-slider">Nhiệt độ</label><output id="temp-value" for="temp-slider">25°C</output></div>
+  <input id="temp-slider" type="range" min="0" max="150" step="1" value="25" aria-label="Nhiệt độ môi trường từ 0 đến 150 độ C">
+ </div>
  <button id="b2" aria-label="Đặt lại thí nghiệm"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.6-5.7M19.8 3.5v4.8h-4.8"/></svg></button>
  
 </div>
@@ -324,7 +337,7 @@ NaBr|c|f2f2f2|sodium bromide natri bromua
 PbI2|c|f1d342|lead ii iodide chì ii iodua kết tủa vàng
 K2CrO4|l|e1c52e|potassium chromate kali cromat vàng
 K2Cr2O7|c|db802b|potassium dichromate kali đicromat da cam
-KMnO4|l|7d36a8|potassium permanganate kali pemanganat tím
+KMnO4|c|7d36a8|potassium permanganate kali pemanganat tím
 KSCN|l|f2f2f2|potassium thiocyanate kali thiocyanat
 NH4Cl|c|f2f2f2|ammonium chloride amoni clorua
 (NH4)2SO4|c|f2f2f2|ammonium sulfate amoni sunfat
@@ -374,7 +387,7 @@ AgBr|c|e7dfcc|silver bromide bạc bromua
 AgI|c|e6d99a|silver iodide bạc iodua
 PbSO4|c|f1f0e9|lead ii sulfate chì sunfat
 PbCO3|c|e5e1d2|lead ii carbonate chì cacbonat
-K2MnO4|l|4e8b58|potassium manganate kali manganat
+K2MnO4|c|4e8b58|potassium manganate kali manganat
 CaS|c|d8d3b8|calcium sulfide canxi sunfua
 Ca(NO3)2|l|f2f2f2|calcium nitrate canxi nitrat
 HgO|c|ce9c32|mercury ii oxide thủy ngân oxit
@@ -533,14 +546,14 @@ const RX=[
  {id:'potassium_oxide_water',need:['K2O','H2O'],eq:'K2O + H2O → 2KOH',out:['KOH'],col:'#e8e8e5',dur:5,bub:.08,heatRise:5},
  {id:'sodium_peroxide_water',need:['Na2O2','H2O'],eq:'2Na2O2 + 2H2O → 4NaOH + O2↑',out:['NaOH','O2'],col:'#e8e8e5',dur:7,bub:.7,gas:'O2'},
  {id:'cuso4_hydrate_heat',need:['CuSO4·5H2O'],eq:'CuSO4·5H2O → CuSO4 + 5H2O',out:['CuSO4','H2O'],heat:80,heating:true,col:'#e9e8e1',precip:'#e8e5d5',dur:8,bub:.3,gas:'H2O',explain:'Tinh thể đồng(II) sunfat ngậm nước mất nước kết tinh khi đun nóng; màu xanh lam nhạt dần.'},
- {id:'kmno4_thermal',need:['KMnO4'],eq:'2KMnO4 → K2MnO4 + MnO2 + O2↑',out:['K2MnO4','MnO2','O2'],heat:100,heating:true,col:'#4e8b58',dur:9,bub:.8,gas:'O2'},
+ {id:'kmno4_thermal',need:['KMnO4'],eq:'2KMnO4 → K2MnO4 + MnO2 + O2↑',out:['K2MnO4','MnO2','O2'],heat:100,heating:true,col:'#4e8b58',precip:'#292929',dur:9,bub:.8,gas:'O2',explain:'Nhiệt phân: tạo manganat kali màu xanh lục, mangan đioxit màu nâu đen và giải phóng khí oxy.'},
  {id:'mercury_oxide_thermal',need:['HgO'],eq:'2HgO → 2Hg + O2↑',out:['Hg','O2'],heat:100,heating:true,arrowLabel:'t°',col:'#d4d6d8',dur:8,bub:.6,gas:'O2',explain:'Chỉ mô phỏng nhiệt phân; thủy ngân và hợp chất của nó rất độc.'},
  {id:'hydrogen_chlorine_light',need:['H2','Cl2'],eq:'H2 + Cl2 → 2HCl',out:['HCl'],arrowLabel:'ánh sáng',col:'#e7e7e7',dur:6,bub:.1,explain:'Phản ứng quang hóa; mô phỏng không tái hiện nguy hiểm ngoài đời.'}
 ];
 /* ============ reactionEngine.js ============ */
 // The engine requires each listed reagent and checks thermal conditions before firing.
 const hasAllReactants=(r,contents)=>r.need.every(n=>contents.includes(n));
-const conditionsMet=(r,temp,heatOn)=>(!r.heat||temp>=r.heat)&&(!r.heating||heatOn);
+const conditionsMet=(r,temp,heatOn)=>{const threshold=r.heat??(r.heating?60:0);return temp>=threshold&&(!r.heating||heatOn||temp>=threshold)};
 const findReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
 const findHeatDependentReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
@@ -606,8 +619,9 @@ function updateReactionFeedback(){
  const unique=[...new Set(st.contents)];
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
  if(pending){
-  const need=pending.heat?`Cần đạt khoảng ${pending.heat}°C`: 'Cần bật gia nhiệt';
-  const extra=pending.heating&&!st.heat?'Hãy bật biểu tượng ngọn lửa để gia nhiệt.':(pending.heat&&st.temp<pending.heat?`Nhiệt độ mô phỏng hiện tại: ${Math.round(st.temp)}°C.`:'');
+  const threshold=pending.heat??(pending.heating?60:0);
+  const need=`Cần đạt khoảng ${threshold}°C`;
+  const extra=st.temp<threshold?'Kéo thanh nhiệt độ lên mức này hoặc bật nút đun nóng.':(!st.heat&&pending.heating?'Có thể dùng nút đun nóng để tăng nhiệt độ dần.':'');
   showEquation(pending,`${need}. ${extra}`.trim());eqEl.dataset.state='needs-heat';return;
  }
  if(unique.length<2){clearIdleStatus();return;}
@@ -692,6 +706,7 @@ function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new 
 
 /* ============ state ============ */
 const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null};
+let roomTemp=25;
 const rocks=[];
 let sediment=null;
 function clearSediment(){if(sediment){bk.remove(sediment);sediment.geometry.dispose();sediment.material.dispose();sediment=null}}
@@ -734,7 +749,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
  lvT=Math.min(2.15,Math.max(0,lvT));lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=LIQ_BASE+lv;
  const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(.72);
- st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
+ if(st.heat)st.temp=Math.min(150,st.temp+24*dt);else if(st.temp>roomTemp)st.temp=Math.max(roomTemp,st.temp-10*dt);else if(st.temp<roomTemp)st.temp=Math.min(roomTemp,st.temp+10*dt);glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
  if((st.contents.length>1||st.heat)&&(st.chk-=dt)<=0){st.chk=.5;check()}
  /* dòng chất lỏng */
  if(st.stream>0){st.stream-=dt;const c=[st.sc.r,st.sc.g,st.sc.b],tx=.1,tz=0,ty=LIQ_BASE+lv+.05;
@@ -815,7 +830,18 @@ grid.addEventListener('click',e=>{const b=e.target.closest('.t');if(!b)return;op
 $('#x').onclick=()=>openCat(false);
 $('#b0').onclick=()=>openCat(!cat.classList.contains('open'));
 $('#b1').onclick=()=>{st.heat=!st.heat;$('#b1').classList.toggle('on',st.heat);check();updateReactionFeedback()};
-$('#b2').onclick=()=>{clearAll();st.heat=false;$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
+const tempSlider=$('#temp-slider'),tempValue=$('#temp-value');
+tempSlider.addEventListener('input',()=>{
+ roomTemp=Number(tempSlider.value);
+ tempValue.textContent=roomTemp+'°C';
+ if(!st.heat)st.temp=roomTemp;
+ else st.temp=Math.max(st.temp,roomTemp);
+ st.chk=0;
+ glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value);
+ check();
+ updateReactionFeedback();
+});
+$('#b2').onclick=()=>{clearAll();st.heat=false;roomTemp=25;st.temp=25;tempSlider.value='25';tempValue.textContent='25°C';$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
 
 addEventListener('keydown',e=>{if(e.key==='Escape')openCat(false)});
 renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz};
