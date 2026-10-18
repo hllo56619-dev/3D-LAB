@@ -4,12 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#063b4b">
+<meta name="description" content="Phòng thí nghiệm hóa học 3D tương tác — khám phá hóa chất và phản ứng hóa học.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230b7185'/%3E%3Cpath d='M24 9h16M28 9v17L15 48a6 6 0 0 0 5 9h24a6 6 0 0 0 5-9L36 26V9' fill='none' stroke='%23e6fbff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M21 43h22l5 8H16z' fill='%232fe1bc'/%3E%3Ccircle cx='28' cy='39' r='2.5' fill='%23fff'/%3E%3Ccircle cx='36' cy='34' r='2' fill='%23fff'/%3E%3C/svg%3E">
 <title>Thí nghiệm hóa học 3D</title>
 <style>
 :root{color-scheme:dark;--bg:#000;--panel:#262626;--bar:#2c2c2c;--fg:#f2f2f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:Georgia,"Times New Roman",serif;overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:none}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block}
+#brand{position:fixed;z-index:3;top:calc(env(safe-area-inset-top,0px) + 10px);left:12px;display:flex;align-items:center;gap:8px;padding:6px 11px 6px 7px;border:1px solid rgba(86,218,224,.38);border-radius:14px;background:linear-gradient(135deg,rgba(5,87,105,.88),rgba(9,29,48,.88));box-shadow:0 5px 22px rgba(0,0,0,.32);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);pointer-events:none}
+#brand-mark{width:34px;height:34px;flex:none;filter:drop-shadow(0 0 7px rgba(53,220,213,.25))}
+#brand-name{font:700 12px/1.15 Arial,Helvetica,sans-serif;letter-spacing:1.2px;color:#f1fdff;white-space:nowrap}
+#brand-tagline{margin-top:3px;font:9px/1 Arial,Helvetica,sans-serif;letter-spacing:.5px;color:#8fe7e8;white-space:nowrap}
+@media(max-width:380px){#brand{top:calc(env(safe-area-inset-top,0px) + 7px);left:8px;gap:6px;padding:5px 8px 5px 5px}#brand-mark{width:29px;height:29px}#brand-name{font-size:10px}#brand-tagline{font-size:8px}#eq{left:40%;right:3%;text-align:right}}
 #eq{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:8%;right:8%;text-align:center;font-size:12px;line-height:1.35;color:#e8e8e8;pointer-events:none}
 #lab{position:fixed;left:6%;top:56%;font-size:11px;line-height:1.5;color:#cfcfcf;pointer-events:none}
 sub{font-size:.72em;line-height:0}
@@ -34,6 +42,17 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 </head>
 <body>
 <canvas id="c"></canvas>
+<header id="brand" aria-label="Chemistry Lab 3D">
+ <svg id="brand-mark" viewBox="0 0 64 64" role="img" aria-label="Logo phòng thí nghiệm">
+  <defs><linearGradient id="flaskGlow" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#e7ffff"/><stop offset="1" stop-color="#6ee7e8"/></linearGradient><linearGradient id="liquidGlow" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#4af0c7"/><stop offset="1" stop-color="#10a8c4"/></linearGradient></defs>
+  <path d="M22 7h20M26 7v17L12 47a7 7 0 0 0 6 10h28a7 7 0 0 0 6-10L38 24V7" fill="rgba(213,251,255,.08)" stroke="url(#flaskGlow)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M19 43h26l6 8a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4z" fill="url(#liquidGlow)" opacity=".95"/>
+  <path d="M17 43h28" stroke="#d9ffff" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="27" cy="37" r="2.5" fill="#eaffff"/><circle cx="36" cy="32" r="2" fill="#eaffff"/><circle cx="40" cy="39" r="1.4" fill="#eaffff"/>
+  <path d="M46 12l3-5 3 5-3 5z" fill="#ffc95c"/><path d="M49 21v4" stroke="#ffc95c" stroke-width="2" stroke-linecap="round"/>
+ </svg>
+ <div><div id="brand-name">CHEMISTRY LAB</div><div id="brand-tagline">3D VIRTUAL EXPERIMENTS</div></div>
+</header>
 <div id="eq"></div><div id="lab"></div>
 <div id="cat" aria-hidden="true">
  <div id="top"><div id="sw"><i>What do you want...</i><input id="q" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Tìm hóa chất"></div>
