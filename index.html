@@ -400,7 +400,13 @@ P4O10|c|eeeeea|phosphorus pentoxide điphotpho pentaoxit
 Ni(NO3)2|l|b9d4d0|nickel ii nitrate niken nitrat
 Mn(NO3)2|l|f0eeee|manganese ii nitrate mangan nitrat
 [Ag(NH3)2]OH|l|d8d8d8|diammine silver hydroxide phức bạc amoniac thuốc thử tráng bạc
-C6H15NO7|l|f2f2f2|ammonium gluconate amoni gluconat sản phẩm oxi hóa glucozơ`;
+C6H15NO7|l|f2f2f2|ammonium gluconate amoni gluconat sản phẩm oxi hóa glucozơ
+Cr2(SO4)3|l|8d6cb0|chromium iii sulfate crom iii sunfat
+Ca(HCO3)2|l|f2f2f2|calcium bicarbonate canxi hiđrocacbonat
+NH4HCO3|c|f2f2f2|ammonium bicarbonate amoni hiđrocacbonat
+NaI|c|f2f2f2|sodium iodide natri iodua
+NaIO3|c|f2f2f2|sodium iodate natri iodat
+NaClO3|c|f2f2f2|sodium chlorate natri clorat`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
@@ -415,8 +421,9 @@ const hasAllReactants=(r,contents)=>r.need.every(n=>contents.includes(n));
 const conditionsMet=(r,temp,heatOn)=>!(r.heating||r.heat)||(
  !!heatOn&&temp>=(r.heat??60)
 );
-const findReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
-const findHeatDependentReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
+const RX_ORDER=[...RX].sort((a,b)=>(b.need?.length||0)-(a.need?.length||0));
+const findReaction=(contents,temp,heatOn)=>RX_ORDER.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
+const findHeatDependentReaction=(contents,temp,heatOn)=>RX_ORDER.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
  const label=r.arrowLabel||(r.heat||r.heating?'t°':'');
  return sub(r.eq).replace(/(→|⇌|↔)/g,arrow=>`<span class="eq-arrow">${label?`<span class="eq-arrow-label">${sub(label)}</span>`:''}${arrow}</span>`);
@@ -477,6 +484,7 @@ function clearIdleStatus(){
 function updateReactionFeedback(){
  clearFeedbackTimer();const revision=++feedbackRevision;
  if(st.rx||st.pour)return;
+ if(performance.now()<st.readyAt){feedbackTimer=setTimeout(()=>{if(revision===feedbackRevision)updateReactionFeedback()},Math.max(25,st.readyAt-performance.now()+30));return;}
  const unique=[...new Set(st.contents)];
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
  if(pending){
@@ -528,7 +536,7 @@ const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.position.y=LIQ_BASE;liq.renderOrder=1;bk.add(liq);
 const topMat=new THREE.MeshBasicMaterial({color:0xbfcbd2,transparent:true,opacity:.25,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,40),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
-function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.1/(1.22*th),4.5/(1.5*cam.aspect*th));cam.position.set(0,1.55+d*.52,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.05);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.1/(1.22*th),4.5/(1.5*cam.aspect*th));cam.position.set(0,1.55+d*.52,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
 // Fixed illustration view: pointer dragging is intentionally disabled.
 viewRoot.rotation.set(-0.08,0,0);
@@ -559,14 +567,14 @@ function Pool(n,add,tx,kill){
   A[i]=A0[i]*(t<.1?t/.1:1-(t-.1)/.9);Z[i]=S0[i]*(1+GR[i]*t)}
   ['position','col','sz','al'].forEach(a=>g.attributes[a].needsUpdate=true)}}}
 let lv=0,lvT=0;
-const fire=Pool(120,true,T0),spark=Pool(36,true,T0),bub=Pool(36,false,T1,(x,y)=>y>LIQ_BASE+lv),grain=Pool(100,false,T0),mist=Pool(64,false,T0);
+const fire=Pool(88,true,T0),spark=Pool(24,true,T0),bub=Pool(24,false,T1,(x,y)=>y>LIQ_BASE+lv),grain=Pool(64,false,T0),mist=Pool(32,false,T0);
 let mistTick=0;
 const rings=[];
 function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
  m.rotation.x=-Math.PI/2;m.position.set(x,LIQ_BASE+lv+.02,z);m.scale.setScalar(.1);m.renderOrder=9;S.add(m);rings.push({m,t:0})}
 
 /* ============ state ============ */
-const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null};
+const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null,readyAt:0};
 
 const rocks=[];
 let sediment=null;
@@ -597,7 +605,9 @@ function startReaction(r){
  }
  rocks.forEach(k=>{if(r.need.includes(k.id)&&!keep.has(k.id)){k.dis=true;if(r.fire)k.st='float'}});
  // Render newly formed solid products as small visible crystals/metal pieces at the bottom of the beaker.
- const solidProducts=[...new Set((r.out||[]).filter(id=>BY[id]&&BY[id].t==='c'))].slice(0,4);
+ const visibleProducts=rocks.filter(k=>k.product&&!k.dis);
+ while(visibleProducts.length>=8){const old=visibleProducts.shift();viewRoot.remove(old.m);old.m.geometry.dispose();old.m.material.dispose();const oi=rocks.indexOf(old);if(oi>=0)rocks.splice(oi,1)}
+ const solidProducts=[...new Set((r.out||[]).filter(id=>BY[id]&&BY[id].t==='c'))].slice(0,Math.max(0,8-visibleProducts.length));
  solidProducts.forEach((id,index)=>{
   const d=BY[id],m=new THREE.Mesh(new THREE.IcosahedronGeometry(.15,1),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
   m.scale.set(rnd(.85,1.25),rnd(.7,1.05),rnd(.85,1.2));
@@ -608,9 +618,9 @@ function startReaction(r){
   rocks.push({m,id,vy:0,st:'rest',t:0,dis:false,pushed:true,product:true});
  });
 }
-function check(){if(st.rx)return;const r=findReaction(st.contents,st.temp,st.heat);if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}}
+function check(){if(st.rx||performance.now()<st.readyAt)return;const r=findReaction(st.contents,st.temp,st.heat);if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}}
 
-function add(id){const d=BY[id];if(!d)return;
+function add(id){const d=BY[id];if(!d)return;st.readyAt=performance.now()+2100;
  if(!st.rx){clearFeedbackTimer();feedbackRevision++;eqEl.innerHTML='';delete eqEl.dataset.state;}
  if(st.ovr&&!st.rx)st.ovr=null;
  if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.15,lvT+.90);labels();check();updateReactionFeedback()},900)}
@@ -619,7 +629,7 @@ function add(id){const d=BY[id];if(!d)return;
  else{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
   m.scale.set(rnd(.9,1.3),rnd(.7,1),rnd(.9,1.3));m.position.set(.5,6.2,0);viewRoot.add(m);rocks.push({m,id,vy:0,st:'fall',t:0,dis:false,pushed:false})}}
 
-function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
+function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];st.readyAt=0;lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
  rocks.splice(0).forEach(k=>{viewRoot.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
 
 /* ============ main loop ============ */
@@ -673,7 +683,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
   fire.emit({x:Math.cos(a)*rr,y:LIQ_BASE+lv+.1,z:Math.sin(a)*rr,vx:rnd(-.3,.3),vy:rnd(2.2,4),vz:rnd(-.3,.3),life:rnd(.9,1.6),size:rnd(.7,1.3),c0:[1,.75,.3],c1:[.75,.08,.04],a:.4*st.fire+.1,grow:.4})}
   for(let i=0;i<Math.round(12*st.fire*dt*60/60);i++)spark.emit({x:rnd(-.7,.7),y:lv+.2,z:rnd(-.7,.7),vx:rnd(-1.5,1.5),vy:rnd(2,6),vz:rnd(-1.5,1.5),life:rnd(1,2.2),size:rnd(.05,.1),c0:[1,.85,.5],c1:[1,.2,.1],g:-1.5,a:.9})}
  /* ngọn lửa đun dưới đáy cốc */
- if(st.heat){const n=Math.round(45*dt*(.7+Math.random()*.6));for(let i=0;i<n;i++)fire.emit({x:rnd(-.3,.3),y:-.9,z:rnd(-.2,.2),vx:rnd(-.1,.1),vy:rnd(1.2,2.2),vz:rnd(-.1,.1),life:rnd(.45,.8),size:rnd(.45,.8),c0:[1,.88,.45],c1:[.9,.25,.05],a:.5,grow:-.3})}
+ if(st.heat){const n=Math.round(24*dt*(.7+Math.random()*.6));for(let i=0;i<n;i++)fire.emit({x:rnd(-.3,.3),y:-.9,z:rnd(-.2,.2),vx:rnd(-.1,.1),vy:rnd(1.2,2.2),vz:rnd(-.1,.1),life:rnd(.45,.8),size:rnd(.45,.8),c0:[1,.88,.45],c1:[.9,.25,.05],a:.5,grow:-.3})}
  for(let i=rings.length-1;i>=0;i--){const g=rings[i];g.t+=dt*1.4;g.m.scale.setScalar(.1+g.t*1.3);g.m.material.opacity=.5*(1-g.t);g.m.position.y=LIQ_BASE+lv+.02;
   if(g.t>=1){S.remove(g.m);g.m.geometry.dispose();g.m.material.dispose();rings.splice(i,1)}}
  /* đổ bỏ dung dịch (nút cửa) */
