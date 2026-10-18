@@ -587,61 +587,53 @@ R.setClearColor(0x000000,1);
 const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
 S.add(new THREE.AmbientLight(0xffffff,.75));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);S.add(dl);
 const viewRoot=new THREE.Group();S.add(viewRoot);const bk=new THREE.Group();viewRoot.add(bk);
-const H=3.2,pts=[[0,0],[1.25,0],[1.38,.03],[1.43,.12],[1.6,H]].map(p=>new THREE.Vector2(p[0],p[1]));
+const H=3.2,pts=[
+ [0,.12],[1.12,.12],[1.23,.145],[1.32,.22],[1.39,.36],[1.42,.52],
+ [1.47,2.77],[1.50,2.92],[1.55,2.985],[1.65,3.00],[1.715,3.035],
+ [1.708,3.085],[1.66,3.115],[1.56,3.105],[1.515,3.065],
+ [1.49,2.98],[1.455,2.80],[1.395,.54],[1.335,.38],[1.245,.265],[0,.265]
+].map(p=>new THREE.Vector2(p[0],p[1]));
+// Clear, neutral glass: show the edges and rolled lip, not a blue opaque body.
 const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
  vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
- fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=mix(vec3(.55,.62,.72),vec3(1.,.5,.2),uW*.55)+vec3(.25)*f;gl_FragColor=vec4(c,.05+.7*f);}'});
-const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
-const rim=new THREE.Mesh(new THREE.TorusGeometry(1.62,.045,10,64),new THREE.MeshBasicMaterial({color:0xb4c0d0,transparent:true,opacity:.85,depthWrite:false}));
-rim.rotation.x=Math.PI/2;rim.position.y=H;rim.renderOrder=4;bk.add(rim);
-// Integrated pour spout: a small flared triangular glass lip attached to the front-left rim.
-const spoutA=new THREE.Vector3(-1.42,H+.018,.78);
-const spoutTip=new THREE.Vector3(-2.02,H+.035,1.00);
-const spoutB=new THREE.Vector3(-1.15,H+.018,1.14);
-const spoutBottomA=new THREE.Vector3(spoutA.x,spoutA.y-.045,spoutA.z);
-const spoutBottomTip=new THREE.Vector3(spoutTip.x,spoutTip.y-.045,spoutTip.z);
-const spoutBottomB=new THREE.Vector3(spoutB.x,spoutB.y-.045,spoutB.z);
+ fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=vec3(.70,.70,.70)+vec3(.24)*f;gl_FragColor=vec4(c,.025+.62*f);}'});
+const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,72),glassMat);glass.renderOrder=3;bk.add(glass);
+// Rolled, slightly protruding glass lip; integrated with the rim profile above.
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.625,.052,10,64),new THREE.MeshBasicMaterial({color:0xd9dde2,transparent:true,opacity:.55,depthWrite:false}));
+rim.rotation.x=Math.PI/2;rim.position.y=3.055;rim.renderOrder=4;bk.add(rim);
+// Small triangular pouring beak attached to the rim, with real width and glass-like edges.
+const A=new THREE.Vector3(-1.10,3.075,1.02);
+const B=new THREE.Vector3(-1.47,3.075,.36);
+const T=new THREE.Vector3(-1.79,3.105,.82);
+const thick=.035;
+const A2=new THREE.Vector3(A.x,A.y-thick,A.z),B2=new THREE.Vector3(B.x,B.y-thick,B.z),T2=new THREE.Vector3(T.x,T.y-thick,T.z);
 const spoutGeometry=new THREE.BufferGeometry();
 spoutGeometry.setAttribute('position',new THREE.Float32BufferAttribute([
- spoutA.x,spoutA.y,spoutA.z, spoutTip.x,spoutTip.y,spoutTip.z, spoutB.x,spoutB.y,spoutB.z,
- spoutBottomA.x,spoutBottomA.y,spoutBottomA.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z,
- spoutA.x,spoutA.y,spoutA.z, spoutBottomA.x,spoutBottomA.y,spoutBottomA.z, spoutTip.x,spoutTip.y,spoutTip.z,
- spoutTip.x,spoutTip.y,spoutTip.z, spoutBottomA.x,spoutBottomA.y,spoutBottomA.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z,
- spoutTip.x,spoutTip.y,spoutTip.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z, spoutB.x,spoutB.y,spoutB.z,
- spoutB.x,spoutB.y,spoutB.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z,
- spoutB.x,spoutB.y,spoutB.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z, spoutA.x,spoutA.y,spoutA.z,
- spoutA.x,spoutA.y,spoutA.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z, spoutBottomA.x,spoutBottomA.y,spoutBottomA.z
+ A.x,A.y,A.z,T.x,T.y,T.z,B.x,B.y,B.z,
+ A2.x,A2.y,A2.z,B2.x,B2.y,B2.z,T2.x,T2.y,T2.z,
+ A.x,A.y,A.z,A2.x,A2.y,A2.z,T.x,T.y,T.z,
+ T.x,T.y,T.z,A2.x,A2.y,A2.z,T2.x,T2.y,T2.z,
+ T.x,T.y,T.z,T2.x,T2.y,T2.z,B.x,B.y,B.z,
+ B.x,B.y,B.z,T2.x,T2.y,T2.z,B2.x,B2.y,B2.z,
+ B.x,B.y,B.z,B2.x,B2.y,B2.z,A.x,A.y,A.z,
+ A.x,A.y,A.z,B2.x,B2.y,B2.z,A2.x,A2.y,A2.z
 ],3));
 spoutGeometry.computeVertexNormals();
-const spoutMaterial=new THREE.MeshBasicMaterial({color:0xdce6ee,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false});
-const spout=new THREE.Mesh(spoutGeometry,spoutMaterial);
+const spout=new THREE.Mesh(spoutGeometry,new THREE.MeshBasicMaterial({color:0xe4e7ea,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false}));
 spout.renderOrder=5;bk.add(spout);
-// Thin glints follow the two sides of the pour lip; no separate loop or wire ring.
-const spoutEdgeMaterial=new THREE.LineBasicMaterial({color:0xcbd7e2,transparent:true,opacity:.72,depthWrite:false});
-const spoutEdge1=new THREE.Line(new THREE.BufferGeometry().setFromPoints([
- new THREE.Vector3(-1.42,H+.035,.78),new THREE.Vector3(-1.65,H+.07,.85),new THREE.Vector3(-2.02,H+.045,1.00)
-]),spoutEdgeMaterial);
-const spoutEdge2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([
- new THREE.Vector3(-1.15,H+.035,1.14),new THREE.Vector3(-1.58,H+.065,1.13),new THREE.Vector3(-2.02,H+.045,1.00)
-]),spoutEdgeMaterial);
-spoutEdge1.renderOrder=6;spoutEdge2.renderOrder=6;bk.add(spoutEdge1,spoutEdge2);
-// Thước chia độ đặt phía trước thành cốc để người dùng nhìn rõ hướng xoay 3D.
-const gradMat=new THREE.LineBasicMaterial({color:0xd9faff,transparent:true,opacity:.42,depthTest:false});
-const gradX=.83,gradZ=1.18;
-const gradSpine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,.35,gradZ),new THREE.Vector3(gradX,H-.28,gradZ)]),gradMat);
-gradSpine.renderOrder=6;bk.add(gradSpine);
-for(let i=1;i<=7;i++){
- const y=.35+i*.34,len=i%2===0?.29:.16;
- const mark=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,y,gradZ),new THREE.Vector3(gradX+len,y,gradZ)]),gradMat);
- mark.renderOrder=6;bk.add(mark);
-}
-const LR=1.43,liqMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false});
+const spoutEdgeMaterial=new THREE.LineBasicMaterial({color:0xcfd4d8,transparent:true,opacity:.62,depthWrite:false});
+const spoutEdge1=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(A.x,A.y+.008,A.z),new THREE.Vector3(T.x,T.y+.008,T.z)]),spoutEdgeMaterial);
+const spoutEdge2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(B.x,B.y+.008,B.z),new THREE.Vector3(T.x,T.y+.008,T.z)]),spoutEdgeMaterial);
+spoutEdge1.renderOrder=5;spoutEdge2.renderOrder=5;bk.add(spoutEdge1,spoutEdge2);
+// Thick, rounded base edge; no measuring graduations or numbers.
+const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.04,8,48),new THREE.MeshBasicMaterial({color:0xcbd0d5,transparent:true,opacity:.24,depthWrite:false}));
+foot.rotation.x=Math.PI/2;foot.position.y=.18;foot.renderOrder=4;bk.add(foot);
+const LR=1.36,liqMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
 const topMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.97,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
-function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
- const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.2/(1.25*th),3.8/(1.5*cam.aspect*th));cam.position.set(0,1.65+d*.22,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.5);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.0/(1.25*th),4.4/(1.5*cam.aspect*th));cam.position.set(0,1.65+d*.22,d);cam.lookAt(0,1.55,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
 // Fixed illustration view: pointer dragging is intentionally disabled.
 viewRoot.rotation.set(-0.08,0,0);
