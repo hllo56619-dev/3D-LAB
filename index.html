@@ -111,6 +111,24 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 .kc.ke small{font-size:11px;opacity:.75}
 .kc.ke u{display:block;max-width:100%;white-space:nowrap;overflow:hidden;margin-top:auto;font-size:9px;font-size:clamp(6.5px,calc(150cqw/var(--n)),10px)}
 .el{container-type:inline-size}.el s{white-space:nowrap;font-size:5px;font-size:clamp(4px,calc(170cqw/var(--n)),calc(var(--cs,46px)*.2))}
+
+/* ===== Clean-up: compact chemistry picker, no category filters ===== */
+#cat{z-index:24;top:calc(env(safe-area-inset-top,0px) + 50px);bottom:calc(env(safe-area-inset-bottom,0px) + 68px);width:min(96vw,980px);background:rgba(7,13,31,.97);border:1px solid rgba(34,211,238,.3);box-shadow:0 16px 48px rgba(0,0,0,.58);border-radius:16px}
+#top{align-items:center;padding:10px 12px 8px;gap:10px}
+#sw{border-bottom:1px solid rgba(34,211,238,.6)}
+#sw i{font:10px system-ui,sans-serif;letter-spacing:.04em}
+#q{font:15px system-ui,sans-serif}
+#filters{display:none!important}
+#grid{grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;padding:10px;align-content:start}
+.t{min-height:84px;box-sizing:border-box;border:1px solid rgba(148,163,184,.24);border-radius:12px;background:linear-gradient(150deg,rgba(38,55,84,.9),rgba(10,19,42,.98));box-shadow:inset 0 1px 0 rgba(255,255,255,.08);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:8px 4px;font:12px system-ui,sans-serif;overflow:hidden;overflow-wrap:normal;word-break:normal;transition:border-color .15s,transform .15s}
+.t:hover{border-color:rgba(34,211,238,.8);transform:translateY(-2px)}
+.t svg{width:38px;height:38px;display:block;flex:none;margin:0}
+.t .chem-label{display:block;max-width:100%;width:100%;font:600 12px/1.15 system-ui,sans-serif;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#e6edf8}
+#none{font:13px system-ui,sans-serif}
+#bar{max-width:300px}
+#c{cursor:grab;touch-action:none}
+#c:active{cursor:grabbing}
+@media(max-width:480px){#cat{width:96vw;border-radius:12px}#grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;padding:7px}.t{min-height:76px}.t svg{width:32px;height:32px}.t .chem-label{font-size:11px}}
 </style>
 </head>
 <body>
@@ -121,7 +139,7 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 <path d="M17 43h28" stroke="#d9ffff" stroke-width="2" stroke-linecap="round"/>
 <circle cx="27" cy="37" r="2.5" fill="#fff"/><circle cx="36" cy="32" r="2" fill="#fff"/><circle cx="40" cy="39" r="1.4" fill="#fff"/>
 <path d="M46 12l3-5 3 5-3 5z" fill="#ffc95c"/>
-</svg><div><div id="brand-name">CHEMISTRY LAB</div><div id="brand-tagline">3D VIRTUAL LAB</div></div></div><button data-tab="lab" class="on">🧪 Phòng 3D</button><button data-tab="kho">📦 Kho hóa chất</button><button data-tab="pt">⚛️ Bảng tuần hoàn</button></nav>
+</svg><div><div id="brand-name">CHEMISTRY LAB</div><div id="brand-tagline">3D VIRTUAL LAB</div></div></div><button data-tab="lab" class="on">🧪 Phòng 3D</button><button data-tab="pt">⚛️ Bảng tuần hoàn</button></nav>
 <section id="kho" class="pane"><div id="khw"><header class="card" id="khh"><h2>Kho hóa chất</h2><span id="khc" class="note"></span>
 <div class="row"><div style="position:relative;flex:1;min-width:200px"><input id="khq" placeholder="Tìm: vàng, Au, 79, H2SO4, axit, khí hiếm…" autocomplete="off" aria-label="Tìm kiếm"><button id="khx" aria-label="Xóa tìm kiếm">✕</button></div><button id="khr">Xóa tất cả bộ lọc</button></div><div class="note" id="khn" aria-live="polite"></div></header>
 <div id="khb"><details id="khf" open class="card"><summary>Bộ lọc</summary><div class="fh">Danh mục (kết hợp được)</div><div id="ktags"></div><div class="fh">Họ nguyên tố</div><div id="kfams"></div><p class="note">Màu chỉ phục vụ giao diện, không phải màu thực tế của nguyên tố.</p></details>
@@ -134,14 +152,14 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 <div id="cat" aria-hidden="true">
  <div id="top"><div id="sw"><i>What do you want...</i><input id="q" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" enterkeyhint="search" aria-label="Tìm hóa chất"></div>
  <button id="x" aria-label="Đóng"><svg width="22" height="22" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.4" stroke-linecap="round"><path d="M4 4l16 16M20 4L4 20"/></svg></button></div>
- <div id="filters" aria-label="Lọc theo nhóm hóa chất"></div>
+ <div id="filters" aria-label="Bộ lọc đã được loại bỏ" hidden></div>
  <div id="grid"></div>
 </div>
 <div id="bar">
  <button id="b0" aria-label="Danh mục hóa chất"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
  <button id="b1" aria-label="Đun nóng"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 1.5c.6 4.2 6.2 6.4 6.2 12.4a6.2 6.2 0 0 1-12.4 0c0-2.6 1.3-4.1 2.4-5.6.3 1.6 1 2.5 1.8 2.9C9.6 8 11.2 5.2 12 1.5z" fill="#ff2a1a"/><path d="M12 12c.4 2 2.6 2.8 2.6 5.2a2.6 2.6 0 0 1-5.2 0c0-1.3.8-1.8 1.2-2.6.4.6.8.9 1.1.9-.1-1 .1-2.3.3-3.5z" fill="#ff8a3a"/></svg></button>
  <button id="b2" aria-label="Đặt lại thí nghiệm"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.6-5.7M19.8 3.5v4.8h-4.8"/></svg></button>
- <button id="b3" aria-label="Đổ bỏ dung dịch"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M9 3h10v18H9M9 3v4M9 17v4M3 12h9M9 9l3 3-3 3"/></svg></button>
+ 
 </div>
 <div id="err">Trình duyệt này không hỗ trợ WebGL nên không thể hiển thị cốc 3D. Hãy thử Chrome hoặc Safari bản mới.</div>
 <svg width="0" height="0" style="position:absolute"><defs><radialGradient id="sm"><stop offset="0" stop-color="#cfcfcf" stop-opacity=".9"/><stop offset="1" stop-color="#999" stop-opacity="0"/></radialGradient></defs></svg>
@@ -568,7 +586,7 @@ let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});}catch(e){$
 R.setClearColor(0x000000,1);
 const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
 S.add(new THREE.AmbientLight(0xffffff,.75));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);S.add(dl);
-const bk=new THREE.Group();S.add(bk);
+const viewRoot=new THREE.Group();S.add(viewRoot);const bk=new THREE.Group();viewRoot.add(bk);
 const H=3.2,pts=[[0,0],[1.25,0],[1.38,.03],[1.43,.12],[1.6,H]].map(p=>new THREE.Vector2(p[0],p[1]));
 const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
  vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
@@ -587,6 +605,23 @@ top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
 function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
  const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
+const viewDrag={id:null,x:0,y:0};
+viewRoot.rotation.x=-0.08;
+R.domElement.style.touchAction='none';
+R.domElement.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='mouse'&&e.button!==0)return;
+ viewDrag.id=e.pointerId;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
+ try{R.domElement.setPointerCapture(e.pointerId)}catch(_){}
+});
+R.domElement.addEventListener('pointermove',e=>{
+ if(viewDrag.id!==e.pointerId)return;
+ const dx=e.clientX-viewDrag.x,dy=e.clientY-viewDrag.y;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
+ viewRoot.rotation.y+=dx*.009;
+ viewRoot.rotation.x=Math.max(-.65,Math.min(.65,viewRoot.rotation.x+dy*.007));
+});
+const endViewDrag=e=>{if(viewDrag.id===e.pointerId)viewDrag.id=null};
+R.domElement.addEventListener('pointerup',endViewDrag);
+R.domElement.addEventListener('pointercancel',endViewDrag);
 
 /* ============ effects.js ============ */
 const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
@@ -649,10 +684,10 @@ function add(id){const d=BY[id];if(!d)return;
  else if(d.t==='g'){const c=rgb(d.c);for(let i=0;i<70;i++)setTimeout(()=>grain.emit({x:rnd(.3,1.3),y:5.5,z:rnd(-.3,.3),vx:rnd(-.6,0),vy:-rnd(1,2.5),life:rnd(1.2,2),size:rnd(.3,.6),c0:c,a:.4,grow:1.5}),i*14);
   setTimeout(()=>{st.contents.push(id);labels();for(let i=0;i<14;i++)bub.emit({x:rnd(-.8,.8),y:.2,z:rnd(-.8,.8),vy:rnd(.6,1),life:6,size:rnd(.08,.16),c0:[1,1,1],a:.7});check();updateReactionFeedback()},1100)}
  else{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
-  m.scale.set(rnd(.9,1.3),rnd(.7,1),rnd(.9,1.3));m.position.set(.5,6.2,0);S.add(m);rocks.push({m,id,vy:0,st:'fall',t:0,dis:false,pushed:false})}}
+  m.scale.set(rnd(.9,1.3),rnd(.7,1),rnd(.9,1.3));m.position.set(.5,6.2,0);viewRoot.add(m);rocks.push({m,id,vy:0,st:'fall',t:0,dis:false,pushed:false})}}
 
 function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
- rocks.splice(0).forEach(k=>{S.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
+ rocks.splice(0).forEach(k=>{viewRoot.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
 
 /* ============ main loop ============ */
 let last=performance.now(),time=0;
@@ -697,7 +732,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last
   if(g.t>=1){S.remove(g.m);g.m.geometry.dispose();g.m.material.dispose();rings.splice(i,1)}}
  /* đổ bỏ dung dịch (nút cửa) */
  if(st.pour){const p=st.pour;p.t+=dt;const a=Math.min(.85,p.t<.8?p.t/.8*.85:p.t<2.6?.85:(3.4-p.t)/.8*.85);bk.rotation.x=Math.max(0,a);
-  if(p.t>.8&&!p.go){p.go=1;lvT=0;st.rx=null;st.fire=0;st.contents=[];st.ovr=null;st.gasType=null;clearSediment();labels();eqEl.innerHTML='';rocks.splice(0).forEach(k=>{S.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
+  if(p.t>.8&&!p.go){p.go=1;lvT=0;st.rx=null;st.fire=0;st.contents=[];st.ovr=null;st.gasType=null;clearSediment();labels();eqEl.innerHTML='';rocks.splice(0).forEach(k=>{viewRoot.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
   if(p.t>.8&&p.t<2.4&&lv>.05){const c=[st.col.r,st.col.g,st.col.b];for(let i=0;i<10;i++)grain.emit({x:rnd(-.2,.2),y:1.15,z:3.45,vx:0,vy:-.5,vz:rnd(.8,1.6),life:1.2,size:rnd(.07,.12),c0:c,g:-9,a:.9})}
   if(p.t>3.4){st.pour=null;bk.rotation.x=0}}
  fire.update(dt);spark.update(dt);bub.update(dt);grain.update(dt);R.render(S,cam)}
@@ -730,7 +765,7 @@ $('#x').onclick=()=>openCat(false);
 $('#b0').onclick=()=>openCat(!cat.classList.contains('open'));
 $('#b1').onclick=()=>{st.heat=!st.heat;$('#b1').classList.toggle('on',st.heat);check();updateReactionFeedback()};
 $('#b2').onclick=()=>{clearAll();st.heat=false;$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
-$('#b3').onclick=()=>{if(!st.pour&&(lv>.05||st.contents.length||rocks.length)){st.heat=false;$('#b1').classList.remove('on');st.pour={t:0}}};
+
 addEventListener('keydown',e=>{if(e.key==='Escape')openCat(false)});
 renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz};
  document.title=`Thí nghiệm hóa học 3D · ${DB.length} chất · ${RX.length} quy tắc phản ứng`;
@@ -786,8 +821,53 @@ const FD={alk:'Kim loại mềm, hoạt động rất mạnh; tác dụng với 
 const radio=z=>z===43||z===61||z>=84,TOX=new Set(['SO2','NO2','NO','H2S','NH3','Cl2','CO','HF']);
 const inv=e=>({H:'H2',O:'O2',N:'N2',Cl:'Cl2',I:'I2',Br:'Br2',F:'F2',P:'P (white)'}[e.sym]||e.sym);
 function init(){
-const C=window.CHEM,sub=C?C.sub:x=>x,items=buildItems(C?C.DB:[]),byK=Object.fromEntries(items.map(i=>[i.k,i]));
+const C=window.CHEM,sub=C?C.sub:x=>x;
+if(C){
+ EL.forEach(e=>{
+  const target=inv(e);
+  if(!C.BY[target]){
+   const typ=e.state==='Khí'?'g':e.state==='Lỏng'?'l':'e';
+   const col=CATN[e.cat][1];
+   const d={id:target,f:target,t:typ,c:col,nf:fnorm(target),a:nrm(e.sym+' '+e.en+' '+e.vi+' '+e.z+' element nguyên tố'),aliases:[e.en]};
+   C.DB.push(d);C.BY[target]=d;
+  }
+ });
+}
+const items=buildItems(C?C.DB:[]),byK=Object.fromEntries(items.map(i=>[i.k,i]));
 const hasSub=e=>!!(C&&C.BY[inv(e)]);let toastT=0;
+
+const CORE_IDS=new Set([
+ 'H2O','H2O2','HCl','H2SO4','H2SO4 (đặc)','HNO3','HNO3 (đặc)','H3PO4','H2CO3','CH3COOH','H2SO3','HBr','HF','HClO','HClO3','HClO4','H2S','H2SiO3',
+ 'CH4','CO2','CO','SO2','SO3','NO','NO2','NH3','NH3(aq)','CH3OH','C2H5OH','Glucose','Starch',
+ 'LiOH','NaOH','KOH','Ca(OH)2','Ba(OH)2','Mg(OH)2','Al(OH)3','Fe(OH)2','Fe(OH)3','Cu(OH)2','Zn(OH)2',
+ 'NaCl','KCl','LiCl','AgCl','MgCl2','CaCl2','BaCl2','FeCl2','FeCl3','AlCl3','ZnCl2','PbCl2',
+ 'Na2SO4','K2SO4','CuSO4','FeSO4','Fe2(SO4)3','ZnSO4','MgSO4','BaSO4','CaSO4',
+ 'Na2CO3','NaHCO3','CaCO3','CuCO3','MgCO3','K2CO3','Na2SO3','Na2S2O3','Na2S','FeS','CuS','PbS',
+ 'AgNO3','NaNO3','KNO3','Cu(NO3)2','Pb(NO3)2','Zn(NO3)2','Mg(NO3)2','Na3PO4','Ca3(PO4)2',
+ 'KI','KBr','NaBr','PbI2','K2CrO4','K2Cr2O7','KMnO4','KSCN','NH4Cl','NH4NO3',
+ 'CaO','MgO','CuO','Cu2O','FeO','Fe2O3','Fe3O4','ZnO','Al2O3','MnO2','SiO2','Na2O','Na2O2','K2O','CaSO3','KClO3',
+ 'CuSO4·5H2O','CH3COONa','Phenolphthalein','Universal indicator'
+]);
+const representedIds=new Set(EL.map(e=>inv(e)));
+const catalogData=[
+ ...EL.map(e=>({id:inv(e),label:e.sym,type:e.state==='Khí'?'g':e.state==='Lỏng'?'l':'e',color:CATN[e.cat][1],search:nrm([e.sym,e.en,e.vi,e.z,'nguyen to','element'].join(' ')),title:e.sym+' — '+e.en})),
+ ...(C?C.DB.filter(d=>CORE_IDS.has(d.id)&&!representedIds.has(d.id)).map(d=>({id:d.id,label:d.id==='P (white)'?'P':d.f,type:d.t,color:d.c,search:nrm([d.id,d.f,d.a,d.t].join(' ')),title:d.f+' — '+(d.aliases||[]).join(' ')})):[])
+];
+function catalogIcon(type,color){
+ if(type==='l')return '<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M16 4h12v12l10 17a5 5 0 0 1-4 7H10a5 5 0 0 1-4-7l10-17z" fill="'+color+'" fill-opacity=".9" stroke="#e5faff" stroke-opacity=".75" stroke-width="1.4"/><path d="M14 27h16l7 10H7z" fill="#c3f4ff" fill-opacity=".48"/><path d="M18 5h8" stroke="#e5faff" stroke-width="2" stroke-linecap="round"/></svg>';
+ if(type==='g')return '<svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="18" cy="28" r="8" fill="'+color+'" fill-opacity=".72" stroke="#e5faff" stroke-opacity=".65"/><circle cx="27" cy="17" r="6.5" fill="'+color+'" fill-opacity=".8" stroke="#e5faff" stroke-opacity=".65"/><circle cx="17" cy="10" r="4.5" fill="'+color+'" fill-opacity=".9" stroke="#e5faff" stroke-opacity=".65"/></svg>';
+ return '<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M7 27 14 9 30 6 39 19 33 36 14 38z" fill="'+color+'"/><path d="M14 9 30 6 26 23 7 27z" fill="#fff" fill-opacity=".22"/><path d="m26 23 13-4-6 17-19 2-7-11z" fill="#000" fill-opacity=".2"/></svg>';
+}
+function renderCatalog(){
+ const raw=$('#q').value.trim(),needle=nrm(raw),compact=fnorm(raw);
+ const shown=catalogData.filter(it=>!needle||it.search.includes(needle)||fnorm(it.id).includes(compact)||fnorm(it.label).includes(compact));
+ grid.innerHTML=shown.length?shown.map(it=>'<button type="button" class="t" data-id="'+it.id.replace(/"/g,'&quot;')+'" title="'+it.title.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'">'+catalogIcon(it.type,it.color)+'<span class="chem-label">'+sub(it.label)+'</span></button>').join(''):'<div id="none">Không tìm thấy chất nào</div>';
+}
+const catalogSearch=$('#q');
+catalogSearch.addEventListener('input',renderCatalog);
+$('#b0').addEventListener('click',renderCatalog);
+renderCatalog();
+
 const toast=t=>{const e=$('#toast');e.textContent=t;e.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>e.classList.remove('on'),1800)};
 let lock=false;function addExp(id){if(lock||!C)return;lock=true;setTimeout(()=>lock=false,1200);C.add(id);toast('Đã thêm '+id+' vào bình thí nghiệm');tab('lab')}
 const rows=(a)=>'<table>'+a.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')+'</table>';
@@ -836,7 +916,7 @@ function showDet(it){stopV();if(St.sel)St.sel.node.classList.remove('sel');St.se
   <div style="margin-top:8px"><button data-add="${d.id.replace(/"/g,'&quot;')}">＋ Thêm vào thí nghiệm</button></div>`}}
 $('#kgrid').onclick=ev=>{const b=ev.target.closest('.kc');if(b)showDet(byK[b.dataset.k])};
 $('#kdet').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dataset.x!==undefined)hideDet();else if(b.dataset.add)addExp(b.dataset.add);else if(b.dataset.pt){tab('pt');selPT(+b.dataset.pt)}};
-function gotoKho(sym){const it=byK['el:'+sym];if(it.node.hidden)resetF();tab('kho');showDet(it);it.node.scrollIntoView({block:'center'})}
+function gotoKho(sym){tab('lab');const b=$('#b0');if(b)b.click();const e=EL.find(x=>x.sym===sym);$('#q').value=e?e.sym:sym;$('#q').dispatchEvent(new Event('input',{bubbles:true}));}
 /* ---- Bảng tuần hoàn (dùng chung EL) ---- */
 const g=$('#ptg');let selZ=0,fcat='',q='';
 g.innerHTML=EL.map(e=>`<button class="el" data-z="${e.z}" style="grid-row:${e.row};grid-column:${e.col};background:${CATN[e.cat][1]}" title="${e.sym} — ${e.en}"><i>${e.z}</i><b>${e.sym}</b><s style="--n:${e.en.length}">${e.en}</s></button>`).join('')+'<div class="ph" style="grid-row:6;grid-column:3">57–71</div><div class="ph" style="grid-row:7;grid-column:3">89–103</div>';
@@ -850,7 +930,7 @@ $('#ptd').onclick=ev=>{const b=ev.target.closest('button');if(!b)return;if(b.dat
 function tab(t){$$('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));$$('.pane').forEach(p=>p.classList.toggle('on',p.id===t));if(t!=='kho')stopV();else if(St.sel&&!$('#kdet').hidden)showDet(St.sel)}
 document.addEventListener('click',ev=>{const b=ev.target.closest('#tabs [data-tab],#pt [data-tab]');if(b)tab(b.dataset.tab)});
 document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&$('#kho').classList.contains('on'))hideDet()});
-const b0=$('#b0');if(b0)b0.onclick=()=>tab('kho');
+
 paint();apply();document.title=`Phòng thí nghiệm hóa học 3D · 118 nguyên tố · ${items.length-118} hóa chất`}
 window.__threeReady.then(()=>setTimeout(init,0));
 })();
