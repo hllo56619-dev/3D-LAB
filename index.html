@@ -594,6 +594,18 @@ const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.rende
 const rim=new THREE.Mesh(new THREE.TorusGeometry(1.625,.075,10,64),new THREE.MeshPhysicalMaterial({color:0xd9dde2,metalness:0,roughness:.2,transparent:true,opacity:.30,clearcoat:1,clearcoatRoughness:.1,side:THREE.DoubleSide,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.075;rim.renderOrder=5;bk.add(rim);
 // Vành đáy dày, tạo phản sáng cong quanh chân cốc.
+// Small outward pouring lip (spout), placed on the front-left edge of the beaker.
+const spoutMat=new THREE.MeshPhysicalMaterial({color:0xe0e5e9,metalness:0,roughness:.18,transparent:true,opacity:.48,clearcoat:1,side:THREE.DoubleSide,depthWrite:false});
+const spoutCurve=new THREE.CatmullRomCurve3([
+ new THREE.Vector3(-1.48,3.055,0.55),
+ new THREE.Vector3(-1.67,3.13,0.61),
+ new THREE.Vector3(-1.86,3.12,0.56),
+ new THREE.Vector3(-1.91,3.06,0.48),
+ new THREE.Vector3(-1.77,3.015,0.50),
+ new THREE.Vector3(-1.56,3.035,0.55)
+]);
+const spout=new THREE.Mesh(new THREE.TubeGeometry(spoutCurve,24,.027,6,false),spoutMat);
+spout.renderOrder=6;bk.add(spout);
 const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.038,8,48),new THREE.MeshBasicMaterial({color:0xc4cbd4,transparent:true,opacity:.16,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.19;foot.renderOrder=4;bk.add(foot);
 // Neutral, unobstructed glass: no artificial streaks or graduation marks.
@@ -605,23 +617,9 @@ top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
 function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
  const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
-const viewDrag={id:null,x:0,y:0};
-viewRoot.rotation.x=-0.08;
-R.domElement.style.touchAction='none';
-R.domElement.addEventListener('pointerdown',e=>{
- if(e.pointerType==='mouse'&&e.button!==0)return;
- viewDrag.id=e.pointerId;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
- try{R.domElement.setPointerCapture(e.pointerId)}catch(_){}
-});
-R.domElement.addEventListener('pointermove',e=>{
- if(viewDrag.id!==e.pointerId)return;
- const dx=e.clientX-viewDrag.x,dy=e.clientY-viewDrag.y;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
- viewRoot.rotation.y+=dx*.009;
- viewRoot.rotation.x=Math.max(-.65,Math.min(.65,viewRoot.rotation.x+dy*.007));
-});
-const endViewDrag=e=>{if(viewDrag.id===e.pointerId)viewDrag.id=null};
-R.domElement.addEventListener('pointerup',endViewDrag);
-R.domElement.addEventListener('pointercancel',endViewDrag);
+// Fixed view: keep the beaker still; no pointer-driven 3D rotation.
+viewRoot.rotation.set(-0.08,0,0);
+R.domElement.style.touchAction='auto';
 
 /* ============ effects.js ============ */
 const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
