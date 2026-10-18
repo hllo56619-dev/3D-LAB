@@ -582,27 +582,27 @@ function updateReactionFeedback(){
  },900);
 }
 /* ============ scene.js ============ */
-let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});}catch(e){$('#err').style.display='grid';return}
+let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:false,powerPreference:'high-performance',alpha:false});}catch(e){$('#err').style.display='grid';return}
 R.setClearColor(0x000000,1);
 const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
 S.add(new THREE.HemisphereLight(0xcfeaff,0x18243b,1.15));const dl=new THREE.DirectionalLight(0xffffff,1.8);dl.position.set(-3,5,4);S.add(dl);const rimLight=new THREE.DirectionalLight(0x8fcfff,1.05);rimLight.position.set(4,2,-3);S.add(rimLight);const fillLight=new THREE.PointLight(0xffffff,.6,18);fillLight.position.set(0,1.4,4);S.add(fillLight);
 const viewRoot=new THREE.Group();S.add(viewRoot);const bk=new THREE.Group();viewRoot.add(bk);
 const H=3.2,pts=[[0,.13],[1.13,.13],[1.22,.145],[1.30,.19],[1.36,.28],[1.40,.43],[1.49,2.86],[1.53,2.97],[1.62,3.00],[1.66,3.055],[1.64,3.115],[1.58,3.145],[1.51,3.12],[1.48,3.07],[1.47,2.98],[1.44,2.86],[1.35,.43],[1.30,.31],[1.22,.25],[0,.25]].map(p=>new THREE.Vector2(p[0],p[1]));
 const glassMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.12,transparent:true,opacity:.12,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false});
-const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,96),glassMat);glass.renderOrder=3;bk.add(glass);
+const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
 // Vành miệng dày, bo tròn như cốc thủy tinh thật.
-const rim=new THREE.Mesh(new THREE.TorusGeometry(1.595,.043,16,96),new THREE.MeshPhysicalMaterial({color:0xc9cdd2,metalness:0,roughness:.22,transparent:true,opacity:.22,clearcoat:1,clearcoatRoughness:.12,side:THREE.DoubleSide,depthWrite:false}));
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.625,.075,10,64),new THREE.MeshPhysicalMaterial({color:0xd9dde2,metalness:0,roughness:.2,transparent:true,opacity:.30,clearcoat:1,clearcoatRoughness:.1,side:THREE.DoubleSide,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.075;rim.renderOrder=5;bk.add(rim);
 // Vành đáy dày, tạo phản sáng cong quanh chân cốc.
-const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.038,12,96),new THREE.MeshBasicMaterial({color:0xc4cbd4,transparent:true,opacity:.16,depthWrite:false}));
+const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.038,8,48),new THREE.MeshBasicMaterial({color:0xc4cbd4,transparent:true,opacity:.16,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.19;foot.renderOrder=4;bk.add(foot);
 // Neutral, unobstructed glass: no artificial streaks or graduation marks.
 const LR=1.34,liqMat=new THREE.MeshPhysicalMaterial({color:0x59d9e8,transparent:true,opacity:.42,roughness:.18,metalness:0,clearcoat:1,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
-const topMat=new THREE.MeshPhysicalMaterial({color:0x6ce9ef,transparent:true,opacity:.72,roughness:.16,clearcoat:1,side:THREE.DoubleSide,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,64),topMat);
+const topMat=new THREE.MeshPhysicalMaterial({color:0x6ce9ef,transparent:true,opacity:.72,roughness:.16,clearcoat:1,side:THREE.DoubleSide,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,40),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
-function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
  const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
 const viewDrag={id:null,x:0,y:0};
