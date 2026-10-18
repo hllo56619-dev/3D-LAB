@@ -594,18 +594,23 @@ const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.rende
 const rim=new THREE.Mesh(new THREE.TorusGeometry(1.625,.075,10,64),new THREE.MeshPhysicalMaterial({color:0xd9dde2,metalness:0,roughness:.2,transparent:true,opacity:.30,clearcoat:1,clearcoatRoughness:.1,side:THREE.DoubleSide,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.075;rim.renderOrder=5;bk.add(rim);
 // Vành đáy dày, tạo phản sáng cong quanh chân cốc.
-// Small outward pouring lip (spout), placed on the front-left edge of the beaker.
-const spoutMat=new THREE.MeshPhysicalMaterial({color:0xe0e5e9,metalness:0,roughness:.18,transparent:true,opacity:.48,clearcoat:1,side:THREE.DoubleSide,depthWrite:false});
-const spoutCurve=new THREE.CatmullRomCurve3([
- new THREE.Vector3(-1.48,3.055,0.55),
- new THREE.Vector3(-1.67,3.13,0.61),
- new THREE.Vector3(-1.86,3.12,0.56),
- new THREE.Vector3(-1.91,3.06,0.48),
- new THREE.Vector3(-1.77,3.015,0.50),
- new THREE.Vector3(-1.56,3.035,0.55)
-]);
-const spout=new THREE.Mesh(new THREE.TubeGeometry(spoutCurve,24,.027,6,false),spoutMat);
-spout.renderOrder=6;bk.add(spout);
+// Integrated glass pouring spout: a flared, shallow triangular lip (not a separate wire loop).
+const spoutShape=new THREE.Shape();
+spoutShape.moveTo(1.43,3.025);
+spoutShape.quadraticCurveTo(1.51,2.99,1.61,3.025);
+spoutShape.lineTo(1.93,3.155);
+spoutShape.quadraticCurveTo(1.985,3.18,1.955,3.105);
+spoutShape.lineTo(1.62,2.99);
+spoutShape.quadraticCurveTo(1.51,2.955,1.43,2.98);
+spoutShape.closePath();
+const spoutMat=new THREE.MeshPhysicalMaterial({color:0xe7ebef,metalness:0,roughness:.2,transparent:true,opacity:.24,clearcoat:.8,clearcoatRoughness:.12,side:THREE.DoubleSide,depthWrite:false});
+const spoutGeo=new THREE.ExtrudeGeometry(spoutShape,{depth:.055,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.018,bevelThickness:.012,curveSegments:8});
+const spout=new THREE.Mesh(spoutGeo,spoutMat);
+const spoutGroup=new THREE.Group();
+spoutGroup.add(spout);
+spoutGroup.rotation.y=-Math.PI*.75;
+spoutGroup.renderOrder=5;
+bk.add(spoutGroup);
 const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.038,8,48),new THREE.MeshBasicMaterial({color:0xc4cbd4,transparent:true,opacity:.16,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.19;foot.renderOrder=4;bk.add(foot);
 // Neutral, unobstructed glass: no artificial streaks or graduation marks.
@@ -615,10 +620,10 @@ const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
 const topMat=new THREE.MeshPhysicalMaterial({color:0x6ce9ef,transparent:true,opacity:.72,roughness:.16,clearcoat:1,side:THREE.DoubleSide,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,40),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
 function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
- const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+ const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,1.72+d*.55,d);cam.lookAt(0,1.65,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
-// Fixed view: keep the beaker still; no pointer-driven 3D rotation.
-viewRoot.rotation.set(-0.08,0,0);
+// Fixed, slightly elevated view: no pointer-driven 3D rotation.
+viewRoot.rotation.set(0,0,0);
 R.domElement.style.touchAction='auto';
 
 /* ============ effects.js ============ */
