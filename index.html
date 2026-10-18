@@ -495,7 +495,7 @@ function updateReactionFeedback(){
   if(nowReady){check();return;}
   if(nowPending){updateReactionFeedback();return;}
   eqEl.dataset.state='no-reaction';
-  eqEl.innerHTML='<div class="eq-status no-reaction">Không phản ứng trong điều kiện hiện tại</div><div class="eq-note">Không tìm thấy phương trình phản ứng phù hợp trong mô hình cho các chất đã chọn.</div>';
+  eqEl.innerHTML='<div class="eq-status no-reaction">Chưa có phương trình trong thư viện</div><div class="eq-note">Mô hình chưa khai báo phản ứng phù hợp cho tổ hợp này; điều đó không khẳng định các chất chắc chắn không phản ứng ngoài thực tế.</div>';
  },900);
 }
 /* ============ scene.js ============ */
@@ -713,7 +713,7 @@ $('#b1').onclick=()=>{st.heat=!st.heat;$('#b1').classList.toggle('on',st.heat);c
 $('#b2').onclick=()=>{clearAll();st.heat=false;st.temp=25;$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
 
 addEventListener('keydown',e=>{if(e.key==='Escape')openCat(false)});
-renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz};
+renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz,pairAudit:()=>window.CHEM_PAIR_AUDIT(DB,RX)};
  document.title=`Thí nghiệm hóa học 3D · ${DB.length} chất · ${RX.length} quy tắc phản ứng`;
  })();
 }).catch(error => {
