@@ -380,7 +380,25 @@ K2MnO4|c|4e8b58|potassium manganate kali manganat
 CaS|c|d8d3b8|calcium sulfide canxi sunfua
 Ca(NO3)2|l|f2f2f2|calcium nitrate canxi nitrat
 HgO|c|ce9c32|mercury ii oxide thủy ngân oxit
-C6H12O6|c|e8e0c5|glucose dextrose đường glucose`;
+C6H12O6|c|e8e0c5|glucose dextrose đường glucose
+CoCl2|l|d8c6bb|cobalt ii chloride coban clorua dung dịch
+CoSO4|l|d8c6bb|cobalt ii sulfate coban sunfat
+Co(NO3)2|l|d8c6bb|cobalt ii nitrate coban nitrat
+Co(OH)2|c|d8c6bb|cobalt ii hydroxide coban hiđroxit kết tủa
+Cr(OH)3|c|8d6cb0|chromium iii hydroxide crom hiđroxit kết tủa
+Ni(OH)2|c|77a69a|nickel ii hydroxide niken hiđroxit kết tủa
+Mn(OH)2|c|d9b6b8|manganese ii hydroxide mangan hiđroxit kết tủa
+Pb(OH)2|c|e5e3dc|lead ii hydroxide chì hiđroxit kết tủa
+Ag2O|c|5f5145|silver oxide bạc oxit kết tủa nâu
+Ag2CO3|c|dfd6b8|silver carbonate bạc cacbonat kết tủa
+BaCO3|c|eeeeea|barium carbonate bari cacbonat kết tủa trắng
+BaSO3|c|eeeeea|barium sulfite bari sunfit kết tủa trắng
+BaCrO4|c|e1c52e|barium chromate bari cromat kết tủa vàng
+ZnS|c|333333|zinc sulfide kẽm sunfua kết tủa
+Al(NO3)3|l|f2f2f2|aluminium nitrate nhôm nitrat
+P4O10|c|eeeeea|phosphorus pentoxide điphotpho pentaoxit
+Ni(NO3)2|l|b9d4d0|nickel ii nitrate niken nitrat
+Mn(NO3)2|l|f0eeee|manganese ii nitrate mangan nitrat`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
