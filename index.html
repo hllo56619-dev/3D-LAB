@@ -810,13 +810,20 @@ function clearSediment(){if(sediment){bk.remove(sediment);sediment.geometry.disp
 const eqEl=$('#eq'),labEl=$('#lab');
 const labels=()=>{labEl.innerHTML=st.contents.map(sub).join('<br>')};
 function liquidTarget(){if(st.ovr)return new THREE.Color(st.ovr);const ls=st.contents.filter(i=>BY[i]&&BY[i].t==='l');if(!ls.length)return st.col.clone();
+ if(ls.every(i=>i==='H2O'))return new THREE.Color('#85d4fa');
  const c=new THREE.Color(0,0,0);ls.forEach(i=>c.add(new THREE.Color(BY[i].c)));return c.multiplyScalar(1/ls.length).lerp(new THREE.Color('#cdd0d5'),.15)}
 function startReaction(r){
  if(st.rx)return;
  clearFeedbackTimer();feedbackRevision++;
- st.rx={r,t:0,col0:st.col.clone()};st.ovr=r.col;st.gasType=r.gas||null;showEquation(r);
+ const hadLiquid=st.contents.some(id=>BY[id]&&BY[id].t==='l');
+ st.rx={r,t:0,col0:st.col.clone()};st.gasType=r.gas||null;showEquation(r);
  const keep=new Set(r.preserve||[]),consume=new Set(r.need.filter(i=>!keep.has(i)));
  st.contents=st.contents.filter(i=>!consume.has(i)).concat(r.out||[]);
+ const liquidProducts=(r.out||[]).filter(id=>BY[id]&&BY[id].t==='l');
+ if(!hadLiquid&&liquidProducts.length){
+  lvT=Math.min(2.15,lvT+.90);
+  st.ovr=null;
+ }else st.ovr=r.col;
  if(r.heatRise)st.temp=Math.min(130,st.temp+r.heatRise);
  labels();
  if(r.precip){
@@ -825,6 +832,17 @@ function startReaction(r){
   m.position.set(0,.12,0);m.renderOrder=2;bk.add(m);sediment=m;
  }
  rocks.forEach(k=>{if(r.need.includes(k.id)&&!keep.has(k.id)){k.dis=true;if(r.fire)k.st='float'}});
+ // Render newly formed solid products as small visible crystals/metal pieces at the bottom of the beaker.
+ const solidProducts=[...new Set((r.out||[]).filter(id=>BY[id]&&BY[id].t==='c'))].slice(0,4);
+ solidProducts.forEach((id,index)=>{
+  const d=BY[id],m=new THREE.Mesh(new THREE.IcosahedronGeometry(.15,1),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
+  m.scale.set(rnd(.85,1.25),rnd(.7,1.05),rnd(.85,1.2));
+  const angle=index*2.4+rnd(-.2,.2),radius=rnd(.12,.58);
+  m.position.set(Math.cos(angle)*radius,LIQ_BASE+Math.max(.08,Math.min(lv*.28,.22)),Math.sin(angle)*radius);
+  m.rotation.set(rnd(0,2),rnd(0,2),rnd(0,2));
+  viewRoot.add(m);
+  rocks.push({m,id,vy:0,st:'rest',t:0,dis:false,pushed:true,product:true});
+ });
 }
 function check(){if(st.rx)return;const r=findReaction(st.contents,st.temp,st.heat);if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}}
 
@@ -845,7 +863,8 @@ let last=performance.now(),time=0;
 function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;return}const dt=Math.min(.04,(now-last)/1000);last=now;time+=dt;
  lvT=Math.min(2.15,Math.max(0,lvT));lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=LIQ_BASE+lv;
- const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(.72);
+ const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(.82);
+ const pureWater=st.contents.includes('H2O')&&st.contents.filter(i=>BY[i]&&BY[i].t==='l').every(i=>i==='H2O');liqMat.opacity=pureWater?.36:.30;topMat.opacity=pureWater?.34:.30;
  if(st.heat)st.temp=Math.min(150,st.temp+24*dt);else st.temp=Math.max(25,st.temp-10*dt);glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
  if((st.contents.length>1||st.heat)&&(st.chk-=dt)<=0){st.chk=.5;check()}
  /* dòng chất lỏng */
