@@ -429,7 +429,7 @@ const RX=[
  {id:'cuso4_na2s',need:['CuSO4','Na2S'],eq:'CuSO4 + Na2S → CuS↓ + Na2SO4',out:['CuS','Na2SO4'],col:'#252525',precip:'#222222',dur:7,bub:.08},
  {id:'h2s_pbno3',need:['H2S','Pb(NO3)2'],eq:'H2S + Pb(NO3)2 → PbS↓ + 2HNO3',out:['PbS','HNO3'],col:'#252525',precip:'#222222',dur:7,bub:.08},
  {id:'k2cro4_pbno3',need:['K2CrO4','Pb(NO3)2'],eq:'K2CrO4 + Pb(NO3)2 → PbCrO4↓ + 2KNO3',out:['PbCrO4','KNO3'],col:'#e1c52e',precip:'#e1c52e',dur:7,bub:.08,explain:'Kết tủa chì(II) cromat màu vàng.'},
- {id:'hcl_nh3',need:['HCl','NH3'],eq:'HCl + NH3 → NH4Cl',out:['NH4Cl'],col:'#ededed',precip:'#f0f0ea',dur:6,bub:.1},
+ {id:'hcl_nh3',need:['HCl','NH3'],eq:'HCl(g) + NH3(g) → NH4Cl(s)',out:['NH4Cl'],col:'#ededed',dur:6,bub:.02,smoke:true,explain:'Hai khí tạo các hạt ammonium chloride rắn li ti lơ lửng, quan sát thấy như khói trắng. Không có ngọn lửa.'},
  {id:'nh4cl_naoh',need:['NH4Cl','NaOH'],eq:'NH4Cl + NaOH → NH3↑ + NaCl + H2O',out:['NH3','NaCl','H2O'],heat:40,heating:true,col:'#e9e9e8',dur:8,bub:.8,gas:'NH3'},
  {id:'na2so3_hcl',need:['Na2SO3','HCl'],eq:'Na2SO3 + 2HCl → 2NaCl + SO2↑ + H2O',out:['NaCl','SO2','H2O'],col:'#e7e8e7',dur:7,bub:1,gas:'SO2'},
  {id:'na2s2o3_hcl',need:['Na2S2O3','HCl'],eq:'Na2S2O3 + 2HCl → 2NaCl + SO2↑ + S↓ + H2O',out:['NaCl','SO2','S','H2O'],col:'#d6d0a4',precip:'#d9d84a',dur:8,bub:1,gas:'SO2'},
@@ -549,9 +549,51 @@ function equationHTML(r){
 }
 let feedbackTimer=0,feedbackRevision=0;
 function clearFeedbackTimer(){if(feedbackTimer){clearTimeout(feedbackTimer);feedbackTimer=0}}
+function reactionNote(r){
+ const notes=[];
+ if(r.explain)notes.push(r.explain);
+ const eq=r.eq||'';
+ const explain=(r.explain||'').toLowerCase();
+ if(r.smoke&&!/khói trắng/i.test(r.explain||''))notes.push('Xuất hiện khói trắng do các hạt rắn li ti hình thành; hiệu ứng không có lửa.');
+ const products=(eq.split('→')[1]||'').split('+').map(s=>s.trim());
+ const precipProduct=products.find(s=>s.includes('↓'))?.replace('↓','').trim()||'';
+ const colorName={
+  '#4d83d7':'xanh lam','#a4552c':'nâu đỏ','#b5c49a':'xanh lục nhạt','#f1d342':'vàng',
+  '#e1c52e':'vàng','#222222':'đen','#252525':'đen','#f0f0ea':'trắng',
+  '#f4f2ed':'trắng','#efeee8':'trắng','#eeeeea':'trắng','#eeeeee':'trắng',
+  '#a4552c':'nâu đỏ','#b5493b':'đỏ nâu','#c6c6c8':'xám bạc','#e6d99a':'vàng nhạt',
+  '#e6e5de':'trắng ngà','#eeeae1':'trắng ngà','#eeeeea':'trắng'
+ };
+ if(eq.includes('↓')&&!/kết tủa/i.test(explain)){
+  const hue=colorName[(r.precip||'').toLowerCase()];
+  notes.push('Xuất hiện kết tủa'+(hue?' màu '+hue:'')+(precipProduct?' ('+precipProduct+')':'')+'.');
+ }else if(r.precip&&!eq.includes('↓')&&!/kết tủa|lắng xuống/i.test(explain)){
+  const hue=colorName[(r.precip||'').toLowerCase()];
+  notes.push('Mô phỏng tạo chất rắn'+(hue?' màu '+hue:'')+' lắng xuống.');
+ }
+ const gasNames={H2:'hydro (H₂)',O2:'oxy (O₂)',CO2:'carbon dioxide (CO₂)',SO2:'sulfur dioxide (SO₂)',NO:'nitrogen monoxide (NO)',NO2:'nitrogen dioxide (NO₂)',H2S:'hydrogen sulfide (H₂S)',NH3:'ammonia (NH₃)',H2O:'hơi nước'};
+ if((r.gas||eq.includes('↑'))&&!r.smoke&&!/(khí|bọt khí|thoát ra)/i.test(explain)){
+  notes.push(r.gas?'Giải phóng '+(gasNames[r.gas]||r.gas)+'; bọt khí là hiệu ứng minh họa khí thoát ra.':'Có khí thoát ra (ký hiệu ↑), được minh họa bằng bọt khí.');
+ }
+ if(r.fire&&!/ngọn lửa|cháy|tỏa nhiệt/i.test(explain))notes.push('Phản ứng tỏa nhiệt; ngọn lửa trong mô hình chỉ là hiệu ứng minh họa.');
+ else if(r.heating&&r.heat&&!/cần gia nhiệt|nhiệt độ/i.test(explain))notes.push('Cần gia nhiệt trong mô hình (mốc cài đặt '+r.heat+' °C).');
+ else if(r.heatRise&&!/ấm lên|tỏa nhiệt|trung hòa/i.test(explain))notes.push('Phản ứng có thể làm dung dịch ấm lên.');
+ if(!notes.length){
+  const acidSet=new Set(['HCl','H2SO4','H2SO4 (đặc)','HNO3','HNO3 (đặc)','H3PO4','H2CO3','CH3COOH','H2SO3','HBr','HF','HClO','HClO3','HClO4']);
+  const baseSet=new Set(['NaOH','KOH','LiOH','Ca(OH)2','Ba(OH)2','Mg(OH)2','NH3(aq)']);
+  const hasAcid=(r.need||[]).some(x=>acidSet.has(x)),hasBase=(r.need||[]).some(x=>baseSet.has(x));
+  if(hasAcid&&hasBase)notes.push('Phản ứng axit–bazơ: tạo muối và thường tạo nước (phản ứng trung hòa).');
+  else if(eq.includes('⇌'))notes.push('Phản ứng thuận nghịch; chiều chuyển dịch phụ thuộc điều kiện và nồng độ.');
+  else if(r.heating&&r.need?.length===1)notes.push('Phản ứng phân hủy do nhiệt; cần điều kiện gia nhiệt thích hợp.');
+  else if((r.need||[]).length===1)notes.push('Một chất ban đầu chuyển hóa thành các sản phẩm ở vế phải của phương trình.');
+  else notes.push('Các chất tham gia chuyển hóa thành sản phẩm như phương trình trên; hiện tượng phụ thuộc điều kiện phản ứng.');
+ }
+ return notes.join(' ');
+}
 function showEquation(r,note=''){
  eqEl.dataset.state='equation';
- eqEl.innerHTML=`<div class="eq-main">${equationHTML(r)}</div>${note?`<div class="eq-note">${note}</div>`:''}${r.explain?`<div class="eq-note">${r.explain}</div>`:''}`;
+ const detail=reactionNote(r);
+ eqEl.innerHTML=`<div class="eq-main">${equationHTML(r)}</div>${note?`<div class="eq-note">${note}</div>`:''}<div class="eq-note">${detail}</div>`;
 }
 function clearIdleStatus(){
  if(eqEl.dataset.state==='no-reaction'||eqEl.dataset.state==='needs-heat'){
@@ -642,7 +684,8 @@ function Pool(n,add,tx,kill){
   A[i]=A0[i]*(t<.1?t/.1:1-(t-.1)/.9);Z[i]=S0[i]*(1+GR[i]*t)}
   ['position','col','sz','al'].forEach(a=>g.attributes[a].needsUpdate=true)}}}
 let lv=0,lvT=0;
-const fire=Pool(120,true,T0),spark=Pool(36,true,T0),bub=Pool(36,false,T1,(x,y)=>y>LIQ_BASE+lv),grain=Pool(100,false,T0);
+const fire=Pool(120,true,T0),spark=Pool(36,true,T0),bub=Pool(36,false,T1,(x,y)=>y>LIQ_BASE+lv),grain=Pool(100,false,T0),mist=Pool(64,false,T0);
+let mistTick=0;
 const rings=[];
 function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
  m.rotation.x=-Math.PI/2;m.position.set(x,LIQ_BASE+lv+.02,z);m.scale.setScalar(.1);m.renderOrder=9;S.add(m);rings.push({m,t:0})}
@@ -713,6 +756,18 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
  if(st.rx){const r=st.rx.r;st.rx.t+=dt;const p=Math.min(1,st.rx.t/r.dur);
   st.bub=Math.sin(Math.PI*Math.min(1,p*1.1))**.7*(r.bub||0);st.fire=r.fire?Math.max(0,Math.sin(Math.PI*Math.min(1,p*1.05)**.6)):0;
   if(r.precip&&lv>.1){const count=Math.max(1,Math.floor(22*dt));for(let i=0;i<count;i++)grain.emit({x:rnd(-.82,.82),y:LIQ_BASE+rnd(.04,Math.max(.08,lv*.82)),z:rnd(-.7,.7),vx:rnd(-.12,.12),vy:rnd(-.05,.12),vz:rnd(-.12,.12),life:rnd(2.8,5.5),size:rnd(.07,.15),c0:rgb(r.precip),a:.95,g:-.20})}
+  if(r.smoke&&p<.98){
+   mistTick-=dt;
+   if(mistTick<=0){
+    mistTick=.075;
+    for(let i=0;i<2;i++){
+     const a=rnd(6.283),rr=rnd(.06,.38);
+     mist.emit({x:Math.cos(a)*rr,y:2.65+rnd(-.05,.25),z:Math.sin(a)*rr,
+      vx:rnd(-.20,.20),vy:rnd(.38,.78),vz:rnd(-.20,.20),
+      life:rnd(1.5,2.5),size:rnd(.26,.48),c0:[.80,.82,.84],c1:[.95,.95,.95],a:.23,g:.06,grow:1.45});
+    }
+   }
+  }
   if(p>=1){st.rx=null;st.fire=0;st.hint=3}}
  else if(st.hint>0){st.hint-=dt;st.bub=Math.max(0,st.bub-dt*.4)}else st.bub=Math.max(0,st.bub-dt*.5);
  /* bọt khí trong dung dịch */
@@ -731,7 +786,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
   if(p.t>.8&&!p.go){p.go=1;lvT=0;st.rx=null;st.fire=0;st.contents=[];st.ovr=null;st.gasType=null;clearSediment();labels();eqEl.innerHTML='';rocks.splice(0).forEach(k=>{viewRoot.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
   if(p.t>.8&&p.t<2.4&&lv>.05){const c=[st.col.r,st.col.g,st.col.b];for(let i=0;i<10;i++)grain.emit({x:rnd(-.2,.2),y:1.15,z:3.45,vx:0,vy:-.5,vz:rnd(.8,1.6),life:1.2,size:rnd(.07,.12),c0:c,g:-9,a:.9})}
   if(p.t>3.4){st.pour=null;bk.rotation.x=0}}
- fire.update(dt);spark.update(dt);bub.update(dt);grain.update(dt);R.render(S,cam)}
+ fire.update(dt);spark.update(dt);bub.update(dt);grain.update(dt);mist.update(dt);R.render(S,cam)}
 requestAnimationFrame(frame);
 
 /* ============ ui.js ============ */
