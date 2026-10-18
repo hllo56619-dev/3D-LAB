@@ -602,35 +602,14 @@ const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.rende
 // One restrained roll highlight follows the rounded lip already modelled in the glass profile.
 const rim=new THREE.Mesh(new THREE.TorusGeometry(1.565,.032,8,48),new THREE.MeshBasicMaterial({color:0xd6d8db,transparent:true,opacity:.32,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.425;rim.renderOrder=4;bk.add(rim);
-// Small pouring beak attached to the upper-left edge: a translucent wedge, not a loop or separate wire.
-const spoutA=new THREE.Vector3(-1.10,3.445,1.15);
-const spoutB=new THREE.Vector3(-1.53,3.445,.47);
-const spoutTip=new THREE.Vector3(-1.83,3.465,.77);
-const spoutBaseY=3.415;
-const spoutGeo=new THREE.BufferGeometry();
-spoutGeo.setAttribute('position',new THREE.Float32BufferAttribute([
- spoutA.x,spoutA.y,spoutA.z,spoutTip.x,spoutTip.y,spoutTip.z,spoutB.x,spoutB.y,spoutB.z,
- spoutA.x,spoutBaseY,spoutA.z,spoutB.x,spoutBaseY,spoutB.z,spoutTip.x,spoutBaseY,spoutTip.z,
- spoutA.x,spoutA.y,spoutA.z,spoutA.x,spoutBaseY,spoutA.z,spoutTip.x,spoutTip.y,spoutTip.z,
- spoutTip.x,spoutTip.y,spoutTip.z,spoutA.x,spoutBaseY,spoutA.z,spoutTip.x,spoutBaseY,spoutTip.z,
- spoutTip.x,spoutTip.y,spoutTip.z,spoutTip.x,spoutBaseY,spoutTip.z,spoutB.x,spoutB.y,spoutB.z,
- spoutB.x,spoutB.y,spoutB.z,spoutTip.x,spoutBaseY,spoutTip.z,spoutB.x,spoutBaseY,spoutB.z
-],3));
-spoutGeo.computeVertexNormals();
-const spout=new THREE.Mesh(spoutGeo,new THREE.MeshBasicMaterial({color:0xe7e7e7,transparent:true,opacity:.20,side:THREE.DoubleSide,depthWrite:false}));
-spout.renderOrder=5;bk.add(spout);
-const spoutEdgeMat=new THREE.LineBasicMaterial({color:0xd6d9dc,transparent:true,opacity:.30,depthWrite:false});
-bk.add(
- new THREE.Line(new THREE.BufferGeometry().setFromPoints([spoutA,spoutTip]),spoutEdgeMat),
- new THREE.Line(new THREE.BufferGeometry().setFromPoints([spoutB,spoutTip]),spoutEdgeMat)
-);
+// No pouring spout: keep a clean, continuous beaker rim.
 // Thick rounded base, with no volume markings.
 const foot=new THREE.Mesh(new THREE.TorusGeometry(1.23,.035,6,40),new THREE.MeshBasicMaterial({color:0xcbd0d5,transparent:true,opacity:.18,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.20;foot.renderOrder=4;bk.add(foot);
-const LR=1.31,liqMat=new THREE.MeshBasicMaterial({color:0xc5d3da,transparent:true,opacity:.30,side:THREE.DoubleSide,depthWrite:false});
+const LR=1.20,liqMat=new THREE.MeshBasicMaterial({color:0xbfcbd2,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
-const topMat=new THREE.MeshBasicMaterial({color:0xc5d3da,transparent:true,opacity:.38,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
+const topMat=new THREE.MeshBasicMaterial({color:0xbfcbd2,transparent:true,opacity:.25,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,40),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
 function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.1/(1.22*th),4.5/(1.5*cam.aspect*th));cam.position.set(0,1.55+d*.52,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
@@ -697,7 +676,7 @@ function check(){if(st.rx)return;const r=findReaction(st.contents,st.temp,st.hea
 function add(id){const d=BY[id];if(!d)return;
  if(!st.rx){clearFeedbackTimer();feedbackRevision++;eqEl.innerHTML='';delete eqEl.dataset.state;}
  if(st.ovr&&!st.rx)st.ovr=null;
- if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.7,lvT+.8);labels();check();updateReactionFeedback()},900)}
+ if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.15,lvT+.45);labels();check();updateReactionFeedback()},900)}
  else if(d.t==='g'){const c=rgb(d.c);for(let i=0;i<18;i++)setTimeout(()=>grain.emit({x:rnd(.3,1.3),y:5.5,z:rnd(-.3,.3),vx:rnd(-.6,0),vy:-rnd(1,2.5),life:rnd(.8,1.4),size:rnd(.22,.42),c0:c,a:.35,grow:.8}),i*22);
   setTimeout(()=>{st.contents.push(id);labels();for(let i=0;i<14;i++)bub.emit({x:rnd(-.8,.8),y:.2,z:rnd(-.8,.8),vy:rnd(.6,1),life:6,size:rnd(.08,.16),c0:[1,1,1],a:.7});check();updateReactionFeedback()},1100)}
  else{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
@@ -709,14 +688,14 @@ function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];lvT=0
 /* ============ main loop ============ */
 let last=performance.now(),time=0;
 function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;return}const dt=Math.min(.04,(now-last)/1000);last=now;time+=dt;
- lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
+ lvT=Math.min(2.15,Math.max(0,lvT));lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=lv;
  const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(.72);
  st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
  if((st.contents.length>1||st.heat)&&(st.chk-=dt)<=0){st.chk=.5;check()}
  /* dòng chất lỏng */
  if(st.stream>0){st.stream-=dt;const c=[st.sc.r,st.sc.g,st.sc.b],tx=.1,tz=0,ty=lv+.05;
-  for(let i=0;i<4;i++){const sx=1.25+rnd(-.12,.12),sy=6.4,dx=tx-sx,dy=ty-sy,L2=Math.hypot(dx,dy),sp=7.5;
+  for(let i=0;i<4;i++){const sx=.62+rnd(-.08,.08),sy=5.7,dx=tx-sx,dy=ty-sy,L2=Math.hypot(dx,dy),sp=6.2;
    grain.emit({x:sx,y:sy,z:rnd(-.1,.1),vx:dx/L2*sp,vy:dy/L2*sp,vz:0,life:L2/sp,size:rnd(.06,.11),c0:c,a:.9})}
   if(Math.random()<.12){ripple(rnd(-.15,.25),rnd(-.1,.1))}
   for(let i=0;i<2;i++)grain.emit({x:tx+rnd(-.1,.1),y:ty,z:rnd(-.1,.1),vx:rnd(-.8,.8),vy:rnd(1,2),vz:rnd(-.8,.8),life:.5,size:.05,c0:c,a:.8,g:-7})}
