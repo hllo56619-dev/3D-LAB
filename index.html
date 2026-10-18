@@ -4,6 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#073b4b">
+<meta name="description" content="Phòng thí nghiệm hóa học 3D tương tác — khám phá hóa chất và phản ứng hóa học.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23073b4b'/%3E%3Cpath d='M22 7h20M26 7v17L12 47a7 7 0 0 0 6 10h28a7 7 0 0 0 6-10L38 24V7' fill='none' stroke='%23d8ffff' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M19 43h26l6 8a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4z' fill='%232fe1bc'/%3E%3Ccircle cx='27' cy='37' r='2.5' fill='white'/%3E%3Ccircle cx='36' cy='32' r='2' fill='white'/%3E%3C/svg%3E">
 <title>Phòng thí nghiệm hóa học 3D</title>
 <style>
 :root{color-scheme:dark;--bg:#000;--panel:#262626;--bar:#2c2c2c;--fg:#f2f2f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
@@ -43,6 +46,11 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 :root{--nv:#070d1f;--cy:#22d3ee;--pu:#8b5cf6;--or:#fb923c;--tx:#e6edf8;--mu:#8fa3c4}
 #eq{top:calc(env(safe-area-inset-top,0px) + 56px)!important}
 #tabs{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;gap:6px;padding:calc(env(safe-area-inset-top,0px) + 6px) 10px 6px;background:rgba(7,13,31,.88);backdrop-filter:blur(10px);border-bottom:1px solid rgba(34,211,238,.28);overflow-x:auto;scrollbar-width:none;touch-action:pan-x}
+#brand{display:flex;align-items:center;gap:7px;flex:none;margin-right:5px;padding:3px 10px 3px 4px;border:1px solid rgba(86,218,224,.35);border-radius:12px;background:linear-gradient(135deg,rgba(5,87,105,.78),rgba(9,29,48,.78));box-shadow:0 3px 12px rgba(0,0,0,.22)}
+#brand-mark{width:29px;height:29px;display:block;flex:none;filter:drop-shadow(0 0 5px rgba(53,220,213,.22))}
+#brand-name{font:700 10px/1.1 Arial,Helvetica,sans-serif;letter-spacing:1px;color:#f1fdff;white-space:nowrap}
+#brand-tagline{margin-top:3px;font:8px/1 Arial,Helvetica,sans-serif;letter-spacing:.25px;color:#8fe7e8;white-space:nowrap}
+@media(max-width:430px){#brand{gap:5px;padding-right:6px}#brand-mark{width:25px;height:25px}#brand-name{font-size:9px}#brand-tagline{font-size:7px}}
 #tabs button,.pane button,.pane select,.pane input{font:13px system-ui,sans-serif}
 #tabs button{white-space:nowrap;background:rgba(255,255,255,.05);color:var(--mu);border:1px solid rgba(255,255,255,.1);border-radius:99px;padding:7px 14px;cursor:pointer;transition:.2s}
 #tabs button:hover{color:#fff;border-color:var(--cy)}
@@ -106,7 +114,14 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 </style>
 </head>
 <body>
-<nav id="tabs"><button data-tab="lab" class="on">🧪 Phòng 3D</button><button data-tab="kho">📦 Kho hóa chất</button><button data-tab="pt">⚛️ Bảng tuần hoàn</button></nav>
+<nav id="tabs"><div id="brand" aria-label="Chemistry Lab 3D">
+<svg id="brand-mark" viewBox="0 0 64 64" role="img" aria-label="Logo phòng thí nghiệm">
+<path d="M22 7h20M26 7v17L12 47a7 7 0 0 0 6 10h28a7 7 0 0 0 6-10L38 24V7" fill="rgba(213,251,255,.08)" stroke="#d8ffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M19 43h26l6 8a4 4 0 0 1-4 4H17a4 4 0 0 1-4-4z" fill="#2fe1bc"/>
+<path d="M17 43h28" stroke="#d9ffff" stroke-width="2" stroke-linecap="round"/>
+<circle cx="27" cy="37" r="2.5" fill="#fff"/><circle cx="36" cy="32" r="2" fill="#fff"/><circle cx="40" cy="39" r="1.4" fill="#fff"/>
+<path d="M46 12l3-5 3 5-3 5z" fill="#ffc95c"/>
+</svg><div><div id="brand-name">CHEMISTRY LAB</div><div id="brand-tagline">3D VIRTUAL LAB</div></div></div><button data-tab="lab" class="on">🧪 Phòng 3D</button><button data-tab="kho">📦 Kho hóa chất</button><button data-tab="pt">⚛️ Bảng tuần hoàn</button></nav>
 <section id="kho" class="pane"><div id="khw"><header class="card" id="khh"><h2>Kho hóa chất</h2><span id="khc" class="note"></span>
 <div class="row"><div style="position:relative;flex:1;min-width:200px"><input id="khq" placeholder="Tìm: vàng, Au, 79, H2SO4, axit, khí hiếm…" autocomplete="off" aria-label="Tìm kiếm"><button id="khx" aria-label="Xóa tìm kiếm">✕</button></div><button id="khr">Xóa tất cả bộ lọc</button></div><div class="note" id="khn" aria-live="polite"></div></header>
 <div id="khb"><details id="khf" open class="card"><summary>Bộ lọc</summary><div class="fh">Danh mục (kết hợp được)</div><div id="ktags"></div><div class="fh">Họ nguyên tố</div><div id="kfams"></div><p class="note">Màu chỉ phục vụ giao diện, không phải màu thực tế của nguyên tố.</p></details>
