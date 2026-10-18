@@ -591,34 +591,12 @@ const H=3.2,pts=[[0,.13],[1.13,.13],[1.22,.145],[1.30,.19],[1.36,.28],[1.40,.43]
 const glassMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.12,transparent:true,opacity:.12,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false});
 const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,96),glassMat);glass.renderOrder=3;bk.add(glass);
 // Vành miệng dày, bo tròn như cốc thủy tinh thật.
-const rim=new THREE.Mesh(new THREE.TorusGeometry(1.595,.052,16,96),new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.18,transparent:true,opacity:.34,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false}));
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.595,.043,16,96),new THREE.MeshPhysicalMaterial({color:0xc9cdd2,metalness:0,roughness:.22,transparent:true,opacity:.22,clearcoat:1,clearcoatRoughness:.12,side:THREE.DoubleSide,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.075;rim.renderOrder=5;bk.add(rim);
 // Vành đáy dày, tạo phản sáng cong quanh chân cốc.
-const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.045,12,96),new THREE.MeshBasicMaterial({color:0xe6edf5,transparent:true,opacity:.24,depthWrite:false}));
+const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.038,12,96),new THREE.MeshBasicMaterial({color:0xc4cbd4,transparent:true,opacity:.16,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.19;foot.renderOrder=4;bk.add(foot);
-// Hai vệt phản xạ dài trên thành thủy tinh, tạo cảm giác kính bóng.
-const highlightMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.19,depthWrite:false});
-for(const side of [-1,1]){
- const curve=new THREE.CatmullRomCurve3([
-  new THREE.Vector3(side*1.48,.48,.34),
-  new THREE.Vector3(side*1.50,1.15,.40),
-  new THREE.Vector3(side*1.53,2.10,.43),
-  new THREE.Vector3(side*1.56,2.78,.40)
- ]);
- const highlight=new THREE.Mesh(new THREE.TubeGeometry(curve,32,.018,6,false),highlightMat);
- highlight.renderOrder=5;bk.add(highlight);
-}
-// Removed black pour-notch overlay: keep the beaker lip continuous and rounded.
-// Thước chia độ đặt phía trước thành cốc để người dùng nhìn rõ hướng xoay 3D.
-const gradMat=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.20,depthTest:false});
-const gradX=.83,gradZ=1.18;
-const gradSpine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,.35,gradZ),new THREE.Vector3(gradX,H-.28,gradZ)]),gradMat);
-gradSpine.renderOrder=6;bk.add(gradSpine);
-for(let i=1;i<=7;i++){
- const y=.35+i*.34,len=i%2===0?.29:.16;
- const mark=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,y,gradZ),new THREE.Vector3(gradX+len,y,gradZ)]),gradMat);
- mark.renderOrder=6;bk.add(mark);
-}
+// Neutral, unobstructed glass: no artificial streaks or graduation marks.
 const LR=1.34,liqMat=new THREE.MeshPhysicalMaterial({color:0x59d9e8,transparent:true,opacity:.42,roughness:.18,metalness:0,clearcoat:1,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
@@ -717,7 +695,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last
  lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=lv;
  const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(1.12);
- st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
+ st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;/* Neutral clear glass: avoid accessing shader-only uniforms on MeshPhysicalMaterial. */
  if((st.chk-=dt)<=0){st.chk=.25;check()}
  /* dòng chất lỏng */
  if(st.stream>0){st.stream-=dt;const c=[st.sc.r,st.sc.g,st.sc.b],tx=.1,tz=0,ty=lv+.05;
