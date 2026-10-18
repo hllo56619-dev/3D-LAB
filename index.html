@@ -553,7 +553,7 @@ const RX=[
 /* ============ reactionEngine.js ============ */
 // The engine requires each listed reagent and checks thermal conditions before firing.
 const hasAllReactants=(r,contents)=>r.need.every(n=>contents.includes(n));
-const conditionsMet=(r,temp,heatOn)=>{const threshold=r.heat??(r.heating?60:0);return temp>=threshold&&(!r.heating||heatOn||temp>=threshold)};
+const conditionsMet=(r,temp,heatOn)=>temp>=(r.heat??(r.heating?60:0));
 const findReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
 const findHeatDependentReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
