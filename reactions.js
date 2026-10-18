@@ -4027,27 +4027,6 @@ window.CHEM_RX = [
     "bub": 0.05
   },
   {
-    "id": "tollens_glucose_silver",
-    "need": [
-      "AgNO3",
-      "NaOH",
-      "NH3",
-      "Glucose"
-    ],
-    "eq": "C6H12O6 + 2AgNO3 + 3NaOH → C6H11O7Na + 2Ag↓ + 2NaNO3 + 2H2O",
-    "out": [
-      "C6H11O7Na",
-      "Ag",
-      "NaNO3",
-      "H2O"
-    ],
-    "col": "#c6c6c8",
-    "precip": "#c6c6c8",
-    "dur": 9,
-    "bub": 0.08,
-    "explain": "Phản ứng tráng bạc của glucozơ khi có thuốc thử bạc amoniac trong môi trường kiềm; NH3 tạo phức với Ag(I), không xuất hiện ở phương trình tổng quát."
-  },
-  {
     "id": "hcl_cooh2",
     "need": [
       "HCl",
@@ -4696,5 +4675,40 @@ window.CHEM_RX = [
     "col": "#e8e9e9",
     "dur": 6,
     "bub": 0.05
+  },
+  {
+    "id": "tollens_prepare",
+    "need": [
+      "Ag2O",
+      "NH3",
+      "H2O"
+    ],
+    "eq": "Ag2O + 4NH3 + H2O ⇌ 2[Ag(NH3)2]OH",
+    "out": [
+      "[Ag(NH3)2]OH"
+    ],
+    "col": "#d8d8d8",
+    "dur": 6,
+    "bub": 0.05,
+    "explain": "Amoniac hòa tan bạc oxit tạo phức bạc amoniac — thuốc thử cho phản ứng tráng bạc."
+  },
+  {
+    "id": "tollens_reduce_glucose",
+    "need": [
+      "[Ag(NH3)2]OH",
+      "Glucose"
+    ],
+    "eq": "C6H12O6 + 2[Ag(NH3)2]OH → C6H15NO7 + 2Ag↓ + 3NH3 + H2O",
+    "out": [
+      "C6H15NO7",
+      "Ag",
+      "NH3",
+      "H2O"
+    ],
+    "col": "#c6c6c8",
+    "precip": "#c6c6c8",
+    "dur": 9,
+    "bub": 0.06,
+    "explain": "Glucozơ khử bạc(I) thành bạc kim loại; mô phỏng thể hiện bạc màu xám sáng và dung dịch sản phẩm."
   }
 ];
