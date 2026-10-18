@@ -582,49 +582,56 @@ function updateReactionFeedback(){
  },900);
 }
 /* ============ scene.js ============ */
-let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:false,powerPreference:'high-performance',alpha:false});}catch(e){$('#err').style.display='grid';return}
+let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});}catch(e){$('#err').style.display='grid';return}
 R.setClearColor(0x000000,1);
 const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
-S.add(new THREE.HemisphereLight(0xcfeaff,0x18243b,1.15));const dl=new THREE.DirectionalLight(0xffffff,1.8);dl.position.set(-3,5,4);S.add(dl);const rimLight=new THREE.DirectionalLight(0x8fcfff,1.05);rimLight.position.set(4,2,-3);S.add(rimLight);const fillLight=new THREE.PointLight(0xffffff,.6,18);fillLight.position.set(0,1.4,4);S.add(fillLight);
+S.add(new THREE.AmbientLight(0xffffff,.75));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);S.add(dl);
 const viewRoot=new THREE.Group();S.add(viewRoot);const bk=new THREE.Group();viewRoot.add(bk);
-const H=3.2,pts=[[0,.13],[1.13,.13],[1.22,.145],[1.30,.19],[1.36,.28],[1.40,.43],[1.49,2.86],[1.53,2.97],[1.62,3.00],[1.66,3.055],[1.64,3.115],[1.58,3.145],[1.51,3.12],[1.48,3.07],[1.47,2.98],[1.44,2.86],[1.35,.43],[1.30,.31],[1.22,.25],[0,.25]].map(p=>new THREE.Vector2(p[0],p[1]));
-const glassMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.12,transparent:true,opacity:.12,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false});
+const H=3.2,pts=[[0,0],[1.25,0],[1.38,.03],[1.43,.12],[1.6,H]].map(p=>new THREE.Vector2(p[0],p[1]));
+const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
+ vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
+ fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=mix(vec3(.55,.62,.72),vec3(1.,.5,.2),uW*.55)+vec3(.25)*f;gl_FragColor=vec4(c,.05+.7*f);}'});
 const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
-// Vành miệng dày, bo tròn như cốc thủy tinh thật.
-const rim=new THREE.Mesh(new THREE.TorusGeometry(1.625,.075,10,64),new THREE.MeshPhysicalMaterial({color:0xd9dde2,metalness:0,roughness:.2,transparent:true,opacity:.30,clearcoat:1,clearcoatRoughness:.1,side:THREE.DoubleSide,depthWrite:false}));
-rim.rotation.x=Math.PI/2;rim.position.y=3.075;rim.renderOrder=5;bk.add(rim);
-// Vành đáy dày, tạo phản sáng cong quanh chân cốc.
-// Integrated glass pouring spout: a flared, shallow triangular lip (not a separate wire loop).
-const spoutShape=new THREE.Shape();
-spoutShape.moveTo(1.43,3.025);
-spoutShape.quadraticCurveTo(1.51,2.99,1.61,3.025);
-spoutShape.lineTo(1.93,3.155);
-spoutShape.quadraticCurveTo(1.985,3.18,1.955,3.105);
-spoutShape.lineTo(1.62,2.99);
-spoutShape.quadraticCurveTo(1.51,2.955,1.43,2.98);
-spoutShape.closePath();
-const spoutMat=new THREE.MeshPhysicalMaterial({color:0xe7ebef,metalness:0,roughness:.2,transparent:true,opacity:.24,clearcoat:.8,clearcoatRoughness:.12,side:THREE.DoubleSide,depthWrite:false});
-const spoutGeo=new THREE.ExtrudeGeometry(spoutShape,{depth:.055,steps:1,bevelEnabled:true,bevelSegments:2,bevelSize:.018,bevelThickness:.012,curveSegments:8});
-const spout=new THREE.Mesh(spoutGeo,spoutMat);
-const spoutGroup=new THREE.Group();
-spoutGroup.add(spout);
-spoutGroup.rotation.y=-Math.PI*.75;
-spoutGroup.renderOrder=5;
-bk.add(spoutGroup);
-const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.038,8,48),new THREE.MeshBasicMaterial({color:0xc4cbd4,transparent:true,opacity:.16,depthWrite:false}));
-foot.rotation.x=Math.PI/2;foot.position.y=.19;foot.renderOrder=4;bk.add(foot);
-// Neutral, unobstructed glass: no artificial streaks or graduation marks.
-const LR=1.34,liqMat=new THREE.MeshPhysicalMaterial({color:0x59d9e8,transparent:true,opacity:.42,roughness:.18,metalness:0,clearcoat:1,side:THREE.DoubleSide,depthWrite:false});
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.62,.045,10,64),new THREE.MeshBasicMaterial({color:0xb4c0d0,transparent:true,opacity:.85,depthWrite:false}));
+rim.rotation.x=Math.PI/2;rim.position.y=H;rim.renderOrder=4;bk.add(rim);
+const nsh=new THREE.Shape([new THREE.Vector2(-.34,.14),new THREE.Vector2(.34,.14),new THREE.Vector2(0,-.1)]);
+const notch=new THREE.Mesh(new THREE.ShapeGeometry(nsh),new THREE.MeshBasicMaterial({color:0x000000}));notch.position.set(0,H+.04,1.64);notch.renderOrder=6;bk.add(notch);
+const nl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-.36,H+.18,1.64),new THREE.Vector3(0,H-.06,1.66),new THREE.Vector3(.36,H+.18,1.64)]),new THREE.LineBasicMaterial({color:0xb4c0d0}));nl.renderOrder=7;bk.add(nl);
+// Thước chia độ đặt phía trước thành cốc để người dùng nhìn rõ hướng xoay 3D.
+const gradMat=new THREE.LineBasicMaterial({color:0xd9faff,transparent:true,opacity:.42,depthTest:false});
+const gradX=.83,gradZ=1.18;
+const gradSpine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,.35,gradZ),new THREE.Vector3(gradX,H-.28,gradZ)]),gradMat);
+gradSpine.renderOrder=6;bk.add(gradSpine);
+for(let i=1;i<=7;i++){
+ const y=.35+i*.34,len=i%2===0?.29:.16;
+ const mark=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,y,gradZ),new THREE.Vector3(gradX+len,y,gradZ)]),gradMat);
+ mark.renderOrder=6;bk.add(mark);
+}
+const LR=1.43,liqMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
-const topMat=new THREE.MeshPhysicalMaterial({color:0x6ce9ef,transparent:true,opacity:.72,roughness:.16,clearcoat:1,side:THREE.DoubleSide,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,40),topMat);
+const topMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.97,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
-function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
- const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,1.72+d*.55,d);cam.lookAt(0,1.65,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
+ const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
-// Fixed, slightly elevated view: no pointer-driven 3D rotation.
-viewRoot.rotation.set(0,0,0);
-R.domElement.style.touchAction='auto';
+const viewDrag={id:null,x:0,y:0};
+viewRoot.rotation.x=-0.08;
+R.domElement.style.touchAction='none';
+R.domElement.addEventListener('pointerdown',e=>{
+ if(e.pointerType==='mouse'&&e.button!==0)return;
+ viewDrag.id=e.pointerId;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
+ try{R.domElement.setPointerCapture(e.pointerId)}catch(_){}
+});
+R.domElement.addEventListener('pointermove',e=>{
+ if(viewDrag.id!==e.pointerId)return;
+ const dx=e.clientX-viewDrag.x,dy=e.clientY-viewDrag.y;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
+ viewRoot.rotation.y+=dx*.009;
+ viewRoot.rotation.x=Math.max(-.65,Math.min(.65,viewRoot.rotation.x+dy*.007));
+});
+const endViewDrag=e=>{if(viewDrag.id===e.pointerId)viewDrag.id=null};
+R.domElement.addEventListener('pointerup',endViewDrag);
+R.domElement.addEventListener('pointercancel',endViewDrag);
 
 /* ============ effects.js ============ */
 const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
@@ -698,7 +705,7 @@ function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last
  lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=lv;
  const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(1.12);
- st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;/* Neutral clear glass: avoid accessing shader-only uniforms on MeshPhysicalMaterial. */
+ st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
  if((st.chk-=dt)<=0){st.chk=.25;check()}
  /* dòng chất lỏng */
  if(st.stream>0){st.stream-=dt;const c=[st.sc.r,st.sc.g,st.sc.b],tx=.1,tz=0,ty=lv+.05;
