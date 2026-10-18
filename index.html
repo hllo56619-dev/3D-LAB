@@ -594,9 +594,37 @@ const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:
 const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
 const rim=new THREE.Mesh(new THREE.TorusGeometry(1.62,.045,10,64),new THREE.MeshBasicMaterial({color:0xb4c0d0,transparent:true,opacity:.85,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=H;rim.renderOrder=4;bk.add(rim);
-const nsh=new THREE.Shape([new THREE.Vector2(-.34,.14),new THREE.Vector2(.34,.14),new THREE.Vector2(0,-.1)]);
-const notch=new THREE.Mesh(new THREE.ShapeGeometry(nsh),new THREE.MeshBasicMaterial({color:0x000000}));notch.position.set(0,H+.04,1.64);notch.renderOrder=6;bk.add(notch);
-const nl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-.36,H+.18,1.64),new THREE.Vector3(0,H-.06,1.66),new THREE.Vector3(.36,H+.18,1.64)]),new THREE.LineBasicMaterial({color:0xb4c0d0}));nl.renderOrder=7;bk.add(nl);
+// Integrated pour spout: a small flared triangular glass lip attached to the front-left rim.
+const spoutA=new THREE.Vector3(-1.42,H+.018,.78);
+const spoutTip=new THREE.Vector3(-2.02,H+.035,1.00);
+const spoutB=new THREE.Vector3(-1.15,H+.018,1.14);
+const spoutBottomA=new THREE.Vector3(spoutA.x,spoutA.y-.045,spoutA.z);
+const spoutBottomTip=new THREE.Vector3(spoutTip.x,spoutTip.y-.045,spoutTip.z);
+const spoutBottomB=new THREE.Vector3(spoutB.x,spoutB.y-.045,spoutB.z);
+const spoutGeometry=new THREE.BufferGeometry();
+spoutGeometry.setAttribute('position',new THREE.Float32BufferAttribute([
+ spoutA.x,spoutA.y,spoutA.z, spoutTip.x,spoutTip.y,spoutTip.z, spoutB.x,spoutB.y,spoutB.z,
+ spoutBottomA.x,spoutBottomA.y,spoutBottomA.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z,
+ spoutA.x,spoutA.y,spoutA.z, spoutBottomA.x,spoutBottomA.y,spoutBottomA.z, spoutTip.x,spoutTip.y,spoutTip.z,
+ spoutTip.x,spoutTip.y,spoutTip.z, spoutBottomA.x,spoutBottomA.y,spoutBottomA.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z,
+ spoutTip.x,spoutTip.y,spoutTip.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z, spoutB.x,spoutB.y,spoutB.z,
+ spoutB.x,spoutB.y,spoutB.z, spoutBottomTip.x,spoutBottomTip.y,spoutBottomTip.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z,
+ spoutB.x,spoutB.y,spoutB.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z, spoutA.x,spoutA.y,spoutA.z,
+ spoutA.x,spoutA.y,spoutA.z, spoutBottomB.x,spoutBottomB.y,spoutBottomB.z, spoutBottomA.x,spoutBottomA.y,spoutBottomA.z
+],3));
+spoutGeometry.computeVertexNormals();
+const spoutMaterial=new THREE.MeshBasicMaterial({color:0xdce6ee,transparent:true,opacity:.28,side:THREE.DoubleSide,depthWrite:false});
+const spout=new THREE.Mesh(spoutGeometry,spoutMaterial);
+spout.renderOrder=5;bk.add(spout);
+// Thin glints follow the two sides of the pour lip; no separate loop or wire ring.
+const spoutEdgeMaterial=new THREE.LineBasicMaterial({color:0xcbd7e2,transparent:true,opacity:.72,depthWrite:false});
+const spoutEdge1=new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+ new THREE.Vector3(-1.42,H+.035,.78),new THREE.Vector3(-1.65,H+.07,.85),new THREE.Vector3(-2.02,H+.045,1.00)
+]),spoutEdgeMaterial);
+const spoutEdge2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([
+ new THREE.Vector3(-1.15,H+.035,1.14),new THREE.Vector3(-1.58,H+.065,1.13),new THREE.Vector3(-2.02,H+.045,1.00)
+]),spoutEdgeMaterial);
+spoutEdge1.renderOrder=6;spoutEdge2.renderOrder=6;bk.add(spoutEdge1,spoutEdge2);
 // Thước chia độ đặt phía trước thành cốc để người dùng nhìn rõ hướng xoay 3D.
 const gradMat=new THREE.LineBasicMaterial({color:0xd9faff,transparent:true,opacity:.42,depthTest:false});
 const gradX=.83,gradZ=1.18;
@@ -613,25 +641,11 @@ const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
 const topMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.97,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
 function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,2);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;
- const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.9/(.74*cam.aspect*th*2)*1.0,10/(2*th));cam.position.set(0,2.5,d);cam.lookAt(0,1.9,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+ const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(3.2/(1.25*th),3.8/(1.5*cam.aspect*th));cam.position.set(0,1.65+d*.22,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
-const viewDrag={id:null,x:0,y:0};
-viewRoot.rotation.x=-0.08;
-R.domElement.style.touchAction='none';
-R.domElement.addEventListener('pointerdown',e=>{
- if(e.pointerType==='mouse'&&e.button!==0)return;
- viewDrag.id=e.pointerId;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
- try{R.domElement.setPointerCapture(e.pointerId)}catch(_){}
-});
-R.domElement.addEventListener('pointermove',e=>{
- if(viewDrag.id!==e.pointerId)return;
- const dx=e.clientX-viewDrag.x,dy=e.clientY-viewDrag.y;viewDrag.x=e.clientX;viewDrag.y=e.clientY;
- viewRoot.rotation.y+=dx*.009;
- viewRoot.rotation.x=Math.max(-.65,Math.min(.65,viewRoot.rotation.x+dy*.007));
-});
-const endViewDrag=e=>{if(viewDrag.id===e.pointerId)viewDrag.id=null};
-R.domElement.addEventListener('pointerup',endViewDrag);
-R.domElement.addEventListener('pointercancel',endViewDrag);
+// Fixed illustration view: pointer dragging is intentionally disabled.
+viewRoot.rotation.set(-0.08,0,0);
+R.domElement.style.touchAction='auto';
 
 /* ============ effects.js ============ */
 const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
