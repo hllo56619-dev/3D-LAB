@@ -593,20 +593,20 @@ const H=3.5,pts=[
  [1.49,3.46],[1.57,3.46],[1.62,3.42],[1.61,3.36],
  [1.55,3.32],[1.46,3.32],[1.42,3.28],[1.39,3.20],
  [1.35,3.07],[1.32,.52],[1.29,.32],[1.23,.19],[1.16,.14],[1.06,.12],[0,.12]
-].map(p=>new THREE.Vector2(p[0],p[1]));
+].map(p=>new THREE.Vector2(p[0]*1.18,p[1]));
 // Transparent neutral glass with subtle edge highlights and a thick curled rim.
 const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
  vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
  fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=vec3(.72,.72,.72)+vec3(.20)*f;gl_FragColor=vec4(c,.018+.48*f);}'});
 const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
 // One restrained roll highlight follows the rounded lip already modelled in the glass profile.
-const rim=new THREE.Mesh(new THREE.TorusGeometry(1.565,.032,8,48),new THREE.MeshBasicMaterial({color:0xd6d8db,transparent:true,opacity:.32,depthWrite:false}));
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.847,.038,8,48),new THREE.MeshBasicMaterial({color:0xd6d8db,transparent:true,opacity:.32,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.425;rim.renderOrder=4;bk.add(rim);
 // No pouring spout: keep a clean, continuous beaker rim.
 // Thick rounded base, with no volume markings.
-const foot=new THREE.Mesh(new THREE.TorusGeometry(1.23,.035,6,40),new THREE.MeshBasicMaterial({color:0xcbd0d5,transparent:true,opacity:.18,depthWrite:false}));
+const foot=new THREE.Mesh(new THREE.TorusGeometry(1.451,.041,6,40),new THREE.MeshBasicMaterial({color:0xcbd0d5,transparent:true,opacity:.18,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.20;foot.renderOrder=4;bk.add(foot);
-const LR=1.20,liqMat=new THREE.MeshBasicMaterial({color:0xbfcbd2,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
+const LR=1.416,liqMat=new THREE.MeshBasicMaterial({color:0xbfcbd2,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
 const topMat=new THREE.MeshBasicMaterial({color:0xbfcbd2,transparent:true,opacity:.25,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,40),topMat);
