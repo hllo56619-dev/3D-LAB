@@ -4712,3 +4712,25 @@ window.CHEM_RX = [
     "explain": "Glucozơ khử bạc(I) thành bạc kim loại; mô phỏng thể hiện bạc màu xám sáng và dung dịch sản phẩm."
   }
 ];
+
+// Build an exhaustive audit of all unique two-substance combinations in the current inventory.
+// This is a coverage audit, not a claim that every pair chemically reacts.
+window.CHEM_PAIR_AUDIT = function(inventory, rules = window.CHEM_RX) {
+ const ids = [...new Set((inventory || []).map(item => typeof item === 'string' ? item : item.id))];
+ const exact = new Set(), multi = new Set();
+ for (const rule of (rules || [])) {
+  if (!Array.isArray(rule.need)) continue;
+  const key = rule.need.slice().sort().join(' + ');
+  if (rule.need.length === 2) exact.add(key);
+  else if (rule.need.length > 2) {
+   for (let i = 0; i < rule.need.length; i++) for (let j = i + 1; j < rule.need.length; j++)
+    multi.add([rule.need[i], rule.need[j]].sort().join(' + '));
+  }
+ }
+ const pairs = [];
+ for (let i = 0; i < ids.length; i++) for (let j = i + 1; j < ids.length; j++) {
+  const key = [ids[i], ids[j]].sort().join(' + ');
+  pairs.push({a: ids[i], b: ids[j], status: exact.has(key) ? 'has-rule' : multi.has(key) ? 'part-of-multi-substance-rule' : 'unclassified'});
+ }
+ return {inventoryCount: ids.length, pairCount: pairs.length, exactRulePairs: pairs.filter(p => p.status === 'has-rule').length, multiSubstancePairs: pairs.filter(p => p.status === 'part-of-multi-substance-rule').length, unclassifiedPairs: pairs.filter(p => p.status === 'unclassified').length, pairs};
+};
