@@ -582,7 +582,7 @@ function updateReactionFeedback(){
  },900);
 }
 /* ============ scene.js ============ */
-let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true});}catch(e){$('#err').style.display='grid';return}
+let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:false,powerPreference:'high-performance'});}catch(e){$('#err').style.display='grid';return}
 R.setClearColor(0x000000,1);
 const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
 S.add(new THREE.AmbientLight(0xffffff,.75));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);S.add(dl);
@@ -597,33 +597,44 @@ const H=3.2,pts=[
 const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
  vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
  fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=vec3(.70,.70,.70)+vec3(.24)*f;gl_FragColor=vec4(c,.025+.62*f);}'});
-const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,72),glassMat);glass.renderOrder=3;bk.add(glass);
+function makeRoundedSquareLathe(profile,segments=48,squareMix=.26){
+ const positions=[],indices=[];
+ for(const p of profile){
+  for(let j=0;j<segments;j++){
+   const a=j/segments*Math.PI*2,c=Math.cos(a),s=Math.sin(a);
+   const squareFactor=1/Math.max(Math.abs(c),Math.abs(s));
+   const factor=1+(squareFactor-1)*squareMix;
+   positions.push(p.x*factor*c,p.y,p.x*factor*s);
+  }
+ }
+ for(let i=0;i<profile.length-1;i++){
+  for(let j=0;j<segments;j++){
+   const j2=(j+1)%segments,a=i*segments+j,b=i*segments+j2,c=(i+1)*segments+j,d=(i+1)*segments+j2;
+   indices.push(a,c,b,b,c,d);
+  }
+ }
+ const g=new THREE.BufferGeometry();
+ g.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+ g.setIndex(indices);g.computeVertexNormals();return g;
+}
+const glass=new THREE.Mesh(makeRoundedSquareLathe(pts,48,.26),glassMat);glass.renderOrder=3;bk.add(glass);
 // Rolled, slightly protruding glass lip; integrated with the rim profile above.
 const rim=new THREE.Mesh(new THREE.TorusGeometry(1.625,.052,10,64),new THREE.MeshBasicMaterial({color:0xd9dde2,transparent:true,opacity:.55,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.055;rim.renderOrder=4;bk.add(rim);
-// Small triangular pouring beak attached to the rim, with real width and glass-like edges.
-const A=new THREE.Vector3(-1.10,3.075,1.02);
-const B=new THREE.Vector3(-1.47,3.075,.36);
-const T=new THREE.Vector3(-1.79,3.105,.82);
-const thick=.035;
-const A2=new THREE.Vector3(A.x,A.y-thick,A.z),B2=new THREE.Vector3(B.x,B.y-thick,B.z),T2=new THREE.Vector3(T.x,T.y-thick,T.z);
+// Minimal integrated pouring spout: a small flared glass notch, without extra tabs or wire-like details.
+const A=new THREE.Vector3(-.78,3.075,1.42);
+const B=new THREE.Vector3(-1.50,3.075,.62);
+const T=new THREE.Vector3(-1.91,3.09,1.05);
 const spoutGeometry=new THREE.BufferGeometry();
 spoutGeometry.setAttribute('position',new THREE.Float32BufferAttribute([
- A.x,A.y,A.z,T.x,T.y,T.z,B.x,B.y,B.z,
- A2.x,A2.y,A2.z,B2.x,B2.y,B2.z,T2.x,T2.y,T2.z,
- A.x,A.y,A.z,A2.x,A2.y,A2.z,T.x,T.y,T.z,
- T.x,T.y,T.z,A2.x,A2.y,A2.z,T2.x,T2.y,T2.z,
- T.x,T.y,T.z,T2.x,T2.y,T2.z,B.x,B.y,B.z,
- B.x,B.y,B.z,T2.x,T2.y,T2.z,B2.x,B2.y,B2.z,
- B.x,B.y,B.z,B2.x,B2.y,B2.z,A.x,A.y,A.z,
- A.x,A.y,A.z,B2.x,B2.y,B2.z,A2.x,A2.y,A2.z
+ A.x,A.y,A.z, T.x,T.y,T.z, B.x,B.y,B.z
 ],3));
 spoutGeometry.computeVertexNormals();
-const spout=new THREE.Mesh(spoutGeometry,new THREE.MeshBasicMaterial({color:0xe4e7ea,transparent:true,opacity:.22,side:THREE.DoubleSide,depthWrite:false}));
+const spout=new THREE.Mesh(spoutGeometry,new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.13,side:THREE.DoubleSide,depthWrite:false}));
 spout.renderOrder=5;bk.add(spout);
-const spoutEdgeMaterial=new THREE.LineBasicMaterial({color:0xcfd4d8,transparent:true,opacity:.62,depthWrite:false});
-const spoutEdge1=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(A.x,A.y+.008,A.z),new THREE.Vector3(T.x,T.y+.008,T.z)]),spoutEdgeMaterial);
-const spoutEdge2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(B.x,B.y+.008,B.z),new THREE.Vector3(T.x,T.y+.008,T.z)]),spoutEdgeMaterial);
+const spoutEdgeMaterial=new THREE.LineBasicMaterial({color:0xd0d4d8,transparent:true,opacity:.38,depthWrite:false});
+const spoutEdge1=new THREE.Line(new THREE.BufferGeometry().setFromPoints([A,T]),spoutEdgeMaterial);
+const spoutEdge2=new THREE.Line(new THREE.BufferGeometry().setFromPoints([B,T]),spoutEdgeMaterial);
 spoutEdge1.renderOrder=5;spoutEdge2.renderOrder=5;bk.add(spoutEdge1,spoutEdge2);
 // Thick, rounded base edge; no measuring graduations or numbers.
 const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.04,8,48),new THREE.MeshBasicMaterial({color:0xcbd0d5,transparent:true,opacity:.24,depthWrite:false}));
@@ -633,7 +644,7 @@ const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
 const topMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.97,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
-function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.5);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.0/(1.25*th),4.4/(1.5*cam.aspect*th));cam.position.set(0,1.65+d*.22,d);cam.lookAt(0,1.55,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.15);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.0/(1.25*th),4.4/(1.5*cam.aspect*th));cam.position.set(0,1.65+d*.22,d);cam.lookAt(0,1.55,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
 // Fixed illustration view: pointer dragging is intentionally disabled.
 viewRoot.rotation.set(-0.08,0,0);
@@ -653,16 +664,16 @@ function Pool(n,add,tx,kill){
   vertexShader:'attribute vec3 col;attribute float sz,al;uniform float sc;varying vec3 vc;varying float va;void main(){vc=col;va=al;vec4 m=modelViewMatrix*vec4(position,1.);gl_PointSize=sz*sc/-m.z;gl_Position=projectionMatrix*m;}',
   fragmentShader:'uniform sampler2D map;varying vec3 vc;varying float va;void main(){gl_FragColor=vec4(vc,texture2D(map,gl_PointCoord).a*va);}'});
  const o=new THREE.Points(g,m);o.frustumCulled=false;o.renderOrder=8;S.add(o);
- const V=new Float32Array(n*3),Lf=new Float32Array(n),Mx=new Float32Array(n),S0=new Float32Array(n),G=new Float32Array(n),C0=new Float32Array(n*3),C1=new Float32Array(n*3),A0=new Float32Array(n),GR=new Float32Array(n);let k=0;
- return{emit(e){const i=k=(k+1)%n;P.set([e.x,e.y,e.z],i*3);V.set([e.vx||0,e.vy||0,e.vz||0],i*3);Lf[i]=Mx[i]=e.life;S0[i]=e.size;C0.set(e.c0,i*3);C1.set(e.c1||e.c0,i*3);A0[i]=e.a===undefined?1:e.a;G[i]=e.g||0;GR[i]=e.grow||0},
- update(dt){for(let i=0;i<n;i++){if(Lf[i]<=0){A[i]=0;continue}Lf[i]-=dt;const j=i*3;
-  if(Lf[i]<=0||(kill&&kill(P[j],P[j+1],P[j+2]))){Lf[i]=0;A[i]=0;continue}
+ const V=new Float32Array(n*3),Lf=new Float32Array(n),Mx=new Float32Array(n),S0=new Float32Array(n),G=new Float32Array(n),C0=new Float32Array(n*3),C1=new Float32Array(n*3),A0=new Float32Array(n),GR=new Float32Array(n);let k=0,active=0;
+ return{emit(e){const i=k=(k+1)%n;if(Lf[i]<=0)active++;P.set([e.x,e.y,e.z],i*3);V.set([e.vx||0,e.vy||0,e.vz||0],i*3);Lf[i]=Mx[i]=e.life;S0[i]=e.size;C0.set(e.c0,i*3);C1.set(e.c1||e.c0,i*3);A0[i]=e.a===undefined?1:e.a;G[i]=e.g||0;GR[i]=e.grow||0},
+ update(dt){if(active===0)return;for(let i=0;i<n;i++){if(Lf[i]<=0){A[i]=0;continue}Lf[i]-=dt;const j=i*3;
+  if(Lf[i]<=0||(kill&&kill(P[j],P[j+1],P[j+2]))){Lf[i]=0;A[i]=0;active--;continue}
   const t=1-Lf[i]/Mx[i];V[j+1]+=G[i]*dt;P[j]+=V[j]*dt;P[j+1]+=V[j+1]*dt;P[j+2]+=V[j+2]*dt;
   for(let q=0;q<3;q++)Cl[j+q]=C0[j+q]+(C1[j+q]-C0[j+q])*t;
   A[i]=A0[i]*(t<.1?t/.1:1-(t-.1)/.9);Z[i]=S0[i]*(1+GR[i]*t)}
   ['position','col','sz','al'].forEach(a=>g.attributes[a].needsUpdate=true)}}}
 let lv=0,lvT=0;
-const fire=Pool(900,true,T0),spark=Pool(300,true,T0),bub=Pool(220,false,T1,(x,y)=>y>lv),grain=Pool(700,false,T0);
+const fire=Pool(240,true,T0),spark=Pool(90,true,T0),bub=Pool(90,false,T1,(x,y)=>y>lv),grain=Pool(220,false,T0);
 const rings=[];
 function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
  m.rotation.x=-Math.PI/2;m.position.set(x,lv+.02,z);m.scale.setScalar(.1);m.renderOrder=9;S.add(m);rings.push({m,t:0})}
@@ -707,7 +718,7 @@ function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];lvT=0
 
 /* ============ main loop ============ */
 let last=performance.now(),time=0;
-function frame(now){requestAnimationFrame(frame);const dt=Math.min(.05,(now-last)/1000);last=now;time+=dt;if(document.hidden)return;
+function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;return}if(now-last<1000/30)return;const dt=Math.min(.05,(now-last)/1000);last=now;time+=dt;
  lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=lv;
  const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(1.12);
