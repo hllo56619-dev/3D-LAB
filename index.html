@@ -129,15 +129,6 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 #c{cursor:grab;touch-action:none}
 #c:active{cursor:grabbing}
 @media(max-width:480px){#cat{width:96vw;border-radius:12px}#grid{grid-template-columns:repeat(auto-fill,minmax(72px,1fr));gap:6px;padding:7px}.t{min-height:76px}.t svg{width:32px;height:32px}.t .chem-label{font-size:11px}}
-/* Temperature control in the bottom toolbar */
-#bar{height:56px;gap:7px;padding:0 8px;box-sizing:border-box}
-#bar button{flex:0 0 44px;width:44px}
-#temp-control{flex:1 1 140px;min-width:112px;max-width:190px;display:flex;flex-direction:column;justify-content:center;gap:2px;padding:0 4px;box-sizing:border-box}
-#temp-head{display:flex;align-items:center;justify-content:space-between;gap:6px;font:10px/1.1 system-ui,sans-serif;color:#cbd5e1;white-space:nowrap}
-#temp-value{font:700 11px/1 system-ui,sans-serif;color:#fbbf24;font-variant-numeric:tabular-nums}
-#temp-slider{display:block;width:100%;height:17px;margin:0;accent-color:#f59e0b;cursor:pointer;touch-action:pan-x}
-#temp-slider:focus-visible{outline:2px solid #fbbf24;outline-offset:2px}
-@media(max-width:390px){#bar{left:6px;right:6px;gap:3px;padding:0 5px}#bar button{flex-basis:40px;width:40px}#temp-control{min-width:100px;padding:0 2px}#temp-head{font-size:9px}#temp-value{font-size:10px}}
 </style>
 </head>
 <body>
@@ -167,10 +158,6 @@ button:focus-visible{outline:2px solid #8ab4f8;outline-offset:1px}
 <div id="bar">
  <button id="b0" aria-label="Danh mục hóa chất"><svg width="26" height="26" viewBox="0 0 24 24" stroke="#fff" stroke-width="2.6" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
  <button id="b1" aria-label="Đun nóng"><svg width="26" height="26" viewBox="0 0 24 24"><path d="M12 1.5c.6 4.2 6.2 6.4 6.2 12.4a6.2 6.2 0 0 1-12.4 0c0-2.6 1.3-4.1 2.4-5.6.3 1.6 1 2.5 1.8 2.9C9.6 8 11.2 5.2 12 1.5z" fill="#ff2a1a"/><path d="M12 12c.4 2 2.6 2.8 2.6 5.2a2.6 2.6 0 0 1-5.2 0c0-1.3.8-1.8 1.2-2.6.4.6.8.9 1.1.9-.1-1 .1-2.3.3-3.5z" fill="#ff8a3a"/></svg></button>
- <div id="temp-control" title="Điều chỉnh nhiệt độ môi trường">
-  <div id="temp-head"><label for="temp-slider">Nhiệt độ</label><output id="temp-value" for="temp-slider">25°C</output></div>
-  <input id="temp-slider" type="range" min="0" max="150" step="1" value="25" aria-label="Nhiệt độ môi trường từ 0 đến 150 độ C">
- </div>
  <button id="b2" aria-label="Đặt lại thí nghiệm"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 12a7.5 7.5 0 1 1-2.6-5.7M19.8 3.5v4.8h-4.8"/></svg></button>
  
 </div>
@@ -549,11 +536,121 @@ const RX=[
  {id:'kmno4_thermal',need:['KMnO4'],eq:'2KMnO4 → K2MnO4 + MnO2 + O2↑',out:['K2MnO4','MnO2','O2'],heat:100,heating:true,col:'#4e8b58',precip:'#292929',dur:9,bub:.8,gas:'O2',explain:'Nhiệt phân: tạo manganat kali màu xanh lục, mangan đioxit màu nâu đen và giải phóng khí oxy.'},
  {id:'mercury_oxide_thermal',need:['HgO'],eq:'2HgO → 2Hg + O2↑',out:['Hg','O2'],heat:100,heating:true,arrowLabel:'t°',col:'#d4d6d8',dur:8,bub:.6,gas:'O2',explain:'Chỉ mô phỏng nhiệt phân; thủy ngân và hợp chất của nó rất độc.'},
  {id:'hydrogen_chlorine_light',need:['H2','Cl2'],eq:'H2 + Cl2 → 2HCl',out:['HCl'],arrowLabel:'ánh sáng',col:'#e7e7e7',dur:6,bub:.1,explain:'Phản ứng quang hóa; mô phỏng không tái hiện nguy hiểm ngoài đời.'}
+,
+ // Expanded reaction library: neutralization, precipitation, redox, gas reactions and thermal decomposition.
+ {"id":"hcl_lioh","need":["HCl","LiOH"],"eq":"HCl + LiOH → LiCl + H2O","out":["LiCl","H2O"],"col":"#e8e9e9","dur":4,"bub":0.1},
+ {"id":"hcl_mgoh2","need":["HCl","Mg(OH)2"],"eq":"2HCl + Mg(OH)2 → MgCl2 + 2H2O","out":["MgCl2","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"hcl_cuoh2","need":["HCl","Cu(OH)2"],"eq":"2HCl + Cu(OH)2 → CuCl2 + 2H2O","out":["CuCl2","H2O"],"col":"#4d83d7","dur":5,"bub":0.1},
+ {"id":"hcl_feoh2","need":["HCl","Fe(OH)2"],"eq":"2HCl + Fe(OH)2 → FeCl2 + 2H2O","out":["FeCl2","H2O"],"col":"#b8d8a4","dur":5,"bub":0.1},
+ {"id":"hcl_feoh3","need":["HCl","Fe(OH)3"],"eq":"3HCl + Fe(OH)3 → FeCl3 + 3H2O","out":["FeCl3","H2O"],"col":"#d6a34a","dur":5,"bub":0.1},
+ {"id":"hcl_znoh2","need":["HCl","Zn(OH)2"],"eq":"2HCl + Zn(OH)2 → ZnCl2 + 2H2O","out":["ZnCl2","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"hcl_aloh3","need":["HCl","Al(OH)3"],"eq":"3HCl + Al(OH)3 → AlCl3 + 3H2O","out":["AlCl3","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"h2so4_cuoh2","need":["H2SO4","Cu(OH)2"],"eq":"H2SO4 + Cu(OH)2 → CuSO4 + 2H2O","out":["CuSO4","H2O"],"col":"#278ce0","dur":5,"bub":0.1},
+ {"id":"h2so4_feoh2","need":["H2SO4","Fe(OH)2"],"eq":"H2SO4 + Fe(OH)2 → FeSO4 + 2H2O","out":["FeSO4","H2O"],"col":"#a9c8a0","dur":5,"bub":0.1},
+ {"id":"h2so4_feoh3","need":["H2SO4","Fe(OH)3"],"eq":"3H2SO4 + 2Fe(OH)3 → Fe2(SO4)3 + 6H2O","out":["Fe2(SO4)3","H2O"],"col":"#d6b276","dur":5,"bub":0.1},
+ {"id":"h2so4_znoh2","need":["H2SO4","Zn(OH)2"],"eq":"H2SO4 + Zn(OH)2 → ZnSO4 + 2H2O","out":["ZnSO4","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"h2so4_aloh3","need":["H2SO4","Al(OH)3"],"eq":"3H2SO4 + 2Al(OH)3 → Al2(SO4)3 + 6H2O","out":["Al2(SO4)3","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"h2so4_mgo","need":["H2SO4","MgO"],"eq":"H2SO4 + MgO → MgSO4 + H2O","out":["MgSO4","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"h2so4_cao","need":["H2SO4","CaO"],"eq":"H2SO4 + CaO → CaSO4↓ + H2O","out":["CaSO4","H2O"],"col":"#e9e6df","dur":6,"bub":0.1,"precip":"#e9e6df"},
+ {"id":"h2so4_mgco3","need":["H2SO4","MgCO3"],"eq":"H2SO4 + MgCO3 → MgSO4 + CO2↑ + H2O","out":["MgSO4","CO2","H2O"],"col":"#e7e8e7","dur":6,"bub":0.8,"gas":"CO2"},
+ {"id":"h2so4_nahco3","need":["H2SO4","NaHCO3"],"eq":"H2SO4 + 2NaHCO3 → Na2SO4 + 2CO2↑ + 2H2O","out":["Na2SO4","CO2","H2O"],"col":"#e7e8e7","dur":6,"bub":1,"gas":"CO2"},
+ {"id":"hno3_nahco3","need":["HNO3","NaHCO3"],"eq":"HNO3 + NaHCO3 → NaNO3 + CO2↑ + H2O","out":["NaNO3","CO2","H2O"],"col":"#e7e8e7","dur":6,"bub":0.8,"gas":"CO2"},
+ {"id":"hno3_cuoh2","need":["HNO3","Cu(OH)2"],"eq":"2HNO3 + Cu(OH)2 → Cu(NO3)2 + 2H2O","out":["Cu(NO3)2","H2O"],"col":"#278ce0","dur":5,"bub":0.1},
+ {"id":"hno3_znoh2","need":["HNO3","Zn(OH)2"],"eq":"2HNO3 + Zn(OH)2 → Zn(NO3)2 + 2H2O","out":["Zn(NO3)2","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"hno3_mgoh2","need":["HNO3","Mg(OH)2"],"eq":"2HNO3 + Mg(OH)2 → Mg(NO3)2 + 2H2O","out":["Mg(NO3)2","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"hno3_feoh2","need":["HNO3","Fe(OH)2"],"eq":"2HNO3 + Fe(OH)2 → Fe(NO3)2 + 2H2O","out":["Fe(NO3)2","H2O"],"col":"#b8d8a4","dur":5,"bub":0.1},
+ {"id":"hno3_feoh3","need":["HNO3","Fe(OH)3"],"eq":"3HNO3 + Fe(OH)3 → Fe(NO3)3 + 3H2O","out":["Fe(NO3)3","H2O"],"col":"#d6a34a","dur":5,"bub":0.1},
+ {"id":"hno3_mgo","need":["HNO3","MgO"],"eq":"2HNO3 + MgO → Mg(NO3)2 + H2O","out":["Mg(NO3)2","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"hno3_cao","need":["HNO3","CaO"],"eq":"2HNO3 + CaO → Ca(NO3)2 + H2O","out":["Ca(NO3)2","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"hno3_feo","need":["HNO3","FeO"],"eq":"2HNO3 + FeO → Fe(NO3)2 + H2O","out":["Fe(NO3)2","H2O"],"col":"#b8d8a4","dur":5,"bub":0.1},
+ {"id":"hno3_fe2o3","need":["HNO3","Fe2O3"],"eq":"6HNO3 + Fe2O3 → 2Fe(NO3)3 + 3H2O","out":["Fe(NO3)3","H2O"],"col":"#d6a34a","dur":5,"bub":0.1},
+ {"id":"h2so3_naoh","need":["H2SO3","NaOH"],"eq":"H2SO3 + 2NaOH → Na2SO3 + 2H2O","out":["Na2SO3","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"h2co3_naoh","need":["H2CO3","NaOH"],"eq":"H2CO3 + 2NaOH → Na2CO3 + 2H2O","out":["Na2CO3","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"h2co3_caoh2","need":["H2CO3","Ca(OH)2"],"eq":"H2CO3 + Ca(OH)2 → CaCO3↓ + 2H2O","out":["CaCO3","H2O"],"col":"#dfdfd9","dur":6,"bub":0.1,"precip":"#eeeeea"},
+ {"id":"hbr_naoh","need":["HBr","NaOH"],"eq":"HBr + NaOH → NaBr + H2O","out":["NaBr","H2O"],"col":"#e8e9e9","dur":4,"bub":0.1},
+ {"id":"hbr_koh","need":["HBr","KOH"],"eq":"HBr + KOH → KBr + H2O","out":["KBr","H2O"],"col":"#e8e9e9","dur":4,"bub":0.1},
+ {"id":"hclo3_koh","need":["HClO3","KOH"],"eq":"HClO3 + KOH → KClO3 + H2O","out":["KClO3","H2O"],"col":"#e8e9e9","dur":4,"bub":0.1},
+ {"id":"nh3aq_hcl","need":["NH3(aq)","HCl"],"eq":"NH3(aq) + HCl → NH4Cl","out":["NH4Cl"],"col":"#ededed","dur":5,"bub":0.05,"arrowLabel":"Amoniac trong nước nhận proton từ axit tạo muối amoni."},
+ {"id":"nh3aq_hno3","need":["NH3(aq)","HNO3"],"eq":"NH3(aq) + HNO3 → NH4NO3","out":["NH4NO3"],"col":"#ededed","dur":5,"bub":0.05},
+ {"id":"nh3aq_h2so4","need":["NH3(aq)","H2SO4"],"eq":"2NH3(aq) + H2SO4 → (NH4)2SO4","out":["(NH4)2SO4"],"col":"#ededed","dur":5,"bub":0.05},
+ {"id":"agno3_hcl","need":["AgNO3","HCl"],"eq":"AgNO3 + HCl → AgCl↓ + HNO3","out":["AgCl","HNO3"],"col":"#e2e5e7","dur":6,"bub":0.08,"precip":"#f1f1eb"},
+ {"id":"agno3_hbr","need":["AgNO3","HBr"],"eq":"AgNO3 + HBr → AgBr↓ + HNO3","out":["AgBr","HNO3"],"col":"#e7dfcc","dur":6,"bub":0.08,"precip":"#e7dfcc"},
+ {"id":"agno3_nabr","need":["AgNO3","NaBr"],"eq":"AgNO3 + NaBr → AgBr↓ + NaNO3","out":["AgBr","NaNO3"],"col":"#e7dfcc","dur":6,"bub":0.08,"precip":"#e7dfcc"},
+ {"id":"agno3_cucl2","need":["AgNO3","CuCl2"],"eq":"2AgNO3 + CuCl2 → 2AgCl↓ + Cu(NO3)2","out":["AgCl","Cu(NO3)2"],"col":"#5fae9c","dur":6,"bub":0.08,"precip":"#f1f1eb"},
+ {"id":"agno3_fecl2","need":["AgNO3","FeCl2"],"eq":"2AgNO3 + FeCl2 → 2AgCl↓ + Fe(NO3)2","out":["AgCl","Fe(NO3)2"],"col":"#b8d8a4","dur":6,"bub":0.08,"precip":"#f1f1eb"},
+ {"id":"agno3_fecl3","need":["AgNO3","FeCl3"],"eq":"3AgNO3 + FeCl3 → 3AgCl↓ + Fe(NO3)3","out":["AgCl","Fe(NO3)3"],"col":"#d6a34a","dur":6,"bub":0.08,"precip":"#f1f1eb"},
+ {"id":"cacl2_na2so4","need":["CaCl2","Na2SO4"],"eq":"CaCl2 + Na2SO4 → CaSO4↓ + 2NaCl","out":["CaSO4","NaCl"],"col":"#e9e6df","dur":6,"bub":0.08,"precip":"#e9e6df"},
+ {"id":"cuso4_na2co3","need":["CuSO4","Na2CO3"],"eq":"CuSO4 + Na2CO3 → CuCO3↓ + Na2SO4","out":["CuCO3","Na2SO4"],"col":"#55a477","dur":6,"bub":0.08,"precip":"#55a477"},
+ {"id":"feso4_na2co3","need":["FeSO4","Na2CO3"],"eq":"FeSO4 + Na2CO3 → FeCO3↓ + Na2SO4","out":["FeCO3","Na2SO4"],"col":"#a9a58a","dur":6,"bub":0.08,"precip":"#a9a58a"},
+ {"id":"pbno3_kcl","need":["Pb(NO3)2","KCl"],"eq":"Pb(NO3)2 + 2KCl → PbCl2↓ + 2KNO3","out":["PbCl2","KNO3"],"col":"#e5e3dc","dur":6,"bub":0.08,"precip":"#f0eee8"},
+ {"id":"pbno3_k2so4","need":["Pb(NO3)2","K2SO4"],"eq":"Pb(NO3)2 + K2SO4 → PbSO4↓ + 2KNO3","out":["PbSO4","KNO3"],"col":"#f1f0e9","dur":6,"bub":0.08,"precip":"#f1f0e9"},
+ {"id":"pbno3_k2co3","need":["Pb(NO3)2","K2CO3"],"eq":"Pb(NO3)2 + K2CO3 → PbCO3↓ + 2KNO3","out":["PbCO3","KNO3"],"col":"#e5e1d2","dur":6,"bub":0.08,"precip":"#e5e1d2"},
+ {"id":"nano3_ca_co3","need":["Ca(NO3)2","Na2CO3"],"eq":"Ca(NO3)2 + Na2CO3 → CaCO3↓ + 2NaNO3","out":["CaCO3","NaNO3"],"col":"#dfdfd9","dur":6,"bub":0.08,"precip":"#eeeeea"},
+ {"id":"na3po4_cacl2","need":["Na3PO4","CaCl2"],"eq":"2Na3PO4 + 3CaCl2 → Ca3(PO4)2↓ + 6NaCl","out":["Ca3(PO4)2","NaCl"],"col":"#eeeeea","dur":6,"bub":0.08,"precip":"#eeeeea"},
+ {"id":"na3po4_cano3","need":["Na3PO4","Ca(NO3)2"],"eq":"2Na3PO4 + 3Ca(NO3)2 → Ca3(PO4)2↓ + 6NaNO3","out":["Ca3(PO4)2","NaNO3"],"col":"#eeeeea","dur":6,"bub":0.08,"precip":"#eeeeea"},
+ {"id":"na3po4_fecl3","need":["Na3PO4","FeCl3"],"eq":"2Na3PO4 + 2FeCl3 → 2FePO4↓ + 6NaCl","out":["FePO4","NaCl"],"col":"#d6c9a0","dur":6,"bub":0.08,"precip":"#d6c9a0"},
+ {"id":"na3po4_feso4","need":["Na3PO4","FeSO4"],"eq":"2Na3PO4 + 3FeSO4 → Fe3(PO4)2↓ + 3Na2SO4","out":["Fe3(PO4)2","Na2SO4"],"col":"#7a8ca8","dur":6,"bub":0.08,"precip":"#7a8ca8"},
+ {"id":"h2s_cuso4","need":["H2S","CuSO4"],"eq":"H2S + CuSO4 → CuS↓ + H2SO4","out":["CuS","H2SO4"],"col":"#252525","dur":6,"bub":0.08,"precip":"#222222"},
+ {"id":"h2s_feso4","need":["H2S","FeSO4"],"eq":"H2S + FeSO4 → FeS↓ + H2SO4","out":["FeS","H2SO4"],"col":"#3a342e","dur":6,"bub":0.08,"precip":"#3a342e"},
+ {"id":"na2s_pbno3","need":["Na2S","Pb(NO3)2"],"eq":"Na2S + Pb(NO3)2 → PbS↓ + 2NaNO3","out":["PbS","NaNO3"],"col":"#252525","dur":6,"bub":0.08,"precip":"#222222"},
+ {"id":"na2s_cucl2","need":["Na2S","CuCl2"],"eq":"Na2S + CuCl2 → CuS↓ + 2NaCl","out":["CuS","NaCl"],"col":"#252525","dur":6,"bub":0.08,"precip":"#222222"},
+ {"id":"fes_cuso4","need":["FeS","CuSO4"],"eq":"FeS + CuSO4 → CuS↓ + FeSO4","out":["CuS","FeSO4"],"col":"#252525","dur":6,"bub":0.08,"precip":"#222222"},
+ {"id":"cl2_kbr","need":["Cl2","KBr"],"eq":"Cl2 + 2KBr → 2KCl + Br2","out":["KCl","Br2"],"col":"#8a3824","dur":7,"bub":0.1},
+ {"id":"cl2_water","need":["Cl2","H2O"],"eq":"Cl2 + H2O ⇌ HCl + HClO","out":["HCl","HClO"],"col":"#d8e1e5","dur":6,"bub":0.1,"arrowLabel":"Mô hình hóa cân bằng của nước clo."},
+ {"id":"fe_cl2","need":["Fe","Cl2"],"eq":"2Fe + 3Cl2 → 2FeCl3","out":["FeCl3"],"col":"#d6a34a","dur":7,"bub":0.1,"heat":60,"heating":true,"fire":1},
+ {"id":"h2_sulfur","need":["H2","S"],"eq":"H2 + S → H2S","out":["H2S"],"col":"#d8d8d8","dur":7,"bub":0.1,"gas":"H2S","heat":80,"heating":true},
+ {"id":"h2_bromine","need":["H2","Br2"],"eq":"H2 + Br2 → 2HBr","out":["HBr"],"col":"#d8d8d8","dur":7,"bub":0.1,"gas":"HBr","heat":60,"heating":true},
+ {"id":"haber_process","need":["N2","H2"],"eq":"N2 + 3H2 ⇌ 2NH3","out":["NH3"],"col":"#d8d8d8","dur":8,"bub":0.08,"heat":120,"heating":true,"fire":0,"explain":"Mô phỏng cân bằng Haber–Bosch; phản ứng thực tế cần xúc tác và áp suất cao."},
+ {"id":"ammonia_oxidation","need":["NH3","O2"],"eq":"4NH3 + 3O2 → 2N2 + 6H2O","out":["N2","H2O"],"col":"#d8d8d8","dur":8,"bub":0.2,"gas":"N2","heat":100,"heating":true},
+ {"id":"co_oxidation","need":["CO","O2"],"eq":"2CO + O2 → 2CO2","out":["CO2"],"col":"#d8d8d8","dur":6,"bub":0.4,"gas":"CO2","heat":60,"heating":true},
+ {"id":"co_cuo","need":["CO","CuO"],"eq":"CO + CuO → Cu + CO2","out":["Cu","CO2"],"col":"#b5493b","dur":7,"bub":0.2,"gas":"CO2","heat":70,"heating":true},
+ {"id":"co_fe2o3","need":["CO","Fe2O3"],"eq":"3CO + Fe2O3 → 2Fe + 3CO2","out":["Fe","CO2"],"col":"#8d8d8d","dur":8,"bub":0.3,"gas":"CO2","heat":100,"heating":true},
+ {"id":"al_thermite","need":["Al","Fe2O3"],"eq":"2Al + Fe2O3 → Al2O3 + 2Fe","out":["Al2O3","Fe"],"col":"#b7bfcc","dur":8,"bub":0.2,"heat":100,"heating":true,"fire":1,"explain":"Mô phỏng phản ứng nhiệt nhôm tỏa nhiệt mạnh; đây không phải hướng dẫn thực nghiệm."},
+ {"id":"carbon_dioxide_hot","need":["C","CO2"],"eq":"C + CO2 ⇌ 2CO","out":["CO"],"col":"#bcbcbc","dur":8,"bub":0.2,"gas":"CO","heat":110,"heating":true},
+ {"id":"cu2o_oxidation","need":["Cu2O","O2"],"eq":"2Cu2O + O2 → 4CuO","out":["CuO"],"col":"#222222","dur":7,"bub":0.05,"heat":70,"heating":true},
+ {"id":"feo_oxidation","need":["FeO","O2"],"eq":"4FeO + O2 → 2Fe2O3","out":["Fe2O3"],"col":"#8b4230","dur":7,"bub":0.05,"heat":70,"heating":true},
+ {"id":"fe3o4_oxidation","need":["Fe3O4","O2"],"eq":"4Fe3O4 + O2 → 6Fe2O3","out":["Fe2O3"],"col":"#8b4230","dur":7,"bub":0.05,"heat":70,"heating":true},
+ {"id":"silica_hf","need":["SiO2","HF"],"eq":"SiO2 + 6HF → H2SiF6 + 2H2O","out":["H2SiF6","H2O"],"col":"#e8e9e9","dur":7,"bub":0.1,"arrowLabel":"Phản ứng của HF với silica; HF là hóa chất cực độc và ăn mòn."},
+ {"id":"co2_water","need":["CO2","H2O"],"eq":"CO2 + H2O ⇌ H2CO3","out":["H2CO3"],"col":"#d8e1e5","dur":5,"bub":0.05},
+ {"id":"so2_water","need":["SO2","H2O"],"eq":"SO2 + H2O ⇌ H2SO3","out":["H2SO3"],"col":"#d8e1e5","dur":5,"bub":0.05},
+ {"id":"h2o2_slow_decomp","need":["H2O2"],"eq":"2H2O2 → 2H2O + O2↑","out":["H2O","O2"],"col":"#e7e8e7","dur":9,"bub":0.4,"gas":"O2"},
+ {"id":"cuoh2_thermal","need":["Cu(OH)2"],"eq":"Cu(OH)2 → CuO + H2O","out":["CuO","H2O"],"col":"#222222","dur":7,"bub":0.15,"gas":"H2O","heat":70,"heating":true},
+ {"id":"feoh3_thermal","need":["Fe(OH)3"],"eq":"2Fe(OH)3 → Fe2O3 + 3H2O","out":["Fe2O3","H2O"],"col":"#8b4230","dur":7,"bub":0.15,"gas":"H2O","heat":80,"heating":true},
+ {"id":"feoh2_thermal","need":["Fe(OH)2"],"eq":"Fe(OH)2 → FeO + H2O","out":["FeO","H2O"],"col":"#2a2a2a","dur":7,"bub":0.15,"gas":"H2O","heat":80,"heating":true},
+ {"id":"mgoh2_thermal","need":["Mg(OH)2"],"eq":"Mg(OH)2 → MgO + H2O","out":["MgO","H2O"],"col":"#eeeeea","dur":7,"bub":0.15,"gas":"H2O","heat":80,"heating":true},
+ {"id":"aloh3_thermal","need":["Al(OH)3"],"eq":"2Al(OH)3 → Al2O3 + 3H2O","out":["Al2O3","H2O"],"col":"#eeeeea","dur":7,"bub":0.15,"gas":"H2O","heat":80,"heating":true},
+ {"id":"mgco3_thermal","need":["MgCO3"],"eq":"MgCO3 → MgO + CO2↑","out":["MgO","CO2"],"col":"#d6d6d0","dur":8,"bub":0.5,"gas":"CO2","heat":100,"heating":true},
+ {"id":"feco3_thermal","need":["FeCO3"],"eq":"FeCO3 → FeO + CO2↑","out":["FeO","CO2"],"col":"#2a2a2a","dur":8,"bub":0.5,"gas":"CO2","heat":100,"heating":true},
+ {"id":"cuno3_thermal","need":["Cu(NO3)2"],"eq":"2Cu(NO3)2 → 2CuO + 4NO2↑ + O2↑","out":["CuO","NO2","O2"],"col":"#222222","dur":8,"bub":0.8,"gas":"NO2","heat":100,"heating":true},
+ {"id":"agcl_photolysis","need":["AgCl"],"eq":"2AgCl → 2Ag + Cl2↑","out":["Ag","Cl2"],"col":"#c6c6c8","dur":7,"bub":0.08,"heat":0,"arrowLabel":"ánh sáng","fire":0,"explain":"Bạc clorua bị phân hủy quang hóa dưới ánh sáng."},
+ {"id":"agbr_photolysis","need":["AgBr"],"eq":"2AgBr → 2Ag + Br2","out":["Ag","Br2"],"col":"#c6c6c8","dur":7,"bub":0.08,"heat":0,"arrowLabel":"ánh sáng","fire":0,"explain":"Bạc bromua bị phân hủy quang hóa dưới ánh sáng."},
+ {"id":"na2o2_co2","need":["Na2O2","CO2"],"eq":"2Na2O2 + 2CO2 → 2Na2CO3 + O2↑","out":["Na2CO3","O2"],"col":"#e8e9e9","dur":7,"bub":0.5,"gas":"O2"},
+ {"id":"na2o2_so2","need":["Na2O2","SO2"],"eq":"Na2O2 + SO2 → Na2SO4","out":["Na2SO4"],"col":"#e8e9e9","dur":7,"bub":0.05},
+ {"id":"na2o2_hcl","need":["Na2O2","HCl"],"eq":"Na2O2 + 2HCl → 2NaCl + H2O2","out":["NaCl","H2O2"],"col":"#e8e9e9","dur":6,"bub":0.1},
+ {"id":"dichromate_hcl","need":["K2Cr2O7","HCl"],"eq":"K2Cr2O7 + 14HCl → 2KCl + 2CrCl3 + 3Cl2↑ + 7H2O","out":["KCl","CrCl3","Cl2","H2O"],"col":"#db802b","dur":8,"bub":0.4,"gas":"Cl2","heat":70,"heating":true,"explain":"Phản ứng oxi hóa–khử minh họa; có thể tạo khí clo độc, không thực hiện ngoài phòng thí nghiệm chuyên dụng."},
+ {"id":"permanganate_hcl","need":["KMnO4","HCl"],"eq":"2KMnO4 + 16HCl → 2KCl + 2MnCl2 + 5Cl2↑ + 8H2O","out":["KCl","MnCl2","Cl2","H2O"],"col":"#4e8b58","dur":8,"bub":0.5,"gas":"Cl2","heat":70,"heating":true,"explain":"Phản ứng oxi hóa–khử minh họa có thể sinh khí clo độc."},
+ {"id":"fe3o4_hcl","need":["Fe3O4","HCl"],"eq":"Fe3O4 + 8HCl → FeCl2 + 2FeCl3 + 4H2O","out":["FeCl2","FeCl3","H2O"],"col":"#b8d8a4","dur":6,"bub":0.1},
+ {"id":"na2o_hcl","need":["Na2O","HCl"],"eq":"Na2O + 2HCl → 2NaCl + H2O","out":["NaCl","H2O"],"col":"#e8e9e9","dur":5,"bub":0.1},
+ {"id":"co2_cao","need":["CO2","CaO"],"eq":"CO2 + CaO → CaCO3","out":["CaCO3"],"col":"#dfdfd9","dur":6,"bub":0.08,"precip":"#eeeeea"},
+ {"id":"co2_na2o","need":["CO2","Na2O"],"eq":"CO2 + Na2O → Na2CO3","out":["Na2CO3"],"col":"#e8e9e9","dur":5,"bub":0.05},
+ {"id":"so2_cao","need":["SO2","CaO"],"eq":"SO2 + CaO → CaSO3","out":["CaSO3"],"col":"#eeeeea","dur":6,"bub":0.05},
+ {"id":"so3_cao","need":["SO3","CaO"],"eq":"SO3 + CaO → CaSO4","out":["CaSO4"],"col":"#e9e6df","dur":6,"bub":0.05},
+ {"id":"so2_na2co3","need":["SO2","Na2CO3"],"eq":"SO2 + Na2CO3 → Na2SO3 + CO2↑","out":["Na2SO3","CO2"],"col":"#d8d8d8","dur":6,"bub":0.3,"gas":"CO2"},
+ {"id":"so3_na2co3","need":["SO3","Na2CO3"],"eq":"SO3 + Na2CO3 → Na2SO4 + CO2↑","out":["Na2SO4","CO2"],"col":"#d8d8d8","dur":6,"bub":0.3,"gas":"CO2"},
+ {"id":"chromate_acid","need":["K2CrO4","H2SO4"],"eq":"2K2CrO4 + H2SO4 → K2Cr2O7 + K2SO4 + H2O","out":["K2Cr2O7","K2SO4","H2O"],"col":"#db802b","dur":6,"bub":0.05,"arrowLabel":"Môi trường axit chuyển cromat màu vàng sang đicromat màu da cam."},
+ {"id":"h2so4_caoh2","need":["H2SO4","Ca(OH)2"],"eq":"H2SO4 + Ca(OH)2 → CaSO4↓ + 2H2O","out":["CaSO4","H2O"],"col":"#e9e6df","dur":6,"bub":0.1,"precip":"#e9e6df"},
+ {"id":"fe_water_steam","need":["Fe","H2O"],"eq":"3Fe + 4H2O → Fe3O4 + 4H2↑","out":["Fe3O4","H2"],"col":"#333333","dur":8,"bub":0.5,"gas":"H2","heat":110,"heating":true,"explain":"Sắt phản ứng với hơi nước ở nhiệt độ cao."},
+ {"id":"li_hcl","need":["Li","HCl"],"eq":"2Li + 2HCl → 2LiCl + H2↑","out":["LiCl","H2"],"col":"#e8e9e9","dur":6,"bub":1,"gas":"H2"},
+ {"id":"pb_hcl","need":["Pb","HCl"],"eq":"Pb + 2HCl → PbCl2↓ + H2↑","out":["PbCl2","H2"],"col":"#e5e3dc","dur":8,"bub":0.4,"precip":"#f0eee8","gas":"H2","fire":null},
+ {"id":"fecl2_cl2","need":["FeCl2","Cl2"],"eq":"2FeCl2 + Cl2 → 2FeCl3","out":["FeCl3"],"col":"#d6a34a","dur":6,"bub":0.05},
+ {"id":"cucl_cl2","need":["CuCl","Cl2"],"eq":"2CuCl + Cl2 → 2CuCl2","out":["CuCl2"],"col":"#5fae9c","dur":6,"bub":0.05},
 ];
 /* ============ reactionEngine.js ============ */
 // The engine requires each listed reagent and checks thermal conditions before firing.
 const hasAllReactants=(r,contents)=>r.need.every(n=>contents.includes(n));
-const conditionsMet=(r,temp,heatOn)=>temp>=(r.heat??(r.heating?60:0));
+const conditionsMet=(r,temp,heatOn)=>!(r.heating||r.heat)||(
+ !!heatOn&&temp>=(r.heat??60)
+);
 const findReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
 const findHeatDependentReaction=(contents,temp,heatOn)=>RX.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
@@ -620,8 +717,8 @@ function updateReactionFeedback(){
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
  if(pending){
   const threshold=pending.heat??(pending.heating?60:0);
-  const need=`Cần đạt khoảng ${threshold}°C`;
-  const extra=st.temp<threshold?'Kéo thanh nhiệt độ lên mức này hoặc bật nút đun nóng.':(!st.heat&&pending.heating?'Có thể dùng nút đun nóng để tăng nhiệt độ dần.':'');
+  const need=`Cần đun nóng đến khoảng ${threshold}°C`;
+  const extra=!st.heat?'Bật nút đun nóng và chờ mô phỏng đạt ngưỡng nhiệt cần thiết.':(st.temp<threshold?'Đang tăng nhiệt độ; hãy giữ nút đun nóng bật.':'Đang chờ điều kiện phản ứng phù hợp.');
   showEquation(pending,`${need}. ${extra}`.trim());eqEl.dataset.state='needs-heat';return;
  }
  if(unique.length<2){clearIdleStatus();return;}
@@ -706,7 +803,7 @@ function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new 
 
 /* ============ state ============ */
 const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null};
-let roomTemp=25;
+
 const rocks=[];
 let sediment=null;
 function clearSediment(){if(sediment){bk.remove(sediment);sediment.geometry.dispose();sediment.material.dispose();sediment=null}}
@@ -749,7 +846,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
  lvT=Math.min(2.15,Math.max(0,lvT));lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=LIQ_BASE+lv;
  const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(.72);
- if(st.heat)st.temp=Math.min(150,st.temp+24*dt);else if(st.temp>roomTemp)st.temp=Math.max(roomTemp,st.temp-10*dt);else if(st.temp<roomTemp)st.temp=Math.min(roomTemp,st.temp+10*dt);glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
+ if(st.heat)st.temp=Math.min(150,st.temp+24*dt);else st.temp=Math.max(25,st.temp-10*dt);glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
  if((st.contents.length>1||st.heat)&&(st.chk-=dt)<=0){st.chk=.5;check()}
  /* dòng chất lỏng */
  if(st.stream>0){st.stream-=dt;const c=[st.sc.r,st.sc.g,st.sc.b],tx=.1,tz=0,ty=LIQ_BASE+lv+.05;
@@ -830,18 +927,7 @@ grid.addEventListener('click',e=>{const b=e.target.closest('.t');if(!b)return;op
 $('#x').onclick=()=>openCat(false);
 $('#b0').onclick=()=>openCat(!cat.classList.contains('open'));
 $('#b1').onclick=()=>{st.heat=!st.heat;$('#b1').classList.toggle('on',st.heat);check();updateReactionFeedback()};
-const tempSlider=$('#temp-slider'),tempValue=$('#temp-value');
-tempSlider.addEventListener('input',()=>{
- roomTemp=Number(tempSlider.value);
- tempValue.textContent=roomTemp+'°C';
- if(!st.heat)st.temp=roomTemp;
- else st.temp=Math.max(st.temp,roomTemp);
- st.chk=0;
- glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value);
- check();
- updateReactionFeedback();
-});
-$('#b2').onclick=()=>{clearAll();st.heat=false;roomTemp=25;st.temp=25;tempSlider.value='25';tempValue.textContent='25°C';$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
+$('#b2').onclick=()=>{clearAll();st.heat=false;st.temp=25;$('#b1').classList.remove('on');st.pour=null;bk.rotation.x=0;openCat(false)};
 
 addEventListener('keydown',e=>{if(e.key==='Escape')openCat(false)});
 renderFilters();render();window.CHEM={DB,BY,RX,add,sub,nz};
