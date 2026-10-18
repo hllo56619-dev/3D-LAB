@@ -588,18 +588,16 @@ const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value
 S.add(new THREE.HemisphereLight(0xcfeaff,0x18243b,1.15));const dl=new THREE.DirectionalLight(0xffffff,1.8);dl.position.set(-3,5,4);S.add(dl);const rimLight=new THREE.DirectionalLight(0x8fcfff,1.05);rimLight.position.set(4,2,-3);S.add(rimLight);const fillLight=new THREE.PointLight(0xffffff,.6,18);fillLight.position.set(0,1.4,4);S.add(fillLight);
 const viewRoot=new THREE.Group();S.add(viewRoot);const bk=new THREE.Group();viewRoot.add(bk);
 const H=3.2,pts=[[0,.13],[1.13,.13],[1.22,.145],[1.30,.19],[1.36,.28],[1.40,.43],[1.49,2.86],[1.53,2.97],[1.62,3.00],[1.66,3.055],[1.64,3.115],[1.58,3.145],[1.51,3.12],[1.48,3.07],[1.47,2.98],[1.44,2.86],[1.35,.43],[1.30,.31],[1.22,.25],[0,.25]].map(p=>new THREE.Vector2(p[0],p[1]));
-const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
- vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
- fragmentShader:'uniform float uW;varying vec3 n,v;void main(){vec3 N=normalize(n),V=normalize(v);float edge=pow(1.-abs(dot(N,V)),2.2);float fres=pow(1.-max(dot(N,V),0.),3.0);float streak=pow(max(dot(reflect(normalize(vec3(-.35,.5,1.)),N),V),0.),24.);vec3 glassTint=mix(vec3(.48,.62,.78),vec3(1.0,.72,.42),uW*.5);vec3 c=glassTint*(.20+edge*1.35)+vec3(.42,.58,.78)*fres+vec3(.9)*streak;float a=.10+edge*.68+fres*.22+streak*.22;gl_FragColor=vec4(c,clamp(a,.08,.88));}'});
+const glassMat=new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.12,transparent:true,opacity:.12,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false});
 const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,96),glassMat);glass.renderOrder=3;bk.add(glass);
 // Vành miệng dày, bo tròn như cốc thủy tinh thật.
-const rim=new THREE.Mesh(new THREE.TorusGeometry(1.595,.065,16,96),new THREE.MeshPhysicalMaterial({color:0xc8e5ff,metalness:0,roughness:.16,transparent:true,opacity:.52,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false}));
+const rim=new THREE.Mesh(new THREE.TorusGeometry(1.595,.052,16,96),new THREE.MeshPhysicalMaterial({color:0xffffff,metalness:0,roughness:.18,transparent:true,opacity:.34,clearcoat:1,clearcoatRoughness:.08,side:THREE.DoubleSide,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.075;rim.renderOrder=5;bk.add(rim);
 // Vành đáy dày, tạo phản sáng cong quanh chân cốc.
-const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.055,12,96),new THREE.MeshBasicMaterial({color:0xa9c9ef,transparent:true,opacity:.43,depthWrite:false}));
+const foot=new THREE.Mesh(new THREE.TorusGeometry(1.255,.045,12,96),new THREE.MeshBasicMaterial({color:0xe6edf5,transparent:true,opacity:.24,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.19;foot.renderOrder=4;bk.add(foot);
 // Hai vệt phản xạ dài trên thành thủy tinh, tạo cảm giác kính bóng.
-const highlightMat=new THREE.MeshBasicMaterial({color:0xd9efff,transparent:true,opacity:.38,depthWrite:false});
+const highlightMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.19,depthWrite:false});
 for(const side of [-1,1]){
  const curve=new THREE.CatmullRomCurve3([
   new THREE.Vector3(side*1.48,.48,.34),
@@ -610,11 +608,9 @@ for(const side of [-1,1]){
  const highlight=new THREE.Mesh(new THREE.TubeGeometry(curve,32,.018,6,false),highlightMat);
  highlight.renderOrder=5;bk.add(highlight);
 }
-const nsh=new THREE.Shape([new THREE.Vector2(-.34,.14),new THREE.Vector2(.34,.14),new THREE.Vector2(0,-.1)]);
-const notch=new THREE.Mesh(new THREE.ShapeGeometry(nsh),new THREE.MeshBasicMaterial({color:0x000000}));notch.position.set(0,H+.04,1.64);notch.renderOrder=6;bk.add(notch);
-const nl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-.36,H+.18,1.64),new THREE.Vector3(0,H-.06,1.66),new THREE.Vector3(.36,H+.18,1.64)]),new THREE.LineBasicMaterial({color:0xb4c0d0}));nl.renderOrder=7;bk.add(nl);
+// Removed black pour-notch overlay: keep the beaker lip continuous and rounded.
 // Thước chia độ đặt phía trước thành cốc để người dùng nhìn rõ hướng xoay 3D.
-const gradMat=new THREE.LineBasicMaterial({color:0xd9faff,transparent:true,opacity:.42,depthTest:false});
+const gradMat=new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:.20,depthTest:false});
 const gradX=.83,gradZ=1.18;
 const gradSpine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,.35,gradZ),new THREE.Vector3(gradX,H-.28,gradZ)]),gradMat);
 gradSpine.renderOrder=6;bk.add(gradSpine);
