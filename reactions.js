@@ -4710,6 +4710,282 @@ window.CHEM_RX = [
     "dur": 9,
     "bub": 0.06,
     "explain": "Glucozơ khử bạc(I) thành bạc kim loại; mô phỏng thể hiện bạc màu xám sáng và dung dịch sản phẩm."
+  },
+  {
+    "id": "acid_permanganate_iron2",
+    "need": [
+      "KMnO4",
+      "FeSO4",
+      "H2SO4"
+    ],
+    "eq": "2KMnO4 + 10FeSO4 + 8H2SO4 → K2SO4 + 2MnSO4 + 5Fe2(SO4)3 + 8H2O",
+    "out": [
+      "K2SO4",
+      "MnSO4",
+      "Fe2(SO4)3",
+      "H2O"
+    ],
+    "col": "#a9c8a0",
+    "dur": 9,
+    "bub": 0.6,
+    "explain": "Phản ứng oxi hóa–khử trong môi trường axit: permanganat oxi hóa Fe²⁺ thành Fe³⁺."
+  },
+  {
+    "id": "acid_dichromate_iodide",
+    "need": [
+      "K2Cr2O7",
+      "KI",
+      "H2SO4"
+    ],
+    "eq": "K2Cr2O7 + 6KI + 7H2SO4 → Cr2(SO4)3 + 4K2SO4 + 3I2 + 7H2O",
+    "out": [
+      "Cr2(SO4)3",
+      "K2SO4",
+      "I2",
+      "H2O"
+    ],
+    "col": "#805b91",
+    "dur": 9,
+    "bub": 0.2,
+    "explain": "Đicromat oxi hóa iodua thành iốt trong môi trường axit."
+  },
+  {
+    "id": "acid_permanganate_sulfite",
+    "need": [
+      "KMnO4",
+      "Na2SO3",
+      "H2SO4"
+    ],
+    "eq": "2KMnO4 + 5Na2SO3 + 3H2SO4 → K2SO4 + 5Na2SO4 + 2MnSO4 + 3H2O",
+    "out": [
+      "K2SO4",
+      "Na2SO4",
+      "MnSO4",
+      "H2O"
+    ],
+    "col": "#4e8b58",
+    "dur": 9,
+    "bub": 0.25,
+    "explain": "Permanganat oxi hóa ion sunfit thành sunfat trong môi trường axit."
+  },
+  {
+    "id": "acid_dichromate_sulfite",
+    "need": [
+      "K2Cr2O7",
+      "Na2SO3",
+      "H2SO4"
+    ],
+    "eq": "K2Cr2O7 + 3Na2SO3 + 4H2SO4 → K2SO4 + Cr2(SO4)3 + 3Na2SO4 + 4H2O",
+    "out": [
+      "K2SO4",
+      "Cr2(SO4)3",
+      "Na2SO4",
+      "H2O"
+    ],
+    "col": "#db802b",
+    "dur": 9,
+    "bub": 0.15,
+    "explain": "Đicromat oxi hóa sunfit thành sunfat trong môi trường axit."
+  },
+  {
+    "id": "acid_permanganate_iodide",
+    "need": [
+      "KMnO4",
+      "KI",
+      "H2SO4"
+    ],
+    "eq": "2KMnO4 + 10KI + 8H2SO4 → 6K2SO4 + 2MnSO4 + 5I2 + 8H2O",
+    "out": [
+      "K2SO4",
+      "MnSO4",
+      "I2",
+      "H2O"
+    ],
+    "col": "#514080",
+    "dur": 9,
+    "bub": 0.25,
+    "explain": "Permanganat oxi hóa iodua thành iốt trong môi trường axit."
+  },
+  {
+    "id": "acid_dichromate_iron2",
+    "need": [
+      "K2Cr2O7",
+      "FeSO4",
+      "H2SO4"
+    ],
+    "eq": "K2Cr2O7 + 6FeSO4 + 7H2SO4 → K2SO4 + Cr2(SO4)3 + 3Fe2(SO4)3 + 7H2O",
+    "out": [
+      "K2SO4",
+      "Cr2(SO4)3",
+      "Fe2(SO4)3",
+      "H2O"
+    ],
+    "col": "#d6b276",
+    "dur": 9,
+    "bub": 0.2,
+    "explain": "Đicromat oxi hóa Fe²⁺ thành Fe³⁺ trong môi trường axit."
+  },
+  {
+    "id": "acid_peroxide_iron2",
+    "need": [
+      "FeSO4",
+      "H2O2",
+      "H2SO4"
+    ],
+    "eq": "2FeSO4 + H2O2 + H2SO4 → Fe2(SO4)3 + 2H2O",
+    "out": [
+      "Fe2(SO4)3",
+      "H2O"
+    ],
+    "col": "#d6b276",
+    "dur": 7,
+    "bub": 0.1,
+    "explain": "Hiđro peoxit oxi hóa Fe²⁺ thành Fe³⁺ trong môi trường axit."
+  },
+  {
+    "id": "limestone_carbonation",
+    "need": [
+      "CaCO3",
+      "CO2",
+      "H2O"
+    ],
+    "eq": "CaCO3 + CO2 + H2O ⇌ Ca(HCO3)2",
+    "out": [
+      "Ca(HCO3)2"
+    ],
+    "col": "#e8e8e2",
+    "dur": 7,
+    "bub": 0.05,
+    "explain": "CO₂ hòa tan trong nước giúp chuyển canxi cacbonat ít tan thành canxi hiđrocacbonat tan."
+  },
+  {
+    "id": "ammonium_bicarbonate_formation",
+    "need": [
+      "NH3",
+      "CO2",
+      "H2O"
+    ],
+    "eq": "NH3 + CO2 + H2O ⇌ NH4HCO3",
+    "out": [
+      "NH4HCO3"
+    ],
+    "col": "#e8e8e2",
+    "dur": 7,
+    "bub": 0.05,
+    "explain": "Amoniac, cacbon đioxit và nước tạo cân bằng hiđrocacbonat amoni."
+  },
+  {
+    "id": "nitrogen_dioxide_oxidation_water",
+    "need": [
+      "NO2",
+      "O2",
+      "H2O"
+    ],
+    "eq": "4NO2 + O2 + 2H2O → 4HNO3",
+    "out": [
+      "HNO3"
+    ],
+    "col": "#d0c4b0",
+    "dur": 8,
+    "bub": 0.2,
+    "explain": "Oxi hóa NO₂ trong nước tạo axit nitric; mô phỏng phương trình tổng quát."
+  },
+  {
+    "id": "sulfur_dioxide_to_sulfuric_acid",
+    "need": [
+      "SO2",
+      "O2",
+      "H2O"
+    ],
+    "eq": "2SO2 + O2 + 2H2O ⇌ 2H2SO4",
+    "out": [
+      "H2SO4"
+    ],
+    "heat": 80,
+    "heating": true,
+    "arrowLabel": "xúc tác, t°",
+    "col": "#e8e9e9",
+    "dur": 9,
+    "bub": 0.08,
+    "explain": "Phương trình tổng quát của quá trình oxi hóa SO₂ rồi hấp thụ tạo axit sunfuric; quy trình thực tế cần xúc tác và nhiều công đoạn."
+  },
+  {
+    "id": "ethanol_dichromate_acid",
+    "need": [
+      "C2H5OH",
+      "K2Cr2O7",
+      "H2SO4"
+    ],
+    "eq": "3C2H5OH + 2K2Cr2O7 + 8H2SO4 → 3CH3COOH + 2Cr2(SO4)3 + 2K2SO4 + 11H2O",
+    "out": [
+      "CH3COOH",
+      "Cr2(SO4)3",
+      "K2SO4",
+      "H2O"
+    ],
+    "heat": 80,
+    "heating": true,
+    "col": "#d6b276",
+    "dur": 10,
+    "bub": 0.1,
+    "explain": "Đicromat trong môi trường axit oxi hóa etanol thành axit axetic theo phương trình tổng quát."
+  },
+  {
+    "id": "iodine_hot_alkali",
+    "need": [
+      "I2",
+      "NaOH",
+      "H2O"
+    ],
+    "eq": "3I2 + 6NaOH → 5NaI + NaIO3 + 3H2O",
+    "out": [
+      "NaI",
+      "NaIO3",
+      "H2O"
+    ],
+    "heat": 80,
+    "heating": true,
+    "col": "#d8d8d8",
+    "dur": 9,
+    "bub": 0.1,
+    "explain": "Trong kiềm nóng, iốt bị phản ứng tự oxi hóa–khử tạo iodua và iodat."
+  },
+  {
+    "id": "chlorine_hot_alkali",
+    "need": [
+      "Cl2",
+      "NaOH",
+      "H2O"
+    ],
+    "eq": "3Cl2 + 6NaOH → 5NaCl + NaClO3 + 3H2O",
+    "out": [
+      "NaCl",
+      "NaClO3",
+      "H2O"
+    ],
+    "heat": 80,
+    "heating": true,
+    "col": "#d8d8d8",
+    "dur": 9,
+    "bub": 0.15,
+    "explain": "Clo phản ứng với kiềm nóng, đặc tạo clorua và clorat; chỉ mô phỏng do khí clo độc."
+  },
+  {
+    "id": "iron_rusting_water_oxygen",
+    "need": [
+      "Fe",
+      "O2",
+      "H2O"
+    ],
+    "eq": "4Fe + 3O2 + 6H2O → 4Fe(OH)3",
+    "out": [
+      "Fe(OH)3"
+    ],
+    "col": "#8b4230",
+    "precip": "#8b4230",
+    "dur": 10,
+    "bub": 0.08,
+    "explain": "Mô hình hóa đơn giản quá trình ăn mòn sắt trong không khí ẩm; gỉ thực tế có thành phần phức tạp."
   }
 ];
 
