@@ -597,6 +597,16 @@ rim.rotation.x=Math.PI/2;rim.position.y=H;rim.renderOrder=4;bk.add(rim);
 const nsh=new THREE.Shape([new THREE.Vector2(-.34,.14),new THREE.Vector2(.34,.14),new THREE.Vector2(0,-.1)]);
 const notch=new THREE.Mesh(new THREE.ShapeGeometry(nsh),new THREE.MeshBasicMaterial({color:0x000000}));notch.position.set(0,H+.04,1.64);notch.renderOrder=6;bk.add(notch);
 const nl=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(-.36,H+.18,1.64),new THREE.Vector3(0,H-.06,1.66),new THREE.Vector3(.36,H+.18,1.64)]),new THREE.LineBasicMaterial({color:0xb4c0d0}));nl.renderOrder=7;bk.add(nl);
+// Thước chia độ đặt phía trước thành cốc để người dùng nhìn rõ hướng xoay 3D.
+const gradMat=new THREE.LineBasicMaterial({color:0xd9faff,transparent:true,opacity:.42,depthTest:false});
+const gradX=.83,gradZ=1.18;
+const gradSpine=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,.35,gradZ),new THREE.Vector3(gradX,H-.28,gradZ)]),gradMat);
+gradSpine.renderOrder=6;bk.add(gradSpine);
+for(let i=1;i<=7;i++){
+ const y=.35+i*.34,len=i%2===0?.29:.16;
+ const mark=new THREE.Line(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(gradX,y,gradZ),new THREE.Vector3(gradX+len,y,gradZ)]),gradMat);
+ mark.renderOrder=6;bk.add(mark);
+}
 const LR=1.43,liqMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
@@ -851,7 +861,7 @@ const CORE_IDS=new Set([
 const representedIds=new Set(EL.map(e=>inv(e)));
 const catalogData=[
  ...EL.map(e=>({id:inv(e),label:e.sym,type:e.state==='Khí'?'g':e.state==='Lỏng'?'l':'e',color:CATN[e.cat][1],search:nrm([e.sym,e.en,e.vi,e.z,'nguyen to','element'].join(' ')),title:e.sym+' — '+e.en})),
- ...(C?C.DB.filter(d=>CORE_IDS.has(d.id)&&!representedIds.has(d.id)).map(d=>({id:d.id,label:d.id==='P (white)'?'P':d.f,type:d.t,color:d.c,search:nrm([d.id,d.f,d.a,d.t].join(' ')),title:d.f+' — '+(d.aliases||[]).join(' ')})):[])
+ ...(C?C.DB.filter(d=>CORE_IDS.has(d.id)&&!representedIds.has(d.id)).map(d=>({id:d.id,label:d.id==='P (white)'?'P':d.id==='Universal indicator'?'UI':d.id==='Phenolphthalein'?'PhPh':d.f,type:d.t,color:d.c,search:nrm([d.id,d.f,d.a,d.t].join(' ')),title:d.f+' — '+(d.aliases||[]).join(' ')})):[])
 ];
 function catalogIcon(type,color){
  if(type==='l')return '<svg viewBox="0 0 44 44" aria-hidden="true"><path d="M16 4h12v12l10 17a5 5 0 0 1-4 7H10a5 5 0 0 1-4-7l10-17z" fill="'+color+'" fill-opacity=".9" stroke="#e5faff" stroke-opacity=".75" stroke-width="1.4"/><path d="M14 27h16l7 10H7z" fill="#c3f4ff" fill-opacity=".48"/><path d="M18 5h8" stroke="#e5faff" stroke-width="2" stroke-linecap="round"/></svg>';
