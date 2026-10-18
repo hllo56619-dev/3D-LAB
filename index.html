@@ -13,7 +13,7 @@
 html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:Georgia,"Times New Roman",serif;overflow:hidden;-webkit-user-select:none;user-select:none;touch-action:none}
 #c{position:fixed;inset:0;width:100%;height:100%;display:block}
-#eq{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:8%;right:8%;text-align:center;font-size:12px;line-height:1.35;color:#e8e8e8;pointer-events:none}
+#eq{position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);left:8%;right:8%;text-align:center;font-size:14px;line-height:1.45;color:#f0f0f0;pointer-events:none}
 #eq .eq-main{display:block;padding-top:12px;line-height:1.5;text-shadow:0 1px 3px #000}
 .eq-arrow{display:inline-block;position:relative;vertical-align:middle;line-height:1;padding-top:.65em;margin:0 .08em;white-space:nowrap}
 .eq-arrow-label{position:absolute;left:50%;top:-.05em;transform:translateX(-50%);font-size:.68em;line-height:1;white-space:nowrap;color:#ddd}
@@ -23,7 +23,7 @@ body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:Georg
 .eq-status.needs-heat{color:#ffe1a6;border-color:rgba(255,210,120,.35)}
 .eq-status.info{color:#ddd}
 
-#lab{position:fixed;left:6%;top:56%;font-size:11px;line-height:1.5;color:#cfcfcf;pointer-events:none}
+#lab{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 70px);transform:translateX(-50%);max-width:min(88vw,420px);text-align:center;font-size:13px;line-height:1.45;color:#e0e3e6;background:rgba(0,0,0,.4);border:1px solid rgba(210,220,230,.12);border-radius:8px;padding:4px 10px;pointer-events:none;white-space:normal}
 sub{font-size:.72em;line-height:0}
 #bar{position:fixed;left:12px;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 10px);height:48px;background:rgba(44,44,44,.94);border-radius:8px;display:flex;justify-content:space-around;align-items:center;z-index:5;max-width:520px;margin:0 auto}
 #bar button{background:none;border:0;width:56px;height:44px;display:grid;place-items:center;cursor:pointer;border-radius:8px;-webkit-tap-highlight-color:transparent}
@@ -582,7 +582,7 @@ function updateReactionFeedback(){
  },900);
 }
 /* ============ scene.js ============ */
-let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:false,powerPreference:'low-power'});}catch(e){$('#err').style.display='grid';return}
+let R;try{R=new THREE.WebGLRenderer({canvas:$('#c'),antialias:true,powerPreference:'high-performance'});}catch(e){$('#err').style.display='grid';return}
 R.setClearColor(0x000000,1);
 const S=new THREE.Scene(),cam=new THREE.PerspectiveCamera(32,1,.1,100),SC={value:1};
 S.add(new THREE.AmbientLight(0xffffff,.75));const dl=new THREE.DirectionalLight(0xffffff,.9);dl.position.set(3,5,4);S.add(dl);
@@ -598,7 +598,7 @@ const H=3.5,pts=[
 const glassMat=new THREE.ShaderMaterial({transparent:true,depthWrite:false,side:THREE.DoubleSide,uniforms:{uW:{value:0}},
  vertexShader:'varying vec3 n,v;void main(){vec4 m=modelViewMatrix*vec4(position,1.);n=normalize(normalMatrix*normal);v=normalize(-m.xyz);gl_Position=projectionMatrix*m;}',
  fragmentShader:'uniform float uW;varying vec3 n,v;void main(){float f=pow(1.-abs(dot(normalize(n),normalize(v))),2.);vec3 c=vec3(.72,.72,.72)+vec3(.20)*f;gl_FragColor=vec4(c,.018+.48*f);}'});
-const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,48),glassMat);glass.renderOrder=3;bk.add(glass);
+const glass=new THREE.Mesh(new THREE.LatheGeometry(pts,64),glassMat);glass.renderOrder=3;bk.add(glass);
 // One restrained roll highlight follows the rounded lip already modelled in the glass profile.
 const rim=new THREE.Mesh(new THREE.TorusGeometry(1.565,.032,8,48),new THREE.MeshBasicMaterial({color:0xd6d8db,transparent:true,opacity:.32,depthWrite:false}));
 rim.rotation.x=Math.PI/2;rim.position.y=3.425;rim.renderOrder=4;bk.add(rim);
@@ -627,12 +627,12 @@ bk.add(
 // Thick rounded base, with no volume markings.
 const foot=new THREE.Mesh(new THREE.TorusGeometry(1.23,.035,6,40),new THREE.MeshBasicMaterial({color:0xcbd0d5,transparent:true,opacity:.18,depthWrite:false}));
 foot.rotation.x=Math.PI/2;foot.position.y=.20;foot.renderOrder=4;bk.add(foot);
-const LR=1.31,liqMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.9,side:THREE.DoubleSide,depthWrite:false});
+const LR=1.31,liqMat=new THREE.MeshBasicMaterial({color:0xc5d3da,transparent:true,opacity:.30,side:THREE.DoubleSide,depthWrite:false});
 const lg=new THREE.CylinderGeometry(LR,LR,1,48,1,true);lg.translate(0,.5,0);
 const liq=new THREE.Mesh(lg,liqMat);liq.renderOrder=1;bk.add(liq);
-const topMat=new THREE.MeshBasicMaterial({transparent:true,opacity:.97,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
+const topMat=new THREE.MeshBasicMaterial({color:0xc5d3da,transparent:true,opacity:.38,depthWrite:false}),top=new THREE.Mesh(new THREE.CircleGeometry(LR,48),topMat);
 top.rotation.x=-Math.PI/2;top.renderOrder=2;bk.add(top);
-function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,.85);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.1/(1.22*th),4.5/(1.5*cam.aspect*th));cam.position.set(0,1.55+d*.52,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
+function fit(){const w=innerWidth,h=innerHeight,dpr=Math.min(devicePixelRatio||1,1.25);R.setPixelRatio(dpr);R.setSize(w,h,false);cam.aspect=w/h;const th=Math.tan(cam.fov*Math.PI/360),d=Math.max(4.1/(1.22*th),4.5/(1.5*cam.aspect*th));cam.position.set(0,1.55+d*.52,d);cam.lookAt(0,1.58,0);cam.updateProjectionMatrix();SC.value=h*dpr/(2*th)/dpr*dpr}
 addEventListener('resize',fit);fit();
 // Fixed illustration view: pointer dragging is intentionally disabled.
 viewRoot.rotation.set(-0.08,0,0);
@@ -640,6 +640,8 @@ R.domElement.style.touchAction='auto';
 
 /* ============ effects.js ============ */
 const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
+const BUBBLE_COLORS={H2:rgb('#dbe8f5'),CO2:rgb('#d8e0e8'),O2:rgb('#bfeaff'),SO2:rgb('#d7cfb5'),NO:rgb('#cfd7dd'),NO2:rgb('#a95b31'),NH3:rgb('#e4e0d5')};
+const DEFAULT_BUBBLE_COLOR=rgb('#e7f1fb');
 function tex(kind){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);
  if(kind){g.addColorStop(0,'rgba(255,255,255,.06)');g.addColorStop(.7,'rgba(255,255,255,.18)');g.addColorStop(.9,'rgba(255,255,255,.95)');g.addColorStop(1,'rgba(255,255,255,0)')}
  else{g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(255,255,255,0)')}
@@ -706,10 +708,10 @@ function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];lvT=0
 
 /* ============ main loop ============ */
 let last=performance.now(),time=0;
-function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;return}if(now-last<1000/24)return;const dt=Math.min(.06,(now-last)/1000);last=now;time+=dt;
+function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;return}const dt=Math.min(.04,(now-last)/1000);last=now;time+=dt;
  lv+=(lvT-lv)*Math.min(1,dt*(st.pour?1:2.5));if(Math.abs(lvT-lv)<.001)lv=lvT;
  liq.visible=top.visible=lv>.02;liq.scale.y=Math.max(lv,.001);top.position.y=lv;
- const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(1.12);
+ const tc=liquidTarget();st.col.lerp(tc,Math.min(1,dt*(st.rx?.55:2.5)));liqMat.color.copy(st.col);topMat.color.copy(st.col).multiplyScalar(.72);
  st.temp+=st.heat?(st.temp<130?24*dt:0):(st.temp>25?-10*dt:0);if(st.temp<25)st.temp=25;glassMat.uniforms.uW.value=st.heat?Math.min(1,(st.temp-25)/60):Math.max(0,glassMat.uniforms.uW.value-dt);
  if((st.contents.length>1||st.heat)&&(st.chk-=dt)<=0){st.chk=.5;check()}
  /* dòng chất lỏng */
@@ -735,7 +737,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
   if(p>=1){st.rx=null;st.fire=0;st.hint=3}}
  else if(st.hint>0){st.hint-=dt;st.bub=Math.max(0,st.bub-dt*.4)}else st.bub=Math.max(0,st.bub-dt*.5);
  /* bọt khí trong dung dịch */
- if(lv>.2){const n=st.bub*(st.heat?55:40)*dt+Math.random();const gasColors={H2:'#dbe8f5',CO2:'#d8e0e8',O2:'#bfeaff',SO2:'#d7cfb5',NO:'#cfd7dd',NO2:'#a95b31',NH3:'#e4e0d5'};const gc=rgb(gasColors[st.gasType]||'#e7f1fb');for(let i=0;i<Math.floor(n*(st.bub>.02?1:0));i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*1.25;
+ if(lv>.2&&st.bub>.02){const n=st.bub*(st.heat?55:40)*dt+Math.random();const gc=BUBBLE_COLORS[st.gasType]||DEFAULT_BUBBLE_COLOR;for(let i=0,count=Math.floor(n);i<count;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*1.25;
   bub.emit({x:Math.cos(a)*rr,y:rnd(.15,Math.max(.2,lv*.6)),z:Math.sin(a)*rr,vx:rnd(-.1,.1),vy:rnd(.4,1.1)+st.bub*.3,life:8,size:rnd(.05,.17),c0:gc,a:.75})}}
  /* lửa trên miệng cốc (kim loại kiềm) */
  if(st.fire>.02){const n=Math.round(70*st.fire*dt*(.5+Math.random()));for(let i=0;i<n;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*.9*(.4+st.fire*.6);
