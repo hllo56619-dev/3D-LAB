@@ -549,11 +549,26 @@ R.domElement.style.touchAction='auto';
 const rgb=h=>{const c=new THREE.Color(h);return[c.r,c.g,c.b]};
 const BUBBLE_COLORS={H2:rgb('#dbe8f5'),CO2:rgb('#d8e0e8'),O2:rgb('#bfeaff'),SO2:rgb('#d7cfb5'),NO:rgb('#cfd7dd'),NO2:rgb('#a95b31'),NH3:rgb('#e4e0d5')};
 const DEFAULT_BUBBLE_COLOR=rgb('#e7f1fb');
-function tex(kind){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d'),g=x.createRadialGradient(32,32,0,32,32,32);
- if(kind){g.addColorStop(0,'rgba(255,255,255,.06)');g.addColorStop(.7,'rgba(255,255,255,.18)');g.addColorStop(.9,'rgba(255,255,255,.95)');g.addColorStop(1,'rgba(255,255,255,0)')}
- else{g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(255,255,255,0)')}
- x.fillStyle=g;x.fillRect(0,0,64,64);return new THREE.CanvasTexture(c)}
-const T0=tex(0),T1=tex(1);
+function tex(kind){const c=document.createElement('canvas');c.width=c.height=64;const x=c.getContext('2d');
+ if(kind===2){
+  // A tapered flame silhouette with a soft halo, not a blurry circular glow.
+  const halo=x.createRadialGradient(32,39,3,32,38,30);
+  halo.addColorStop(0,'rgba(255,255,255,.26)');halo.addColorStop(.48,'rgba(255,255,255,.12)');halo.addColorStop(1,'rgba(255,255,255,0)');
+  x.fillStyle=halo;x.fillRect(0,0,64,64);
+  const body=x.createLinearGradient(0,5,0,63);
+  body.addColorStop(0,'rgba(255,255,255,.08)');body.addColorStop(.22,'rgba(255,255,255,.52)');body.addColorStop(.68,'rgba(255,255,255,.92)');body.addColorStop(1,'rgba(255,255,255,0)');
+  x.beginPath();x.moveTo(32,2);x.bezierCurveTo(36,15,51,23,46,40);x.bezierCurveTo(44,52,37,60,32,63);x.bezierCurveTo(23,58,17,49,18,39);x.bezierCurveTo(18,27,27,18,32,2);x.closePath();x.fillStyle=body;x.fill();
+  const inner=x.createLinearGradient(0,20,0,59);
+  inner.addColorStop(0,'rgba(255,255,255,0)');inner.addColorStop(.4,'rgba(255,255,255,.78)');inner.addColorStop(1,'rgba(255,255,255,0)');
+  x.beginPath();x.moveTo(32,22);x.bezierCurveTo(35,31,40,39,36,49);x.bezierCurveTo(35,54,33,57,31,59);x.bezierCurveTo(26,52,24,47,27,40);x.bezierCurveTo(28,33,31,29,32,22);x.closePath();x.fillStyle=inner;x.fill();
+ }else{
+  const g=x.createRadialGradient(32,32,0,32,32,32);
+  if(kind){g.addColorStop(0,'rgba(255,255,255,.06)');g.addColorStop(.7,'rgba(255,255,255,.18)');g.addColorStop(.9,'rgba(255,255,255,.95)');g.addColorStop(1,'rgba(255,255,255,0)')}
+  else{g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(255,255,255,0)')}
+  x.fillStyle=g;x.fillRect(0,0,64,64)
+ }
+ return new THREE.CanvasTexture(c)}
+const T0=tex(0),T1=tex(1),TF=tex(2);
 function Pool(n,add,tx,kill){
  const g=new THREE.BufferGeometry(),P=new Float32Array(n*3),Cl=new Float32Array(n*3),Z=new Float32Array(n),A=new Float32Array(n);
  [['position',P,3],['col',Cl,3],['sz',Z,1],['al',A,1]].forEach(([k,a,s])=>g.setAttribute(k,new THREE.BufferAttribute(a,s)));
@@ -570,7 +585,7 @@ function Pool(n,add,tx,kill){
   A[i]=A0[i]*(t<.1?t/.1:1-(t-.1)/.9);Z[i]=S0[i]*(1+GR[i]*t)}
   ['position','col','sz','al'].forEach(a=>g.attributes[a].needsUpdate=true)}}}
 let lv=0,lvT=0;
-const fire=Pool(88,true,T0),spark=Pool(24,true,T0),bub=Pool(24,false,T1,(x,y)=>y>LIQ_BASE+lv),grain=Pool(64,false,T0),mist=Pool(32,false,T0);
+const fire=Pool(88,true,TF),spark=Pool(24,true,T0),bub=Pool(24,false,T1,(x,y)=>y>LIQ_BASE+lv),grain=Pool(64,false,T0),mist=Pool(32,false,T0);
 let mistTick=0;
 const rings=[];
 function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.5,side:THREE.DoubleSide,depthWrite:false}));
@@ -682,11 +697,11 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
  if(lv>.2&&st.bub>.02){const n=st.bub*(st.heat?55:40)*dt+Math.random();const gc=BUBBLE_COLORS[st.gasType]||DEFAULT_BUBBLE_COLOR;for(let i=0,count=Math.floor(n);i<count;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*1.25;
   bub.emit({x:Math.cos(a)*rr,y:LIQ_BASE+rnd(.04,Math.max(.08,lv*.6)),z:Math.sin(a)*rr,vx:rnd(-.1,.1),vy:rnd(.4,1.1)+st.bub*.3,life:8,size:rnd(.05,.17),c0:gc,a:.75})}}
  /* lửa trên miệng cốc (kim loại kiềm) */
- if(st.fire>.02){const n=Math.round(70*st.fire*dt*(.5+Math.random()));for(let i=0;i<n;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*.9*(.4+st.fire*.6);
-  fire.emit({x:Math.cos(a)*rr,y:LIQ_BASE+lv+.1,z:Math.sin(a)*rr,vx:rnd(-.3,.3),vy:rnd(2.2,4),vz:rnd(-.3,.3),life:rnd(.9,1.6),size:rnd(.7,1.3),c0:[1,.75,.3],c1:[.75,.08,.04],a:.4*st.fire+.1,grow:.4})}
+ if(st.fire>.02){const n=Math.round(66*st.fire*dt*(.65+Math.random()*.7));for(let i=0;i<n;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*.48*(.4+st.fire*.6);
+  fire.emit({x:Math.cos(a)*rr,y:LIQ_BASE+lv+.08,z:Math.sin(a)*rr,vx:rnd(-.22,.22),vy:rnd(1.25,2.55),vz:rnd(-.22,.22),life:rnd(.32,.68),size:rnd(.16,.31),c0:[1,.83,.32],c1:[.95,.18,.025],a:.78*st.fire+.12,grow:-.12})}
   for(let i=0;i<Math.round(12*st.fire*dt*60/60);i++)spark.emit({x:rnd(-.7,.7),y:lv+.2,z:rnd(-.7,.7),vx:rnd(-1.5,1.5),vy:rnd(2,6),vz:rnd(-1.5,1.5),life:rnd(1,2.2),size:rnd(.05,.1),c0:[1,.85,.5],c1:[1,.2,.1],g:-1.5,a:.9})}
  /* ngọn lửa đun dưới đáy cốc */
- if(st.heat){const n=Math.round(24*dt*(.7+Math.random()*.6));for(let i=0;i<n;i++)fire.emit({x:rnd(-.3,.3),y:-.9,z:rnd(-.2,.2),vx:rnd(-.1,.1),vy:rnd(1.2,2.2),vz:rnd(-.1,.1),life:rnd(.45,.8),size:rnd(.45,.8),c0:[1,.88,.45],c1:[.9,.25,.05],a:.5,grow:-.3})}
+ if(st.heat){const n=Math.round(64*dt*(.8+Math.random()*.4));for(let i=0;i<n;i++){const x=rnd(-.19,.19),z=rnd(-.13,.13);fire.emit({x,y:-.9,z,vx:rnd(-.12,.12),vy:rnd(1.05,1.75),vz:rnd(-.1,.1),life:rnd(.28,.48),size:rnd(.17,.29),c0:[1,.72,.22],c1:[1,.16,.018],a:.78,grow:-.08})}}
  for(let i=rings.length-1;i>=0;i--){const g=rings[i];g.t+=dt*1.4;g.m.scale.setScalar(.1+g.t*1.3);g.m.material.opacity=.5*(1-g.t);g.m.position.y=LIQ_BASE+lv+.02;
   if(g.t>=1){S.remove(g.m);g.m.geometry.dispose();g.m.material.dispose();rings.splice(i,1)}}
  /* đổ bỏ dung dịch (nút cửa) */
