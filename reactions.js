@@ -2,6 +2,6 @@
 // Keep this entry point for anyone who still references ./reactions.js.
 (function(){
  window.CHEM_RX = [];
- const files = ["01-acid-base.js","02-precipitation.js","03-metal-acid.js","04-metal-displacement.js","05-gas-evolution.js","06-oxidation-combustion.js","07-organic-qualitative.js","08-thermal-catalysis.js","09-oxide-reactions.js","10-other-reactions.js","99-audit.js"];
+ const files = ["01-acid-base.js","02-precipitation.js","03-metal-acid.js","04-metal-displacement.js","05-gas-evolution.js","06-oxidation-combustion.js","07-organic-qualitative.js","08-thermal-catalysis.js","09-oxide-reactions.js","10-other-reactions.js","11-expanded-precipitation.js","99-audit.js"];
  document.write(files.map(file => '<script src="./reactions/' + file + '"><' + '/script>').join(''));
 })();
