@@ -409,7 +409,29 @@ NaIO3|c|f2f2f2|sodium iodate natri iodat
 NaClO3|c|f2f2f2|sodium chlorate natri clorat
 NaBrO3|c|f2f2f2|sodium bromate natri bromat
 Na[Al(OH)4]|l|f2f2f2|sodium tetrahydroxoaluminate natri tetrahiđroxoaluminat
-Na2[Zn(OH)4]|l|f2f2f2|sodium tetrahydroxozincate natri tetrahiđroxozincat`;
+Na2[Zn(OH)4]|l|f2f2f2|sodium tetrahydroxozincate natri tetrahiđroxozincat
+GaCl3|l|d8d8d8|gallium chloride gali clorua
+GaBr3|l|d8d8d8|gallium bromide gali bromua
+Ga2O3|c|eeeeea|gallium oxide gali oxit
+CrCl2|l|a9aeb5|chromium ii chloride crom ii clorua
+ZnBr2|l|e7e8e7|zinc bromide kẽm bromua
+MgBr2|l|e7e8e7|magnesium bromide magie bromua
+CaBr2|l|e7e8e7|calcium bromide canxi bromua
+SnBr2|l|d1d1d1|tin ii bromide thiếc ii bromua
+NiBr2|l|b9d4d0|nickel ii bromide niken ii bromua
+CoBr2|l|d8c6bb|cobalt ii bromide coban ii bromua
+Mg(CH3COO)2|l|e7e8e7|magnesium acetate magie axetat
+Zn(CH3COO)2|l|e7e8e7|zinc acetate kẽm axetat
+Fe(CH3COO)2|l|a9c8a0|iron ii acetate sắt ii axetat
+Zn3(PO4)2|c|eeeeea|zinc phosphate kẽm photphat
+Mg3(PO4)2|c|eeeeea|magnesium phosphate magie photphat
+MgF2|c|eeeeea|magnesium fluoride magie florua
+ZnF2|c|eeeeea|zinc fluoride kẽm florua
+CaF2|c|eeeeea|calcium fluoride canxi florua
+Ag2SO4|c|eeeeea|silver sulfate bạc sunfat
+NaClO|l|e7e8e7|sodium hypochlorite natri hipoclorit
+NaBrO|l|d8d8d8|sodium hypobromite natri hipobromit
+Cu3(PO4)2|c|55a477|copper ii phosphate đồng ii photphat`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
