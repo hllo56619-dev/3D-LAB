@@ -5162,6 +5162,634 @@ window.CHEM_RX = [
     "bub": 0.3,
     "gas": "CO2",
     "explain": "CO bị oxi hóa thành CO₂ trên xúc tác platin; mô phỏng giữ Pt lại làm xúc tác."
+  },
+  {
+    "id": "ga_hcl",
+    "need": [
+      "Ga",
+      "HCl"
+    ],
+    "eq": "2Ga + 6HCl → 2GaCl3 + 3H2↑",
+    "out": [
+      "GaCl3",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.7,
+    "gas": "H2",
+    "explain": "Gali phản ứng với axit clohiđric tạo gali clorua và hiđro."
+  },
+  {
+    "id": "co_hcl",
+    "need": [
+      "Co",
+      "HCl"
+    ],
+    "eq": "Co + 2HCl → CoCl2 + H2↑",
+    "out": [
+      "CoCl2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "cr_hcl",
+    "need": [
+      "Cr",
+      "HCl"
+    ],
+    "eq": "Cr + 2HCl → CrCl2 + H2↑",
+    "out": [
+      "CrCl2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "ga_hbr",
+    "need": [
+      "Ga",
+      "HBr"
+    ],
+    "eq": "2Ga + 6HBr → 2GaBr3 + 3H2↑",
+    "out": [
+      "GaBr3",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "H2"
+  },
+  {
+    "id": "zn_hbr",
+    "need": [
+      "Zn",
+      "HBr"
+    ],
+    "eq": "Zn + 2HBr → ZnBr2 + H2↑",
+    "out": [
+      "ZnBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "mg_hbr",
+    "need": [
+      "Mg",
+      "HBr"
+    ],
+    "eq": "Mg + 2HBr → MgBr2 + H2↑",
+    "out": [
+      "MgBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "ca_hbr",
+    "need": [
+      "Ca",
+      "HBr"
+    ],
+    "eq": "Ca + 2HBr → CaBr2 + H2↑",
+    "out": [
+      "CaBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "sn_hbr",
+    "need": [
+      "Sn",
+      "HBr"
+    ],
+    "eq": "Sn + 2HBr → SnBr2 + H2↑",
+    "out": [
+      "SnBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "ni_hbr",
+    "need": [
+      "Ni",
+      "HBr"
+    ],
+    "eq": "Ni + 2HBr → NiBr2 + H2↑",
+    "out": [
+      "NiBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "co_hbr",
+    "need": [
+      "Co",
+      "HBr"
+    ],
+    "eq": "Co + 2HBr → CoBr2 + H2↑",
+    "out": [
+      "CoBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "fe_hbr",
+    "need": [
+      "Fe",
+      "HBr"
+    ],
+    "eq": "Fe + 2HBr → FeBr2 + H2↑",
+    "out": [
+      "FeBr2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "gas": "H2"
+  },
+  {
+    "id": "mg_hf",
+    "need": [
+      "Mg",
+      "HF"
+    ],
+    "eq": "Mg + 2HF → MgF2 + H2↑",
+    "out": [
+      "MgF2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.3,
+    "precip": "#eeeeea",
+    "gas": "H2",
+    "explain": "Chỉ mô phỏng; HF cực độc và ăn mòn mạnh."
+  },
+  {
+    "id": "zn_hf",
+    "need": [
+      "Zn",
+      "HF"
+    ],
+    "eq": "Zn + 2HF → ZnF2 + H2↑",
+    "out": [
+      "ZnF2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.3,
+    "precip": "#eeeeea",
+    "gas": "H2",
+    "explain": "Chỉ mô phỏng; HF cực độc và ăn mòn mạnh."
+  },
+  {
+    "id": "ca_hf",
+    "need": [
+      "Ca",
+      "HF"
+    ],
+    "eq": "Ca + 2HF → CaF2 + H2↑",
+    "out": [
+      "CaF2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.3,
+    "precip": "#eeeeea",
+    "gas": "H2",
+    "explain": "Chỉ mô phỏng; HF cực độc và ăn mòn mạnh."
+  },
+  {
+    "id": "mg_acetic",
+    "need": [
+      "Mg",
+      "CH3COOH"
+    ],
+    "eq": "Mg + 2CH3COOH → Mg(CH3COO)2 + H2↑",
+    "out": [
+      "Mg(CH3COO)2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.3,
+    "gas": "H2"
+  },
+  {
+    "id": "zn_acetic",
+    "need": [
+      "Zn",
+      "CH3COOH"
+    ],
+    "eq": "Zn + 2CH3COOH → Zn(CH3COO)2 + H2↑",
+    "out": [
+      "Zn(CH3COO)2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.3,
+    "gas": "H2"
+  },
+  {
+    "id": "fe_acetic",
+    "need": [
+      "Fe",
+      "CH3COOH"
+    ],
+    "eq": "Fe + 2CH3COOH → Fe(CH3COO)2 + H2↑",
+    "out": [
+      "Fe(CH3COO)2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.3,
+    "gas": "H2"
+  },
+  {
+    "id": "zn_phosphoric",
+    "need": [
+      "Zn",
+      "H3PO4"
+    ],
+    "eq": "3Zn + 2H3PO4 → Zn3(PO4)2↓ + 3H2↑",
+    "out": [
+      "Zn3(PO4)2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "precip": "#eeeeea",
+    "gas": "H2"
+  },
+  {
+    "id": "mg_phosphoric",
+    "need": [
+      "Mg",
+      "H3PO4"
+    ],
+    "eq": "3Mg + 2H3PO4 → Mg3(PO4)2↓ + 3H2↑",
+    "out": [
+      "Mg3(PO4)2",
+      "H2"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.4,
+    "precip": "#eeeeea",
+    "gas": "H2"
+  },
+  {
+    "id": "cu_hno3_dilute",
+    "need": [
+      "Cu",
+      "HNO3"
+    ],
+    "eq": "3Cu + 8HNO3 → 3Cu(NO3)2 + 2NO↑ + 4H2O",
+    "out": [
+      "Cu(NO3)2",
+      "NO",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "NO",
+    "explain": "Axit nitric loãng là axit oxi hóa; phản ứng tạo NO thay vì H2."
+  },
+  {
+    "id": "ag_hno3_dilute",
+    "need": [
+      "Ag",
+      "HNO3"
+    ],
+    "eq": "3Ag + 4HNO3 → 3AgNO3 + NO↑ + 2H2O",
+    "out": [
+      "AgNO3",
+      "NO",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.5,
+    "gas": "NO"
+  },
+  {
+    "id": "ag_hno3_conc",
+    "need": [
+      "Ag",
+      "HNO3 (đặc)"
+    ],
+    "eq": "Ag + 2HNO3 (đặc) → AgNO3 + NO2↑ + H2O",
+    "out": [
+      "AgNO3",
+      "NO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "NO2"
+  },
+  {
+    "id": "ag_h2so4_conc",
+    "need": [
+      "Ag",
+      "H2SO4 (đặc)"
+    ],
+    "eq": "2Ag + 2H2SO4 (đặc, nóng) → Ag2SO4 + SO2↑ + 2H2O",
+    "out": [
+      "Ag2SO4",
+      "SO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.5,
+    "heat": 100,
+    "heating": true,
+    "gas": "SO2"
+  },
+  {
+    "id": "ga_oxygen",
+    "need": [
+      "Ga",
+      "O2"
+    ],
+    "eq": "4Ga + 3O2 → 2Ga2O3",
+    "out": [
+      "Ga2O3"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08,
+    "heat": 70,
+    "heating": true,
+    "precip": "#eeeeea"
+  },
+  {
+    "id": "ga2o3_hcl",
+    "need": [
+      "Ga2O3",
+      "HCl"
+    ],
+    "eq": "Ga2O3 + 6HCl → 2GaCl3 + 3H2O",
+    "out": [
+      "GaCl3",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08
+  },
+  {
+    "id": "hno3_mgco3",
+    "need": [
+      "HNO3",
+      "MgCO3"
+    ],
+    "eq": "2HNO3 + MgCO3 → Mg(NO3)2 + CO2↑ + H2O",
+    "out": [
+      "Mg(NO3)2",
+      "CO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "CO2"
+  },
+  {
+    "id": "h2so4_k2co3",
+    "need": [
+      "H2SO4",
+      "K2CO3"
+    ],
+    "eq": "H2SO4 + K2CO3 → K2SO4 + CO2↑ + H2O",
+    "out": [
+      "K2SO4",
+      "CO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "CO2"
+  },
+  {
+    "id": "h2so4_caco3",
+    "need": [
+      "H2SO4",
+      "CaCO3"
+    ],
+    "eq": "H2SO4 + CaCO3 → CaSO4↓ + CO2↑ + H2O",
+    "out": [
+      "CaSO4",
+      "CO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "CO2",
+    "precip": "#e9e6df"
+  },
+  {
+    "id": "h2so4_cuco3",
+    "need": [
+      "H2SO4",
+      "CuCO3"
+    ],
+    "eq": "H2SO4 + CuCO3 → CuSO4 + CO2↑ + H2O",
+    "out": [
+      "CuSO4",
+      "CO2",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "CO2"
+  },
+  {
+    "id": "hcl_cas",
+    "need": [
+      "HCl",
+      "CaS"
+    ],
+    "eq": "2HCl + CaS → CaCl2 + H2S↑",
+    "out": [
+      "CaCl2",
+      "H2S"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.6,
+    "gas": "H2S"
+  },
+  {
+    "id": "mg_agno3",
+    "need": [
+      "Mg",
+      "AgNO3"
+    ],
+    "eq": "Mg + 2AgNO3 → Mg(NO3)2 + 2Ag",
+    "out": [
+      "Mg(NO3)2",
+      "Ag"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08,
+    "precip": "#c6c6c8"
+  },
+  {
+    "id": "fecl2_naoh",
+    "need": [
+      "FeCl2",
+      "NaOH"
+    ],
+    "eq": "FeCl2 + 2NaOH → Fe(OH)2↓ + 2NaCl",
+    "out": [
+      "Fe(OH)2",
+      "NaCl"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08,
+    "precip": "#a9c8a0"
+  },
+  {
+    "id": "zncl2_naoh",
+    "need": [
+      "ZnCl2",
+      "NaOH"
+    ],
+    "eq": "ZnCl2 + 2NaOH → Zn(OH)2↓ + 2NaCl",
+    "out": [
+      "Zn(OH)2",
+      "NaCl"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08,
+    "precip": "#eeeeea"
+  },
+  {
+    "id": "cuso4_na3po4",
+    "need": [
+      "CuSO4",
+      "Na3PO4"
+    ],
+    "eq": "3CuSO4 + 2Na3PO4 → Cu3(PO4)2↓ + 3Na2SO4",
+    "out": [
+      "Cu3(PO4)2",
+      "Na2SO4"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08,
+    "precip": "#55a477"
+  },
+  {
+    "id": "cl2_nai",
+    "need": [
+      "Cl2",
+      "NaI"
+    ],
+    "eq": "Cl2 + 2NaI → 2NaCl + I2",
+    "out": [
+      "NaCl",
+      "I2"
+    ],
+    "col": "#805b91",
+    "dur": 7,
+    "bub": 0.08
+  },
+  {
+    "id": "br2_nai",
+    "need": [
+      "Br2",
+      "NaI"
+    ],
+    "eq": "Br2 + 2NaI → 2NaBr + I2",
+    "out": [
+      "NaBr",
+      "I2"
+    ],
+    "col": "#805b91",
+    "dur": 7,
+    "bub": 0.08
+  },
+  {
+    "id": "cl2_naoh_cold",
+    "need": [
+      "Cl2",
+      "NaOH"
+    ],
+    "eq": "Cl2 + 2NaOH → NaCl + NaClO + H2O",
+    "out": [
+      "NaCl",
+      "NaClO",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08,
+    "explain": "Mô phỏng phản ứng của clo với kiềm loãng, lạnh; điều kiện khác có thể tạo sản phẩm khác."
+  },
+  {
+    "id": "br2_naoh_cold",
+    "need": [
+      "Br2",
+      "NaOH"
+    ],
+    "eq": "Br2 + 2NaOH → NaBr + NaBrO + H2O",
+    "out": [
+      "NaBr",
+      "NaBrO",
+      "H2O"
+    ],
+    "col": "#e7e8e7",
+    "dur": 7,
+    "bub": 0.08
   }
 ];
 
