@@ -184,7 +184,17 @@ window.__threeReady = new Promise(resolve => {
  loadNext();
 });
 </script>
-<script src="./reactions.js"></script>
+<script src="./reactions/01-acid-base.js"></script>
+<script src="./reactions/02-precipitation.js"></script>
+<script src="./reactions/03-metal-acid.js"></script>
+<script src="./reactions/04-metal-displacement.js"></script>
+<script src="./reactions/05-gas-evolution.js"></script>
+<script src="./reactions/06-oxidation-combustion.js"></script>
+<script src="./reactions/07-organic-qualitative.js"></script>
+<script src="./reactions/08-thermal-catalysis.js"></script>
+<script src="./reactions/09-oxide-reactions.js"></script>
+<script src="./reactions/10-other-reactions.js"></script>
+<script src="./reactions/99-audit.js"></script>
 <script>
 window.__threeReady.then(loaded => {
  if (!loaded) {
@@ -419,7 +429,167 @@ MgBr2|l|e7e8e7|magnesium bromide magie bromua
 CaBr2|l|e7e8e7|calcium bromide canxi bromua
 SnBr2|l|d1d1d1|tin ii bromide thiếc ii bromua
 NiBr2|l|b9d4d0|nickel ii bromide niken ii bromua
-CoBr2|l|d8c6bb|cobalt ii bromide coban ii bromua
+CoBr2|l|d8c6bb|cobalt ii bromide coban 
+Ba(NO3)2|l|e7e8e7|nitrate Ba(NO3)2 salt product
+Ba3(PO4)2|c|eeeeea|phosphate Ba3(PO4)2 salt product
+ZnCO3|c|eeeeea|carbonate ZnCO3 salt product
+AlPO4|c|eeeeea|phosphate AlPO4 salt product
+CoCO3|c|eeeeea|carbonate CoCO3 salt product
+Co3(PO4)2|c|eeeeea|phosphate Co3(PO4)2 salt product
+Sn(NO3)2|l|e7e8e7|nitrate Sn(NO3)2 salt product
+Cr(NO3)3|l|e7e8e7|nitrate Cr(NO3)3 salt product
+Ag3PO4|c|eeeeea|phosphate Ag3PO4 salt product
+Ag2CrO4|c|eeeeea|chromate Ag2CrO4 salt product
+PbBr2|c|eeeeea|bromide PbBr2 salt product
+Pb3(PO4)2|c|eeeeea|phosphate Pb3(PO4)2 salt product
+NiCO3|c|eeeeea|carbonate NiCO3 salt product
+Ni3(PO4)2|c|eeeeea|phosphate Ni3(PO4)2 salt product
+MnCO3|c|eeeeea|carbonate MnCO3 salt product
+Mn3(PO4)2|c|eeeeea|phosphate Mn3(PO4)2 salt product
+CuBr2|l|e7e8e7|bromide CuBr2 salt product
+MnBr2|l|e7e8e7|bromide MnBr2 salt product
+SnCO3|c|eeeeea|carbonate SnCO3 salt product
+Sn3(PO4)2|c|eeeeea|phosphate Sn3(PO4)2 salt product
+AlBr3|l|e7e8e7|bromide AlBr3 salt product
+CrBr3|l|e7e8e7|bromide CrBr3 salt product
+CrPO4|c|eeeeea|phosphate CrPO4 salt product
+LiBr|l|e7e8e7|bromide LiBr salt product
+BaBr2|l|e7e8e7|bromide BaBr2 salt product
+LiF|l|e7e8e7|fluoride LiF salt product
+NaF|l|e7e8e7|fluoride NaF salt product
+KF|l|e7e8e7|fluoride KF salt product
+BaF2|l|e7e8e7|fluoride BaF2 salt product
+AlF3|c|eeeeea|fluoride AlF3 salt product
+FeF2|l|e7e8e7|fluoride FeF2 salt product
+FeF3|l|e7e8e7|fluoride FeF3 salt product
+CuF2|l|e7e8e7|fluoride CuF2 salt product
+CoF2|l|e7e8e7|fluoride CoF2 salt product
+CrF3|l|e7e8e7|fluoride CrF3 salt product
+NiF2|l|e7e8e7|fluoride NiF2 salt product
+MnF2|l|e7e8e7|fluoride MnF2 salt product
+PbF2|c|eeeeea|fluoride PbF2 salt product
+LiNO3|l|e7e8e7|nitrate LiNO3 salt product
+Li2SO4|l|e7e8e7|sulfate Li2SO4 salt product
+Li3PO4|l|e7e8e7|phosphate Li3PO4 salt product
+K3PO4|l|e7e8e7|phosphate K3PO4 salt product
+LiC2H3O2|l|e7e8e7|acetate LiC2H3O2 salt product
+CH3COOK|l|e7e8e7|acetate CH3COOK salt product
+Ca(C2H3O2)2|l|e7e8e7|acetate Ca(C2H3O2)2 salt product
+Ba(C2H3O2)2|l|e7e8e7|acetate Ba(C2H3O2)2 salt product
+Mg(C2H3O2)2|l|e7e8e7|acetate Mg(C2H3O2)2 salt product
+Al(C2H3O2)3|l|e7e8e7|acetate Al(C2H3O2)3 salt product
+Fe(C2H3O2)2|l|e7e8e7|acetate Fe(C2H3O2)2 salt product
+Fe(C2H3O2)3|l|e7e8e7|acetate Fe(C2H3O2)3 salt product
+Cu(C2H3O2)2|l|e7e8e7|acetate Cu(C2H3O2)2 salt product
+Zn(C2H3O2)2|l|e7e8e7|acetate Zn(C2H3O2)2 salt product
+Co(C2H3O2)2|l|e7e8e7|acetate Co(C2H3O2)2 salt product
+Cr(C2H3O2)3|l|e7e8e7|acetate Cr(C2H3O2)3 salt product
+Ni(C2H3O2)2|l|e7e8e7|acetate Ni(C2H3O2)2 salt product
+Mn(C2H3O2)2|l|e7e8e7|acetate Mn(C2H3O2)2 salt product
+Pb(C2H3O2)2|l|e7e8e7|acetate Pb(C2H3O2)2 salt product
+Li2SO3|l|e7e8e7|sulfite Li2SO3 salt product
+K2SO3|l|e7e8e7|sulfite K2SO3 salt product
+MgSO3|c|eeeeea|sulfite MgSO3 salt product
+FeSO3|c|eeeeea|sulfite FeSO3 salt product
+CuSO3|c|eeeeea|sulfite CuSO3 salt product
+ZnSO3|c|eeeeea|sulfite ZnSO3 salt product
+CoSO3|c|eeeeea|sulfite CoSO3 salt product
+NiSO3|c|eeeeea|sulfite NiSO3 salt product
+MnSO3|c|eeeeea|sulfite MnSO3 salt product
+PbSO3|c|eeeeea|sulfite PbSO3 salt product
+LiClO|l|e7e8e7|hypochlorite LiClO salt product
+KClO|l|e7e8e7|hypochlorite KClO salt product
+Ca(ClO)2|l|e7e8e7|hypochlorite Ca(ClO)2 salt product
+Ba(ClO)2|l|e7e8e7|hypochlorite Ba(ClO)2 salt product
+Mg(ClO)2|l|e7e8e7|hypochlorite Mg(ClO)2 salt product
+Al(ClO)3|l|e7e8e7|hypochlorite Al(ClO)3 salt product
+Fe(ClO)2|l|e7e8e7|hypochlorite Fe(ClO)2 salt product
+Fe(ClO)3|l|e7e8e7|hypochlorite Fe(ClO)3 salt product
+Cu(ClO)2|l|e7e8e7|hypochlorite Cu(ClO)2 salt product
+Zn(ClO)2|l|e7e8e7|hypochlorite Zn(ClO)2 salt product
+Co(ClO)2|l|e7e8e7|hypochlorite Co(ClO)2 salt product
+Cr(ClO)3|l|e7e8e7|hypochlorite Cr(ClO)3 salt product
+Ni(ClO)2|l|e7e8e7|hypochlorite Ni(ClO)2 salt product
+Mn(ClO)2|l|e7e8e7|hypochlorite Mn(ClO)2 salt product
+Pb(ClO)2|l|e7e8e7|hypochlorite Pb(ClO)2 salt product
+LiClO3|l|e7e8e7|chlorate LiClO3 salt product
+Ca(ClO3)2|l|e7e8e7|chlorate Ca(ClO3)2 salt product
+Ba(ClO3)2|l|e7e8e7|chlorate Ba(ClO3)2 salt product
+Mg(ClO3)2|l|e7e8e7|chlorate Mg(ClO3)2 salt product
+Al(ClO3)3|l|e7e8e7|chlorate Al(ClO3)3 salt product
+Fe(ClO3)2|l|e7e8e7|chlorate Fe(ClO3)2 salt product
+Fe(ClO3)3|l|e7e8e7|chlorate Fe(ClO3)3 salt product
+Cu(ClO3)2|l|e7e8e7|chlorate Cu(ClO3)2 salt product
+Zn(ClO3)2|l|e7e8e7|chlorate Zn(ClO3)2 salt product
+Co(ClO3)2|l|e7e8e7|chlorate Co(ClO3)2 salt product
+Cr(ClO3)3|l|e7e8e7|chlorate Cr(ClO3)3 salt product
+Ni(ClO3)2|l|e7e8e7|chlorate Ni(ClO3)2 salt product
+Mn(ClO3)2|l|e7e8e7|chlorate Mn(ClO3)2 salt product
+Pb(ClO3)2|l|e7e8e7|chlorate Pb(ClO3)2 salt product
+LiClO4|l|e7e8e7|perchlorate LiClO4 salt product
+NaClO4|l|e7e8e7|perchlorate NaClO4 salt product
+KClO4|l|e7e8e7|perchlorate KClO4 salt product
+Ca(ClO4)2|l|e7e8e7|perchlorate Ca(ClO4)2 salt product
+Ba(ClO4)2|l|e7e8e7|perchlorate Ba(ClO4)2 salt product
+Mg(ClO4)2|l|e7e8e7|perchlorate Mg(ClO4)2 salt product
+Al(ClO4)3|l|e7e8e7|perchlorate Al(ClO4)3 salt product
+Fe(ClO4)2|l|e7e8e7|perchlorate Fe(ClO4)2 salt product
+Fe(ClO4)3|l|e7e8e7|perchlorate Fe(ClO4)3 salt product
+Cu(ClO4)2|l|e7e8e7|perchlorate Cu(ClO4)2 salt product
+Zn(ClO4)2|l|e7e8e7|perchlorate Zn(ClO4)2 salt product
+Co(ClO4)2|l|e7e8e7|perchlorate Co(ClO4)2 salt product
+Cr(ClO4)3|l|e7e8e7|perchlorate Cr(ClO4)3 salt product
+Ni(ClO4)2|l|e7e8e7|perchlorate Ni(ClO4)2 salt product
+Mn(ClO4)2|l|e7e8e7|perchlorate Mn(ClO4)2 salt product
+Pb(ClO4)2|l|e7e8e7|perchlorate Pb(ClO4)2 salt product
+Li2CO3|l|e7e8e7|carbonate Li2CO3 salt product
+Li2S|l|e7e8e7|sulfide Li2S salt product
+K2S|l|e7e8e7|sulfide K2S salt product
+BaS|l|e7e8e7|sulfide BaS salt product
+MgS|l|e7e8e7|sulfide MgS salt product
+CoS|c|eeeeea|sulfide CoS salt product
+NiS|c|eeeeea|sulfide NiS salt product
+MnS|c|eeeeea|sulfide MnS salt product
+Li2SiO3|l|e7e8e7|silicate Li2SiO3 salt product
+Na2SiO3|l|e7e8e7|silicate Na2SiO3 salt product
+K2SiO3|l|e7e8e7|silicate K2SiO3 salt product
+CaSiO3|c|eeeeea|silicate CaSiO3 salt product
+BaSiO3|c|eeeeea|silicate BaSiO3 salt product
+MgSiO3|c|eeeeea|silicate MgSiO3 salt product
+Al2(SiO3)3|c|eeeeea|silicate Al2(SiO3)3 salt product
+FeSiO3|c|eeeeea|silicate FeSiO3 salt product
+Fe2(SiO3)3|c|eeeeea|silicate Fe2(SiO3)3 salt product
+CuSiO3|c|eeeeea|silicate CuSiO3 salt product
+ZnSiO3|c|eeeeea|silicate ZnSiO3 salt product
+CoSiO3|c|eeeeea|silicate CoSiO3 salt product
+Cr2(SiO3)3|c|eeeeea|silicate Cr2(SiO3)3 salt product
+NiSiO3|c|eeeeea|silicate NiSiO3 salt product
+MnSiO3|c|eeeeea|silicate MnSiO3 salt product
+PbSiO3|c|eeeeea|silicate PbSiO3 salt product
+GaF3|l|e7e8e7|fluoride GaF3 salt product
+Ga2(SO4)3|l|e7e8e7|sulfate Ga2(SO4)3 salt product
+GaPO4|c|eeeeea|phosphate GaPO4 salt product
+Ga(C2H3O2)3|l|e7e8e7|acetate Ga(C2H3O2)3 salt product
+Ga(ClO)3|l|e7e8e7|hypochlorite Ga(ClO)3 salt product
+Ga(ClO3)3|l|e7e8e7|chlorate Ga(ClO3)3 salt product
+Ga(ClO4)3|l|e7e8e7|perchlorate Ga(ClO4)3 salt product
+AgF|l|e7e8e7|fluoride AgF salt product
+AgC2H3O2|l|e7e8e7|acetate AgC2H3O2 salt product
+AgClO|l|e7e8e7|hypochlorite AgClO salt product
+AgClO3|l|e7e8e7|chlorate AgClO3 salt product
+AgClO4|l|e7e8e7|perchlorate AgClO4 salt product
+CrBr2|l|e7e8e7|bromide CrBr2 salt product
+CrSO4|l|e7e8e7|sulfate CrSO4 salt product
+Cr3(PO4)2|c|eeeeea|phosphate Cr3(PO4)2 salt product
+Cr(C2H3O2)2|l|e7e8e7|acetate Cr(C2H3O2)2 salt product
+Sn(C2H3O2)2|l|e7e8e7|acetate Sn(C2H3O2)2 salt product
+Cr(NO3)2|l|e7e8e7|reaction product Cr(NO3)2 sản phẩm phản ứng
+SnO2|c|eeeeea|reaction product SnO2 sản phẩm phản ứng
+PbO|c|eeeeea|reaction product PbO sản phẩm phản ứng
+NiO|c|eeeeea|reaction product NiO sản phẩm phản ứng
+CoO|c|eeeeea|reaction product CoO sản phẩm phản ứng
+Cr2O3|c|eeeeea|reaction product Cr2O3 sản phẩm phản ứng
+Al2S3|c|eeeeea|reaction product Al2S3 sản phẩm phản ứngii bromua
 Mg(CH3COO)2|l|e7e8e7|magnesium acetate magie axetat
 Zn(CH3COO)2|l|e7e8e7|zinc acetate kẽm axetat
 Fe(CH3COO)2|l|a9c8a0|iron ii acetate sắt ii axetat
