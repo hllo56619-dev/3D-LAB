@@ -195,6 +195,7 @@ window.__threeReady = new Promise(resolve => {
 <script src="./reactions/09-oxide-reactions.js"></script>
 <script src="./reactions/10-other-reactions.js"></script>
 <script src="./reactions/11-expanded-precipitation.js"></script>
+<script src="./reactions/12-expanded-metal-displacement.js"></script>
 <script src="./reactions/99-audit.js"></script>
 <script>
 window.__threeReady.then(loaded => {
@@ -633,7 +634,8 @@ AgHCO3|l|e7e8e7|solution product AgHCO3 sản phẩm phản ứng
 Cr(HCO3)2|l|e7e8e7|solution product Cr(HCO3)2 sản phẩm phản ứng
 Ga2(SiO3)3|c|eeeeea|precipitate Ga2(SiO3)3 sản phẩm phản ứng
 CrSiO3|c|eeeeea|precipitate CrSiO3 sản phẩm phản ứng
-CrF2|l|e7e8e7|solution product CrF2 sản phẩm phản ứng`;
+CrF2|l|e7e8e7|solution product CrF2 sản phẩm phản ứng
+`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
