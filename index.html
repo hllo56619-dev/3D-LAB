@@ -194,6 +194,7 @@ window.__threeReady = new Promise(resolve => {
 <script src="./reactions/08-thermal-catalysis.js"></script>
 <script src="./reactions/09-oxide-reactions.js"></script>
 <script src="./reactions/10-other-reactions.js"></script>
+<script src="./reactions/11-expanded-precipitation.js"></script>
 <script src="./reactions/99-audit.js"></script>
 <script>
 window.__threeReady.then(loaded => {
@@ -601,7 +602,38 @@ CaF2|c|eeeeea|calcium fluoride canxi florua
 Ag2SO4|c|eeeeea|silver sulfate bạc sunfat
 NaClO|l|e7e8e7|sodium hypochlorite natri hipoclorit
 NaBrO|l|d8d8d8|sodium hypobromite natri hipobromit
-Cu3(PO4)2|c|55a477|copper ii phosphate đồng ii photphat`;
+Cu3(PO4)2|c|55a477|copper ii phosphate đồng ii photphat
+CaCrO4|c|eeeeea|precipitate CaCrO4 sản phẩm phản ứng
+KHCO3|l|e7e8e7|solution product KHCO3 sản phẩm phản ứng
+Cu(HCO3)2|l|e7e8e7|solution product Cu(HCO3)2 sản phẩm phản ứng
+Fe(HCO3)2|l|e7e8e7|solution product Fe(HCO3)2 sản phẩm phản ứng
+Zn(HCO3)2|l|e7e8e7|solution product Zn(HCO3)2 sản phẩm phản ứng
+Mg(HCO3)2|l|e7e8e7|solution product Mg(HCO3)2 sản phẩm phản ứng
+CrCO3|c|eeeeea|precipitate CrCO3 sản phẩm phản ứng
+Ag2SO3|c|eeeeea|precipitate Ag2SO3 sản phẩm phản ứng
+SnSO3|c|eeeeea|precipitate SnSO3 sản phẩm phản ứng
+CrSO3|c|eeeeea|precipitate CrSO3 sản phẩm phản ứng
+Ag2S|c|eeeeea|precipitate Ag2S sản phẩm phản ứng
+SnS|c|eeeeea|precipitate SnS sản phẩm phản ứng
+CrS|c|eeeeea|precipitate CrS sản phẩm phản ứng
+Ga(NO3)3|l|e7e8e7|solution product Ga(NO3)3 sản phẩm phản ứng
+Ag2SiO3|c|eeeeea|precipitate Ag2SiO3 sản phẩm phản ứng
+NH4C2H3O2|l|e7e8e7|solution product NH4C2H3O2 sản phẩm phản ứng
+NH4F|l|e7e8e7|solution product NH4F sản phẩm phản ứng
+(NH4)2S|l|e7e8e7|solution product (NH4)2S sản phẩm phản ứng
+NH4Br|l|e7e8e7|solution product NH4Br sản phẩm phản ứng
+SnSiO3|c|eeeeea|precipitate SnSiO3 sản phẩm phản ứng
+SnF2|l|e7e8e7|solution product SnF2 sản phẩm phản ứng
+Ni(HCO3)2|l|e7e8e7|solution product Ni(HCO3)2 sản phẩm phản ứng
+Mn(HCO3)2|l|e7e8e7|solution product Mn(HCO3)2 sản phẩm phản ứng
+Sn(HCO3)2|l|e7e8e7|solution product Sn(HCO3)2 sản phẩm phản ứng
+Co(HCO3)2|l|e7e8e7|solution product Co(HCO3)2 sản phẩm phản ứng
+LiHCO3|l|e7e8e7|solution product LiHCO3 sản phẩm phản ứng
+AgHCO3|l|e7e8e7|solution product AgHCO3 sản phẩm phản ứng
+Cr(HCO3)2|l|e7e8e7|solution product Cr(HCO3)2 sản phẩm phản ứng
+Ga2(SiO3)3|c|eeeeea|precipitate Ga2(SiO3)3 sản phẩm phản ứng
+CrSiO3|c|eeeeea|precipitate CrSiO3 sản phẩm phản ứng
+CrF2|l|e7e8e7|solution product CrF2 sản phẩm phản ứng`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
