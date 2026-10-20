@@ -645,7 +645,9 @@ Cr(OH)2|c|eeeeea|precipitate Cr(OH)2 sản phẩm phản ứng
 (NH4)3PO4|l|e7e8e7|solution product (NH4)3PO4 sản phẩm phản ứng
 NH4ClO3|l|e7e8e7|solution product NH4ClO3 sản phẩm phản ứng
 NH4ClO4|l|e7e8e7|solution product NH4ClO4 sản phẩm phản ứng
-`;
+
+NaNO2|c|e8e8e2|sodium nitrite natri nitrit sản phẩm nhiệt phân natri nitrat
+KNO2|c|e8e8e2|potassium nitrite kali nitrit sản phẩm nhiệt phân kali nitrat`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
