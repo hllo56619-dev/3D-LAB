@@ -43,10 +43,9 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Starch",
       "H2O"
     ],
-    "eq": "I2 + tinh bột → phức màu xanh tím",
+    "eq": "I2 + tinh bột ⇌ phức iốt–tinh bột màu xanh tím",
     "out": [
-      "Iodine-starch complex",
-      "H2O"
+      "Iodine-starch complex"
     ],
     "col": "#222044",
     "dur": 5,
