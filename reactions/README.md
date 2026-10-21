@@ -20,4 +20,4 @@ The 3D Lab loads chemistry rules from separate modules; `index.html` only loads 
 ## Important limitations
 A generated pair rule is only appropriate when the product is chemically supported under the stated conditions. Solubility patterns and metal activity trends are useful for predicting many reactions, but they do not determine every outcome. A missing rule means the simulation has not classified that pair, not that no real reaction occurs. This remains an educational model, not an exhaustive database covering every condition.
 
-- `26-amphoteric-redox-reduction.js` — amphoteric metal/oxide/hydroxide reactions, oxidizing acids, and carbothermic reductions (16 added rules).
+- \`26-amphoteric-redox-reduction.js\` — amphoteric metal/oxide/hydroxide reactions, oxidizing acids, and carbothermic reductions (14 added rules).
