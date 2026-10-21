@@ -681,7 +681,9 @@ CoCrO4|c|eeeeea|cobalt ii chromate coban cromat kết tủa
 MnCrO4|c|eeeeea|manganese ii chromate mangan cromat kết tủa
 SnCrO4|c|eeeeea|tin ii chromate thiếc ii cromat kết tủa
 Ba(HCO3)2|l|e7e8e7|barium bicarbonate bari hiđrocacbonat dung dịch
-HBrO|l|e7e8e7|hypobromous acid axit hipobromơ`;
+HBrO|l|e7e8e7|hypobromous acid axit hipobromơ
+K2ZnO2|l|f2f2f2|potassium zincate kali zincat sản phẩm trong môi trường kiềm
+Na2ZnO2|l|f2f2f2|sodium zincate natri zincat sản phẩm trong môi trường kiềm`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
@@ -696,7 +698,7 @@ const hasAllReactants=(r,contents)=>r.need.every(n=>contents.includes(n));
 const conditionsMet=(r,temp,heatOn)=>!(r.heating||r.heat)||(
  !!heatOn&&temp>=(r.heat??60)
 );
-const RX_ORDER=[...RX].sort((a,b)=>(b.need?.length||0)-(a.need?.length||0));
+const RX_ORDER=[...RX].sort((a,b)=>(b.priority||0)-(a.priority||0)||(b.need?.length||0)-(a.need?.length||0));
 const findReaction=(contents,temp,heatOn)=>RX_ORDER.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
 const findHeatDependentReaction=(contents,temp,heatOn)=>RX_ORDER.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
@@ -705,6 +707,26 @@ function equationHTML(r){
 }
 let feedbackTimer=0,feedbackRevision=0;
 function clearFeedbackTimer(){if(feedbackTimer){clearTimeout(feedbackTimer);feedbackTimer=0}}
+const MIX_GRACE_MS=6500;
+const findIncompletePriorityReaction=contents=>{
+ const present=new Set(contents);
+ return RX_ORDER.find(r=>r.deferIfPartial&&(r.priority||0)>=80&&r.need.length>2&&
+  r.need.filter(n=>present.has(n)).length>=2&&r.need.some(n=>!present.has(n)));
+};
+function showMixWait(r){
+ const remaining=st.addedAt+MIX_GRACE_MS-performance.now();
+ if(remaining<=0)return false;
+ clearFeedbackTimer();
+ const missing=r.need.filter(n=>!st.contents.includes(n));
+ eqEl.dataset.state='mixing';
+ eqEl.innerHTML='<div class="eq-status info">Đang chờ thêm chất phản ứng</div><div class="eq-note">Có thể cần thêm: '+missing.map(sub).join(' + ')+'. Hãy thêm chất còn thiếu để ưu tiên phản ứng đầy đủ.</div>';
+ const revision=feedbackRevision;
+ feedbackTimer=setTimeout(()=>{
+  if(revision!==feedbackRevision)return;
+  feedbackTimer=0;check();updateReactionFeedback();
+ },Math.min(500,remaining));
+ return true;
+}
 function reactionNote(r){
  const notes=[];
  if(r.explain)notes.push(r.explain);
@@ -761,7 +783,12 @@ function updateReactionFeedback(){
  if(st.rx||st.pour)return;
  if(performance.now()<st.readyAt){feedbackTimer=setTimeout(()=>{if(revision===feedbackRevision)updateReactionFeedback()},Math.max(25,st.readyAt-performance.now()+30));return;}
  const unique=[...new Set(st.contents)];
+ const partial=findIncompletePriorityReaction(st.contents);
+ if(partial&&showMixWait(partial))return;
+ const ready=findReaction(st.contents,st.temp,st.heat);
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
+ const score=r=>(r.priority||0)*100+(r.need?.length||0);
+ if(ready&&(!pending||score(pending)<=score(ready))){check();return;}
  if(pending){
   const threshold=pending.heat??(pending.heating?60:0);
   const need=`Cần đun nóng đến khoảng ${threshold}°C`;
@@ -769,8 +796,6 @@ function updateReactionFeedback(){
   showEquation(pending,`${need}. ${extra}`.trim());eqEl.dataset.state='needs-heat';return;
  }
  if(unique.length<2){clearIdleStatus();return;}
- const ready=findReaction(st.contents,st.temp,st.heat);
- if(ready){check();return;}
  feedbackTimer=setTimeout(()=>{
   if(revision!==feedbackRevision||st.rx||st.pour)return;
   const nowPending=findHeatDependentReaction(st.contents,st.temp,st.heat);
@@ -849,7 +874,7 @@ function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new 
  m.rotation.x=-Math.PI/2;m.position.set(x,LIQ_BASE+lv+.02,z);m.scale.setScalar(.1);m.renderOrder=9;S.add(m);rings.push({m,t:0})}
 
 /* ============ state ============ */
-const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null,readyAt:0};
+const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null,readyAt:0,addedAt:0};
 
 const rocks=[];
 let sediment=null;
@@ -893,9 +918,15 @@ function startReaction(r){
   rocks.push({m,id,vy:0,st:'rest',t:0,dis:false,pushed:true,product:true});
  });
 }
-function check(){if(st.rx||performance.now()<st.readyAt)return;const r=findReaction(st.contents,st.temp,st.heat);if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}}
+function check(){
+ if(st.rx||performance.now()<st.readyAt)return;
+ const partial=findIncompletePriorityReaction(st.contents);
+ if(partial&&showMixWait(partial))return;
+ const r=findReaction(st.contents,st.temp,st.heat);
+ if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}
+}
 
-function add(id){const d=BY[id];if(!d)return;st.readyAt=performance.now()+2100;
+function add(id){const d=BY[id];if(!d)return;st.addedAt=performance.now();st.readyAt=st.addedAt+2100;
  if(!st.rx){clearFeedbackTimer();feedbackRevision++;eqEl.innerHTML='';delete eqEl.dataset.state;}
  if(st.ovr&&!st.rx)st.ovr=null;
  if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.15,lvT+.90);labels();check();updateReactionFeedback()},900)}
@@ -904,7 +935,7 @@ function add(id){const d=BY[id];if(!d)return;st.readyAt=performance.now()+2100;
  else{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
   m.scale.set(rnd(.9,1.3),rnd(.7,1),rnd(.9,1.3));m.position.set(.5,6.2,0);viewRoot.add(m);rocks.push({m,id,vy:0,st:'fall',t:0,dis:false,pushed:false})}}
 
-function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];st.readyAt=0;lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
+function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];st.readyAt=0;st.addedAt=0;lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
  rocks.splice(0).forEach(k=>{viewRoot.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
 
 /* ============ main loop ============ */
