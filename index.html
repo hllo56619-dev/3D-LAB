@@ -203,6 +203,7 @@ window.__threeReady = new Promise(resolve => {
 <script src="./reactions/16-audit-acid-redox.js"></script>
 <script src="./reactions/17-audit-secondary-reactions.js"></script>
 <script src="./reactions/19-audit-reduction-ammonium.js"></script>
+<script src="./reactions/20-audit-industrial-gas.js"></script>
 <script src="./reactions/99-audit.js"></script>
 <script>
 window.__threeReady.then(loaded => {
@@ -660,7 +661,11 @@ LiI|c|f2f2f2|lithium iodide liti iodua
 CF4|g|d8d8d8|carbon tetrafluoride cacbon tetraflorua khí
 [Ag(NH3)2]NO3|l|e7e8e7|diamminesilver nitrate phức bạc amoniac nitrat
 SnCl4|l|e7e8e7|tin iv chloride thiếc iv clorua
-HI|g|d8d8d8|hydrogen iodide hiđro iodua khí`;
+HI|g|d8d8d8|hydrogen iodide hiđro iodua khí
+NaHSO4|c|eeeeea|sodium hydrogen sulfate natri hiđrosunfat
+KHSO4|c|eeeeea|potassium hydrogen sulfate kali hiđrosunfat
+NH4HSO4|c|eeeeea|ammonium hydrogen sulfate amoni hiđrosunfat
+Na2S4O6|l|e7e8e7|sodium tetrathionate natri tetrathionat`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
