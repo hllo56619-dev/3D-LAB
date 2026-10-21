@@ -267,8 +267,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "id": "iodine_hot_alkali",
     "need": [
       "I2",
-      "NaOH",
-      "H2O"
+      "NaOH"
     ],
     "eq": "3I2 + 6NaOH → 5NaI + NaIO3 + 3H2O",
     "out": [
@@ -287,8 +286,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "id": "sulfur_hot_alkali",
     "need": [
       "S",
-      "NaOH",
-      "H2O"
+      "NaOH"
     ],
     "eq": "3S + 6NaOH → 2Na2S + Na2SO3 + 3H2O",
     "out": [
@@ -307,8 +305,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "id": "bromine_hot_alkali",
     "need": [
       "Br2",
-      "NaOH",
-      "H2O"
+      "NaOH"
     ],
     "eq": "3Br2 + 6NaOH → 5NaBr + NaBrO3 + 3H2O",
     "out": [
