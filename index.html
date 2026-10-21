@@ -184,34 +184,34 @@ window.__threeReady = new Promise(resolve => {
  loadNext();
 });
 </script>
-<script src="./reactions/01-acid-base.js?v=20261021-1737"></script>
-<script src="./reactions/02-precipitation.js?v=20261021-1737"></script>
-<script src="./reactions/03-metal-acid.js?v=20261021-1737"></script>
-<script src="./reactions/04-metal-displacement.js?v=20261021-1737"></script>
-<script src="./reactions/05-gas-evolution.js?v=20261021-1737"></script>
-<script src="./reactions/06-oxidation-combustion.js?v=20261021-1737"></script>
-<script src="./reactions/07-organic-qualitative.js?v=20261021-1737"></script>
-<script src="./reactions/08-thermal-catalysis.js?v=20261021-1737"></script>
-<script src="./reactions/09-oxide-reactions.js?v=20261021-1737"></script>
-<script src="./reactions/10-other-reactions.js?v=20261021-1737"></script>
-<script src="./reactions/11-expanded-precipitation.js?v=20261021-1737"></script>
-<script src="./reactions/12-expanded-metal-displacement.js?v=20261021-1737"></script>
-<script src="./reactions/13-hydroxide-precipitation.js?v=20261021-1737"></script>
-<script src="./reactions/14-acid-gas-expanded.js?v=20261021-1737"></script>
-<script src="./reactions/15-redox-thermal-decomposition.js?v=20261021-1737"></script>
-<script src="./reactions/16-audit-metals-halogen.js?v=20261021-1737"></script>
-<script src="./reactions/16-audit-acid-redox.js?v=20261021-1737"></script>
-<script src="./reactions/17-audit-secondary-reactions.js?v=20261021-1737"></script>
-<script src="./reactions/19-audit-reduction-ammonium.js?v=20261021-1737"></script>
-<script src="./reactions/20-audit-industrial-gas.js?v=20261021-1737"></script>
-<script src="./reactions/21-precipitation-halides.js?v=20261021-1737"></script>
-<script src="./reactions/22-precipitation-sulfates.js?v=20261021-1737"></script>
-<script src="./reactions/23-precipitation-carbonates-phosphates.js?v=20261021-1737"></script>
-<script src="./reactions/24-precipitation-other.js?v=20261021-1737"></script>
-<script src="./reactions/25-special-redox-and-ammonia.js?v=20261021-1737"></script>
-<script src="./reactions/26-amphoteric-redox-reduction.js?v=20261021-1737"></script>
-<script src="./reactions/98-deduplicate.js?v=20261021-1737"></script>
-<script src="./reactions/99-audit.js?v=20261021-1737"></script>
+<script src="./reactions/01-acid-base.js?v=20261021-logicfix1"></script>
+<script src="./reactions/02-precipitation.js?v=20261021-logicfix1"></script>
+<script src="./reactions/03-metal-acid.js?v=20261021-logicfix1"></script>
+<script src="./reactions/04-metal-displacement.js?v=20261021-logicfix1"></script>
+<script src="./reactions/05-gas-evolution.js?v=20261021-logicfix1"></script>
+<script src="./reactions/06-oxidation-combustion.js?v=20261021-logicfix1"></script>
+<script src="./reactions/07-organic-qualitative.js?v=20261021-logicfix1"></script>
+<script src="./reactions/08-thermal-catalysis.js?v=20261021-logicfix1"></script>
+<script src="./reactions/09-oxide-reactions.js?v=20261021-logicfix1"></script>
+<script src="./reactions/10-other-reactions.js?v=20261021-logicfix1"></script>
+<script src="./reactions/11-expanded-precipitation.js?v=20261021-logicfix1"></script>
+<script src="./reactions/12-expanded-metal-displacement.js?v=20261021-logicfix1"></script>
+<script src="./reactions/13-hydroxide-precipitation.js?v=20261021-logicfix1"></script>
+<script src="./reactions/14-acid-gas-expanded.js?v=20261021-logicfix1"></script>
+<script src="./reactions/15-redox-thermal-decomposition.js?v=20261021-logicfix1"></script>
+<script src="./reactions/16-audit-metals-halogen.js?v=20261021-logicfix1"></script>
+<script src="./reactions/16-audit-acid-redox.js?v=20261021-logicfix1"></script>
+<script src="./reactions/17-audit-secondary-reactions.js?v=20261021-logicfix1"></script>
+<script src="./reactions/19-audit-reduction-ammonium.js?v=20261021-logicfix1"></script>
+<script src="./reactions/20-audit-industrial-gas.js?v=20261021-logicfix1"></script>
+<script src="./reactions/21-precipitation-halides.js?v=20261021-logicfix1"></script>
+<script src="./reactions/22-precipitation-sulfates.js?v=20261021-logicfix1"></script>
+<script src="./reactions/23-precipitation-carbonates-phosphates.js?v=20261021-logicfix1"></script>
+<script src="./reactions/24-precipitation-other.js?v=20261021-logicfix1"></script>
+<script src="./reactions/25-special-redox-and-ammonia.js?v=20261021-logicfix1"></script>
+<script src="./reactions/26-amphoteric-redox-reduction.js?v=20261021-logicfix1"></script>
+<script src="./reactions/98-deduplicate.js?v=20261021-logicfix1"></script>
+<script src="./reactions/99-audit.js?v=20261021-logicfix1"></script>
 <script>
 window.__threeReady.then(loaded => {
  if (!loaded) {
@@ -243,6 +243,7 @@ Co|e|a7a7ab|cobalt coban kim loại
 Ni|e|bdbdbf|nickel niken kim loại
 Cu|e|b5493b|copper đồng kim loại
 Zn|e|a6a9ad|zinc kẽm kim loại
+Ga|e|b7bfcc|gallium gali kim loại
 Ag|e|c6c6c8|silver bạc kim loại
 Sn|e|b5b8bb|tin thiếc kim loại
 Ba|e|a9aaae|barium bari kim loại
@@ -698,9 +699,26 @@ const hasAllReactants=(r,contents)=>r.need.every(n=>contents.includes(n));
 const conditionsMet=(r,temp,heatOn)=>!(r.heating||r.heat)||(
  !!heatOn&&temp>=(r.heat??60)
 );
-const RX_ORDER=[...RX].sort((a,b)=>(b.priority||0)-(a.priority||0)||(b.need?.length||0)-(a.need?.length||0));
-const findReaction=(contents,temp,heatOn)=>RX_ORDER.find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
-const findHeatDependentReaction=(contents,temp,heatOn)=>RX_ORDER.find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
+// Prefer the most specific rule first; for equally specific rules, use curated priority.
+const compareRules=(a,b)=>(b.need?.length||0)-(a.need?.length||0)||(b.priority||0)-(a.priority||0)||Number(Boolean(b.heat||b.heating))-Number(Boolean(a.heat||a.heating));
+const RX_ORDER=[...RX].sort(compareRules);
+const RX_RANK=new Map(RX_ORDER.map((r,i)=>[r,i]));
+// Index by each reagent rather than scanning the entire reaction database on every update.
+const RX_BY_INGREDIENT=new Map();
+for(const r of RX_ORDER)for(const id of new Set(r.need||[])){
+ if(!RX_BY_INGREDIENT.has(id))RX_BY_INGREDIENT.set(id,[]);
+ RX_BY_INGREDIENT.get(id).push(r);
+}
+const candidateRules=contents=>{
+ const found=new Set();
+ for(const id of new Set(contents||[]))for(const r of RX_BY_INGREDIENT.get(id)||[])found.add(r);
+ return [...found].sort((a,b)=>(RX_RANK.get(a)??1e9)-(RX_RANK.get(b)??1e9));
+};
+const sameReactantSet=(a,b)=>!!(a&&b&&a.need.length===b.need.length&&a.need.every(n=>b.need.includes(n)));
+const reactionScore=r=>(r.need?.length||0)*1000000+(r.priority||0)*1000+Number(Boolean(r.heat||r.heating));
+const preferPendingHeat=(ready,pending)=>!!(ready&&pending&&(pending.heat||pending.heating)&&sameReactantSet(ready,pending)&&st.heat);
+const findReaction=(contents,temp,heatOn)=>candidateRules(contents).find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
+const findHeatDependentReaction=(contents,temp,heatOn)=>candidateRules(contents).find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
  const label=r.arrowLabel||(r.heat||r.heating?'t°':'');
  return sub(r.eq).replace(/(→|⇌|↔)/g,arrow=>`<span class="eq-arrow">${label?`<span class="eq-arrow-label">${sub(label)}</span>`:''}${arrow}</span>`);
@@ -708,10 +726,17 @@ function equationHTML(r){
 let feedbackTimer=0,feedbackRevision=0;
 function clearFeedbackTimer(){if(feedbackTimer){clearTimeout(feedbackTimer);feedbackTimer=0}}
 const MIX_GRACE_MS=12000;
+// Delay matching while a viable 3+ reagent rule is only partially assembled.
+// Do not depend on hand-written flags: every registered multi-reagent rule is eligible.
 const findIncompletePriorityReaction=contents=>{
  const present=new Set(contents);
- return RX_ORDER.find(r=>r.deferIfPartial&&(r.priority||0)>=80&&r.need.length>2&&
-  r.need.filter(n=>present.has(n)).length>=1&&r.need.some(n=>!present.has(n)));
+ if(present.size<2)return null;
+ const candidates=candidateRules(contents).filter(r=>{
+  if(!Array.isArray(r.need)||r.need.length<3||r.need.length<=present.size)return false;
+  return r.need.filter(n=>present.has(n)).length===present.size&&[...present].every(n=>r.need.includes(n));
+ });
+ candidates.sort((a,b)=>(b.priority||0)-(a.priority||0)||(b.need.length-a.need.length));
+ return candidates[0]||null;
 };
 function showMixWait(r){
  const remaining=st.addedAt+MIX_GRACE_MS-performance.now();
@@ -780,15 +805,14 @@ function clearIdleStatus(){
 }
 function updateReactionFeedback(){
  clearFeedbackTimer();const revision=++feedbackRevision;
- if(st.rx||st.pour)return;
+ if(st.rx||st.pour||cat.classList.contains('open'))return;
  if(performance.now()<st.readyAt){feedbackTimer=setTimeout(()=>{if(revision===feedbackRevision)updateReactionFeedback()},Math.max(25,st.readyAt-performance.now()+30));return;}
  const unique=[...new Set(st.contents)];
  const partial=findIncompletePriorityReaction(st.contents);
  if(partial&&showMixWait(partial))return;
  const ready=findReaction(st.contents,st.temp,st.heat);
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
- const score=r=>(r.priority||0)*100+(r.need?.length||0);
- if(ready&&(!pending||score(pending)<=score(ready))){check();return;}
+ if(!preferPendingHeat(ready,pending)&&ready&&(!pending||reactionScore(pending)<=reactionScore(ready))){check();return;}
  if(pending){
   const threshold=pending.heat??(pending.heating?60:0);
   const need=`Cần đun nóng đến khoảng ${threshold}°C`;
@@ -919,13 +943,13 @@ function startReaction(r){
  });
 }
 function check(){
- if(st.rx||performance.now()<st.readyAt)return;
+ if(st.rx||st.pour||cat.classList.contains('open')||performance.now()<st.readyAt)return;
  const partial=findIncompletePriorityReaction(st.contents);
  if(partial&&showMixWait(partial))return;
  const r=findReaction(st.contents,st.temp,st.heat);
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
- const score=x=>(x.priority||0)*100+(x.need?.length||0);
- if(pending&&(!r||score(pending)>score(r))){updateReactionFeedback();return;}
+ if(preferPendingHeat(r,pending)){updateReactionFeedback();return;}
+ if(pending&&(!r||reactionScore(pending)>reactionScore(r))){updateReactionFeedback();return;}
  if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}
 }
 
@@ -982,7 +1006,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
     }
    }
   }
-  if(p>=1){st.rx=null;st.fire=0;st.hint=3}}
+  if(p>=1){st.rx=null;st.fire=0;st.hint=3;setTimeout(()=>{check();updateReactionFeedback()},450)}}
  else if(st.hint>0){st.hint-=dt;st.bub=Math.max(0,st.bub-dt*.4)}else st.bub=Math.max(0,st.bub-dt*.5);
  /* bọt khí trong dung dịch */
  if(lv>.2&&st.bub>.02){const n=st.bub*(st.heat?55:40)*dt+Math.random();const gc=BUBBLE_COLORS[st.gasType]||DEFAULT_BUBBLE_COLOR;for(let i=0,count=Math.floor(n);i<count;i++){const a=rnd(6.28),rr=Math.sqrt(Math.random())*1.25;
@@ -1023,7 +1047,7 @@ filters.addEventListener('click',e=>{const b=e.target.closest('[data-cat]');if(!
 function render(){const raw=q.value.trim(),s=nz(raw),sn=s.replace(/[\s().·]/g,''),f0=nz(raw).replace(/[\s().·]/g,'');
  const l=DB.filter(d=>(!s||d.nf.includes(sn)||d.a.includes(s)||nz(d.f).replace(/[\s().·]/g,'').includes(f0))&&(activeCategory==='all'||categoryOf(d)===activeCategory));
  grid.innerHTML=l.length?l.map(d=>`<button class="t" data-id="${d.id}">${icon(d)}<span>${sub(d.f)}</span></button>`).join(''):'<div id="none">Không tìm thấy chất nào</div>'}
-function openCat(o){cat.classList.toggle('open',o);cat.setAttribute('aria-hidden',!o);$('#b0').classList.toggle('on',o);if(o){render();grid.scrollTop=0}else q.blur()}
+function openCat(o){cat.classList.toggle('open',o);cat.setAttribute('aria-hidden',!o);$('#b0').classList.toggle('on',o);if(o){render();grid.scrollTop=0}else{q.blur();setTimeout(()=>{check();updateReactionFeedback()},0)}}
 q.addEventListener('input',render);
 grid.addEventListener('click',e=>{const b=e.target.closest('.t');if(!b)return;openCat(false);q.value='';add(b.dataset.id)});
 $('#x').onclick=()=>openCat(false);
