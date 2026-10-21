@@ -818,11 +818,13 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "heat": 80,
     "heating": true,
     "col": "#e9e8e1",
-    "precip": "#e8e5d5",
     "dur": 8,
     "bub": 0.3,
     "gas": "H2O",
-    "explain": "Tinh thể đồng(II) sunfat ngậm nước mất nước kết tinh khi đun nóng; màu xanh lam nhạt dần."
+    "explain": "Tinh thể đồng(II) sunfat ngậm nước mất nước kết tinh khi đun nóng; màu xanh lam nhạt dần.",
+    "solidOut": [
+      "CuSO4"
+    ]
   },
   {
     "id": "kmno4_thermal",
@@ -6278,7 +6280,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Al",
       "Cl2"
     ],
-    "eq": "2Al + 3Cl2 → 2AlCl3↓",
+    "eq": "2Al + 3Cl2 → 2AlCl3",
     "out": [
       "AlCl3"
     ],
@@ -6288,7 +6290,10 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "heat": 60,
     "heating": true,
     "fire": 1,
-    "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu."
+    "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu.",
+    "solidOut": [
+      "AlCl3"
+    ]
   },
   {
     "id": "synthesis_halogen_cl2_cu_695",
@@ -6296,7 +6301,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Cu",
       "Cl2"
     ],
-    "eq": "Cu + Cl2 → CuCl2↓",
+    "eq": "Cu + Cl2 → CuCl2",
     "out": [
       "CuCl2"
     ],
@@ -6314,7 +6319,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Pb",
       "Cl2"
     ],
-    "eq": "Pb + Cl2 → PbCl2↓",
+    "eq": "Pb + Cl2 → PbCl2",
     "out": [
       "PbCl2"
     ],
@@ -6332,7 +6337,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Cr",
       "Cl2"
     ],
-    "eq": "2Cr + 3Cl2 → 2CrCl3↓",
+    "eq": "2Cr + 3Cl2 → 2CrCl3",
     "out": [
       "CrCl3"
     ],
@@ -6350,7 +6355,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Al",
       "Br2"
     ],
-    "eq": "2Al + 3Br2 → 2AlBr3↓",
+    "eq": "2Al + 3Br2 → 2AlBr3",
     "out": [
       "AlBr3"
     ],
@@ -6360,7 +6365,10 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "heat": 60,
     "heating": true,
     "fire": 1,
-    "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu."
+    "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu.",
+    "solidOut": [
+      "AlBr3"
+    ]
   },
   {
     "id": "synthesis_halogen_br2_cu_706",
@@ -6368,7 +6376,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Cu",
       "Br2"
     ],
-    "eq": "Cu + Br2 → CuBr2↓",
+    "eq": "Cu + Br2 → CuBr2",
     "out": [
       "CuBr2"
     ],
@@ -6378,7 +6386,10 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "heat": 60,
     "heating": true,
     "fire": 1,
-    "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu."
+    "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu.",
+    "solidOut": [
+      "CuBr2"
+    ]
   },
   {
     "id": "synthesis_halogen_mg_s_712",
@@ -6386,7 +6397,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Mg",
       "S"
     ],
-    "eq": "Mg + S → MgS↓",
+    "eq": "Mg + S → MgS",
     "out": [
       "MgS"
     ],
@@ -6404,7 +6415,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Zn",
       "S"
     ],
-    "eq": "Zn + S → ZnS↓",
+    "eq": "Zn + S → ZnS",
     "out": [
       "ZnS"
     ],
@@ -6422,7 +6433,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Pb",
       "S"
     ],
-    "eq": "Pb + S → PbS↓",
+    "eq": "Pb + S → PbS",
     "out": [
       "PbS"
     ],
@@ -6440,7 +6451,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Al",
       "S"
     ],
-    "eq": "2Al + 3S → Al2S3↓",
+    "eq": "2Al + 3S → Al2S3",
     "out": [
       "Al2S3"
     ],
@@ -6458,7 +6469,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Ca",
       "S"
     ],
-    "eq": "Ca + S → CaS↓",
+    "eq": "Ca + S → CaS",
     "out": [
       "CaS"
     ],
@@ -6476,7 +6487,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Na",
       "S"
     ],
-    "eq": "2Na + S → Na2S↓",
+    "eq": "2Na + S → Na2S",
     "out": [
       "Na2S"
     ],
