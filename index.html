@@ -934,7 +934,8 @@ function startReaction(r){
  st.rx={r,t:0,col0:st.col.clone()};st.gasType=r.gas||null;showEquation(r);
  const keep=new Set(r.preserve||[]),consume=new Set(r.need.filter(i=>!keep.has(i)));
  st.contents=st.contents.filter(i=>!consume.has(i)).concat(r.out||[]);
- const liquidProducts=(r.out||[]).filter(id=>BY[id]&&BY[id].t==='l');
+ const solidOut=new Set(r.solidOut||[]);
+ const liquidProducts=(r.out||[]).filter(id=>BY[id]&&BY[id].t==='l'&&!solidOut.has(id));
  if(!hadLiquid&&liquidProducts.length){
   lvT=Math.min(2.15,lvT+.90);
   st.ovr=null;
@@ -950,7 +951,7 @@ function startReaction(r){
  // Render newly formed solid products as small visible crystals/metal pieces at the bottom of the beaker.
  const visibleProducts=rocks.filter(k=>k.product&&!k.dis);
  while(visibleProducts.length>=8){const old=visibleProducts.shift();viewRoot.remove(old.m);old.m.geometry.dispose();old.m.material.dispose();const oi=rocks.indexOf(old);if(oi>=0)rocks.splice(oi,1)}
- const solidProducts=[...new Set((r.out||[]).filter(id=>BY[id]&&(BY[id].t==='c'||BY[id].t==='e')))].slice(0,Math.max(0,8-visibleProducts.length));
+ const solidProducts=[...new Set((r.out||[]).filter(id=>BY[id]&&(BY[id].t==='c'||BY[id].t==='e'||solidOut.has(id))))].slice(0,Math.max(0,8-visibleProducts.length));
  solidProducts.forEach((id,index)=>{
   const d=BY[id],m=new THREE.Mesh(new THREE.IcosahedronGeometry(.15,1),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
   m.scale.set(rnd(.85,1.25),rnd(.7,1.05),rnd(.85,1.2));
