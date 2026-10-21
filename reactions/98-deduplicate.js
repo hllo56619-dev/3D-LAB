@@ -16,11 +16,12 @@
    r={...raw,eq};correctedBicarbonate++;
   }
   const reactants=r.need.slice().sort().join('|');
-  // For two-substance mixes, the current reaction engine displays one rule per pair.
-  // For one- or three-plus-reactant rules, preserve distinct equations/conditions.
+  // Keep one default equation per pair, but retain a separate rule for a different
+  // thermal regime so a hot reaction does not erase the cold reaction for that pair.
+  const conditionKey=(r.heat||r.heating)?'heated:'+String(r.heat??60):'ambient';
   const key=r.need.length===2
-   ? 'pair:'+reactants
-   : 'rule:'+reactants+'|'+String(r.eq||'').replace(/\\s+/g,' ').trim()+'|'+JSON.stringify(r.out||[]);
+   ? 'pair:'+reactants+'|condition:'+conditionKey
+   : 'rule:'+reactants+'|'+String(r.eq||'').replace(/\\s+/g,' ').trim()+'|'+JSON.stringify(r.out||[])+'|'+conditionKey;
   if(ids.has(r.id)||reactantSets.has(key)){removedDuplicate++;continue;}
   ids.add(r.id);reactantSets.add(key);clean.push(r);
  }
