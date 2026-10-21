@@ -22,15 +22,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Mg",
       "FeCl3"
     ],
-    "eq": "3Mg + 2FeCl3 → 3MgCl2 + 2Fe",
+    "eq": "Mg + 2FeCl3 → MgCl2 + 2FeCl2",
     "out": [
       "MgCl2",
-      "Fe"
+      "FeCl2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_mg_zncl2_572",
@@ -150,15 +150,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Mg",
       "Fe(NO3)3"
     ],
-    "eq": "3Mg + 2Fe(NO3)3 → 3Mg(NO3)2 + 2Fe",
+    "eq": "Mg + 2Fe(NO3)3 → Mg(NO3)2 + 2Fe(NO3)2",
     "out": [
       "Mg(NO3)2",
-      "Fe"
+      "Fe(NO3)2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_mg_ni_no3_2_580",
@@ -230,15 +230,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Mg",
       "Fe2(SO4)3"
     ],
-    "eq": "3Mg + Fe2(SO4)3 → 3MgSO4 + 2Fe",
+    "eq": "Mg + Fe2(SO4)3 → MgSO4 + 2FeSO4",
     "out": [
       "MgSO4",
-      "Fe"
+      "FeSO4"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_mg_niso4_585",
@@ -422,15 +422,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Al",
       "FeCl3"
     ],
-    "eq": "Al + FeCl3 → AlCl3 + Fe",
+    "eq": "Al + 3FeCl3 → AlCl3 + 3FeCl2",
     "out": [
       "AlCl3",
-      "Fe"
+      "FeCl2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_al_zncl2_597",
@@ -534,15 +534,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Al",
       "Fe(NO3)3"
     ],
-    "eq": "Al + Fe(NO3)3 → Al(NO3)3 + Fe",
+    "eq": "Al + 3Fe(NO3)3 → Al(NO3)3 + 3Fe(NO3)2",
     "out": [
       "Al(NO3)3",
-      "Fe"
+      "Fe(NO3)2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_al_ni_no3_2_604",
@@ -614,15 +614,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Al",
       "Fe2(SO4)3"
     ],
-    "eq": "2Al + Fe2(SO4)3 → Al2(SO4)3 + 2Fe",
+    "eq": "2Al + 3Fe2(SO4)3 → Al2(SO4)3 + 6FeSO4",
     "out": [
       "Al2(SO4)3",
-      "Fe"
+      "FeSO4"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_al_znso4_609",
@@ -806,15 +806,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Zn",
       "FeCl3"
     ],
-    "eq": "3Zn + 2FeCl3 → 3ZnCl2 + 2Fe",
+    "eq": "Zn + 2FeCl3 → ZnCl2 + 2FeCl2",
     "out": [
       "ZnCl2",
-      "Fe"
+      "FeCl2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_cocl2_zn_621",
@@ -870,15 +870,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Zn",
       "Fe(NO3)3"
     ],
-    "eq": "3Zn + 2Fe(NO3)3 → 3Zn(NO3)2 + 2Fe",
+    "eq": "Zn + 2Fe(NO3)3 → Zn(NO3)2 + 2Fe(NO3)2",
     "out": [
       "Zn(NO3)2",
-      "Fe"
+      "Fe(NO3)2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_ni_no3_2_zn_625",
@@ -918,15 +918,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Zn",
       "Fe2(SO4)3"
     ],
-    "eq": "3Zn + Fe2(SO4)3 → 3ZnSO4 + 2Fe",
+    "eq": "Zn + Fe2(SO4)3 → ZnSO4 + 2FeSO4",
     "out": [
       "ZnSO4",
-      "Fe"
+      "FeSO4"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_snso4_zn_628",
@@ -1046,15 +1046,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Cr",
       "FeCl3"
     ],
-    "eq": "3Cr + 2FeCl3 → 3CrCl2 + 2Fe",
+    "eq": "Cr + 3FeCl3 → CrCl3 + 3FeCl2",
     "out": [
-      "CrCl2",
-      "Fe"
+      "CrCl3",
+      "FeCl2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_cocl2_cr_636",
@@ -1142,15 +1142,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Cr",
       "Fe(NO3)3"
     ],
-    "eq": "3Cr + 2Fe(NO3)3 → 3Cr(NO3)2 + 2Fe",
+    "eq": "Cr + 3Fe(NO3)3 → Cr(NO3)3 + 3Fe(NO3)2",
     "out": [
-      "Cr(NO3)2",
-      "Fe"
+      "Cr(NO3)3",
+      "Fe(NO3)2"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_cr_ni_no3_2_642",
@@ -1222,15 +1222,15 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Cr",
       "Fe2(SO4)3"
     ],
-    "eq": "3Cr + Fe2(SO4)3 → 3CrSO4 + 2Fe",
+    "eq": "2Cr + 3Fe2(SO4)3 → Cr2(SO4)3 + 6FeSO4",
     "out": [
-      "CrSO4",
-      "Fe"
+      "Cr2(SO4)3",
+      "FeSO4"
     ],
     "col": "#d6dce1",
     "dur": 8,
     "bub": 0.08,
-    "explain": "Kim loại hoạt động mạnh hơn đẩy kim loại yếu hơn khỏi dung dịch muối."
+    "explain": "Trong dung dịch, Fe³⁺ thường bị khử thành Fe²⁺ trước; sản phẩm mô phỏng là muối sắt(II), không mặc định tạo sắt kim loại trực tiếp."
   },
   {
     "id": "metal_displacement_cr_niso4_647",
