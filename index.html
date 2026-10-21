@@ -204,6 +204,12 @@ window.__threeReady = new Promise(resolve => {
 <script src="./reactions/17-audit-secondary-reactions.js"></script>
 <script src="./reactions/19-audit-reduction-ammonium.js"></script>
 <script src="./reactions/20-audit-industrial-gas.js"></script>
+<script src="./reactions/21-precipitation-halides.js"></script>
+<script src="./reactions/22-precipitation-sulfates.js"></script>
+<script src="./reactions/23-precipitation-carbonates-phosphates.js"></script>
+<script src="./reactions/24-precipitation-other.js"></script>
+<script src="./reactions/25-special-redox-and-ammonia.js"></script>
+<script src="./reactions/98-deduplicate.js"></script>
 <script src="./reactions/99-audit.js"></script>
 <script>
 window.__threeReady.then(loaded => {
@@ -468,10 +474,10 @@ BaBr2|l|e7e8e7|bromide BaBr2 salt product
 LiF|l|e7e8e7|fluoride LiF salt product
 NaF|l|e7e8e7|fluoride NaF salt product
 KF|l|e7e8e7|fluoride KF salt product
-BaF2|l|e7e8e7|fluoride BaF2 salt product
+BaF2|c|eeeeea|fluoride BaF2 salt product
 AlF3|c|eeeeea|fluoride AlF3 salt product
 FeF2|l|e7e8e7|fluoride FeF2 salt product
-FeF3|l|e7e8e7|fluoride FeF3 salt product
+FeF3|c|eeeeea|fluoride FeF3 salt product
 CuF2|l|e7e8e7|fluoride CuF2 salt product
 CoF2|l|e7e8e7|fluoride CoF2 salt product
 CrF3|l|e7e8e7|fluoride CrF3 salt product
@@ -552,11 +558,11 @@ Cr(ClO4)3|l|e7e8e7|perchlorate Cr(ClO4)3 salt product
 Ni(ClO4)2|l|e7e8e7|perchlorate Ni(ClO4)2 salt product
 Mn(ClO4)2|l|e7e8e7|perchlorate Mn(ClO4)2 salt product
 Pb(ClO4)2|l|e7e8e7|perchlorate Pb(ClO4)2 salt product
-Li2CO3|l|e7e8e7|carbonate Li2CO3 salt product
+Li2CO3|c|eeeeea|carbonate Li2CO3 salt product
 Li2S|l|e7e8e7|sulfide Li2S salt product
 K2S|l|e7e8e7|sulfide K2S salt product
 BaS|l|e7e8e7|sulfide BaS salt product
-MgS|l|e7e8e7|sulfide MgS salt product
+MgS|c|eeeeea|sulfide MgS salt product
 CoS|c|eeeeea|sulfide CoS salt product
 NiS|c|eeeeea|sulfide NiS salt product
 MnS|c|eeeeea|sulfide MnS salt product
@@ -665,7 +671,16 @@ HI|g|d8d8d8|hydrogen iodide hiđro iodua khí
 NaHSO4|c|eeeeea|sodium hydrogen sulfate natri hiđrosunfat
 KHSO4|c|eeeeea|potassium hydrogen sulfate kali hiđrosunfat
 NH4HSO4|c|eeeeea|ammonium hydrogen sulfate amoni hiđrosunfat
-Na2S4O6|l|e7e8e7|sodium tetrathionate natri tetrathionat`;
+Na2S4O6|l|e7e8e7|sodium tetrathionate natri tetrathionat
+CuCrO4|c|eeeeea|copper ii chromate đồng ii cromat kết tủa
+FeCrO4|c|eeeeea|iron ii chromate sắt ii cromat kết tủa
+ZnCrO4|c|eeeeea|zinc chromate kẽm cromat kết tủa
+NiCrO4|c|eeeeea|nickel ii chromate niken ii cromat kết tủa
+CoCrO4|c|eeeeea|cobalt ii chromate coban cromat kết tủa
+MnCrO4|c|eeeeea|manganese ii chromate mangan cromat kết tủa
+SnCrO4|c|eeeeea|tin ii chromate thiếc ii cromat kết tủa
+Ba(HCO3)2|l|e7e8e7|barium bicarbonate bari hiđrocacbonat dung dịch
+HBrO|l|e7e8e7|hypobromous acid axit hipobromơ`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
