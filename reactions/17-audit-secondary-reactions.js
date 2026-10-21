@@ -374,7 +374,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "HAuCl4",
       "SnCl2"
     ],
-    "eq": "2HAuCl4 + 3SnCl2 → 2Au + 3SnCl4 + 2HCl",
+    "eq": "2HAuCl4 + 3SnCl2 → 2Au↓ + 3SnCl4 + 2HCl",
     "out": [
       "Au",
       "SnCl4",
