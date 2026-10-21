@@ -1,9 +1,12 @@
 # Chemistry reaction library
 
-The 3D Lab loads reaction rules from themed JavaScript modules. Groups cover acid/base reactions, precipitation, metal/acid, displacement, gas evolution, redox/combustion, organic tests, thermal chemistry and oxides. Audit modules extend specific gaps:
+The 3D Lab loads reaction rules from themed JavaScript files: acid/base, precipitation, metals, gas evolution, redox/combustion, organic tests, thermal chemistry and oxides.
 
-- `16-audit-metals-halogen.js` and `16-audit-acid-redox.js`: Ba, F₂, Hg and metal-halogen cases
-- `17-audit-secondary-reactions.js`: halide synthesis, sulfide/halogen redox, concentrated acids, and selected complex/redox tests
-- `99-audit.js`: pair/triple coverage helpers
+Recent audit modules:
+- `16-audit-metals-halogen.js`, `16-audit-acid-redox.js` — reactive metals, halogens and oxidizing acids
+- `17-audit-secondary-reactions.js` — secondary redox and complexes
+- `18-audit-common-gaps.js` — ammonium salts, amphoteric oxides/hydroxides, peroxide and salt/acid reactions
+- `19-audit-reduction-ammonium.js` — reducing oxides, silver halide precipitates and ammonium/base reactions
+- `99-audit.js` — combination-coverage helpers
 
-This is an educational model rather than a guarantee that all reactions under every possible condition are catalogued. A pair with no rule is unclassified, not necessarily inert. New rules should have balanced equations, plausible products, inventory references and relevant conditions.
+The simulation is not an exhaustive database of every possible reaction under every condition. An unclassified pair is not automatically inert. New rules should be balanced, chemically supported and linked to valid inventory products.
