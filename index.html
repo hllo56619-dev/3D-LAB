@@ -923,6 +923,9 @@ function check(){
  const partial=findIncompletePriorityReaction(st.contents);
  if(partial&&showMixWait(partial))return;
  const r=findReaction(st.contents,st.temp,st.heat);
+ const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
+ const score=x=>(x.priority||0)*100+(x.need?.length||0);
+ if(pending&&(!r||score(pending)>score(r))){updateReactionFeedback();return;}
  if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}
 }
 
