@@ -6,7 +6,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
       "Hg",
       "S"
     ],
-    "eq": "Hg + S → HgS",
+    "eq": "Hg + S → HgS↓",
     "out": [
       "HgS"
     ],
