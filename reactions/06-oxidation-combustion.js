@@ -408,8 +408,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "id": "chlorine_hot_alkali",
     "need": [
       "Cl2",
-      "NaOH",
-      "H2O"
+      "NaOH"
     ],
     "eq": "3Cl2 + 6NaOH → 5NaCl + NaClO3 + 3H2O",
     "out": [
@@ -422,7 +421,8 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "col": "#d8d8d8",
     "dur": 9,
     "bub": 0.15,
-    "explain": "Clo phản ứng với kiềm nóng, đặc tạo clorua và clorat; chỉ mô phỏng do khí clo độc."
+    "explain": "Clo phản ứng với kiềm nóng, đặc tạo clorua và clorat; chỉ mô phỏng do khí clo độc.",
+    "priority": 0
   },
   {
     "id": "nitrogen_dioxide_alkali_oxidation",
@@ -900,5 +900,78 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "heating": true,
     "fire": 1,
     "explain": "Phản ứng tổng hợp giữa kim loại và phi kim, thường cần nhiệt khởi đầu."
+  },
+  {
+    "id": "devarda_zinc_kno3_naoh",
+    "need": [
+      "Zn",
+      "KNO3",
+      "NaOH"
+    ],
+    "eq": "8Zn + 2KNO3 + 14NaOH → K2ZnO2 + 7Na2ZnO2 + 2NH3↑ + 4H2O",
+    "out": [
+      "K2ZnO2",
+      "Na2ZnO2",
+      "NH3",
+      "H2O"
+    ],
+    "col": "#e8e8e2",
+    "dur": 10,
+    "bub": 0.28,
+    "gas": "NH3",
+    "heat": 80,
+    "heating": true,
+    "priority": 100,
+    "deferIfPartial": true,
+    "arrowLabel": "kiềm mạnh, đun nóng",
+    "explain": "Khử nitrat bằng kẽm trong môi trường kiềm mạnh khi đun nóng, tạo amoniac và zincat của kali/natri. Quy tắc này mô phỏng phương trình trong thí nghiệm tham khảo."
+  },
+  {
+    "id": "devarda_zinc_nano3_naoh",
+    "need": [
+      "Zn",
+      "NaNO3",
+      "NaOH"
+    ],
+    "eq": "4Zn + NaNO3 + 7NaOH → 4Na2ZnO2 + NH3↑ + 2H2O",
+    "out": [
+      "Na2ZnO2",
+      "NH3",
+      "H2O"
+    ],
+    "col": "#e8e8e2",
+    "dur": 9,
+    "bub": 0.22,
+    "gas": "NH3",
+    "heat": 80,
+    "heating": true,
+    "priority": 90,
+    "deferIfPartial": true,
+    "arrowLabel": "kiềm mạnh, đun nóng",
+    "explain": "Nitrat natri có thể bị khử thành amoniac bởi kẽm trong môi trường kiềm mạnh khi đun nóng."
+  },
+  {
+    "id": "devarda_zinc_kno3_koh",
+    "need": [
+      "Zn",
+      "KNO3",
+      "KOH"
+    ],
+    "eq": "4Zn + KNO3 + 7KOH → 4K2ZnO2 + NH3↑ + 2H2O",
+    "out": [
+      "K2ZnO2",
+      "NH3",
+      "H2O"
+    ],
+    "col": "#e8e8e2",
+    "dur": 9,
+    "bub": 0.22,
+    "gas": "NH3",
+    "heat": 80,
+    "heating": true,
+    "priority": 90,
+    "deferIfPartial": true,
+    "arrowLabel": "kiềm mạnh, đun nóng",
+    "explain": "Nitrat kali có thể bị khử thành amoniac bởi kẽm trong môi trường kiềm mạnh khi đun nóng."
   }
 ]);
