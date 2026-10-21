@@ -703,8 +703,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "id": "aluminium_alkali_water",
     "need": [
       "Al",
-      "NaOH",
-      "H2O"
+      "NaOH"
     ],
     "eq": "2Al + 2NaOH + 6H2O → 2Na[Al(OH)4] + 3H2↑",
     "out": [
@@ -721,8 +720,7 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "id": "zinc_alkali_water",
     "need": [
       "Zn",
-      "NaOH",
-      "H2O"
+      "NaOH"
     ],
     "eq": "Zn + 2NaOH + 2H2O → Na2[Zn(OH)4] + H2↑",
     "out": [
