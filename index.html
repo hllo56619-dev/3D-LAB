@@ -715,8 +715,16 @@ const candidateRules=contents=>{
  return [...found].sort((a,b)=>(RX_RANK.get(a)??1e9)-(RX_RANK.get(b)??1e9));
 };
 const sameReactantSet=(a,b)=>!!(a&&b&&a.need.length===b.need.length&&a.need.every(n=>b.need.includes(n)));
-const reactionScore=r=>(r.need?.length||0)*1000000+(r.priority||0)*1000+Number(Boolean(r.heat||r.heating));
-const preferPendingHeat=(ready,pending)=>!!(ready&&pending&&(pending.heat||pending.heating)&&sameReactantSet(ready,pending)&&st.heat);
+const preferPendingReaction=(ready,pending,contents)=>{
+ if(!ready||!pending)return false;
+ // While the burner is active, prefer the thermal pathway for the same exact reagents.
+ if(st.heat&&(pending.heat||pending.heating)&&sameReactantSet(ready,pending))return true;
+ // A 3+ substance pathway beats a lower-order reaction only when the beaker
+ // contains exactly the full, more-specific mixture required by that pathway.
+ const present=new Set(contents||[]);
+ return pending.need.length>ready.need.length&&present.size===pending.need.length&&
+  pending.need.every(n=>present.has(n))&&[...present].every(n=>pending.need.includes(n));
+};
 const findReaction=(contents,temp,heatOn)=>candidateRules(contents).find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
 const findHeatDependentReaction=(contents,temp,heatOn)=>candidateRules(contents).find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
 function equationHTML(r){
@@ -812,7 +820,7 @@ function updateReactionFeedback(){
  if(partial&&showMixWait(partial))return;
  const ready=findReaction(st.contents,st.temp,st.heat);
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
- if(!preferPendingHeat(ready,pending)&&ready&&(!pending||reactionScore(pending)<=reactionScore(ready))){check();return;}
+ if(!preferPendingReaction(ready,pending,st.contents)&&ready){check();return;}
  if(pending){
   const threshold=pending.heat??(pending.heating?60:0);
   const need=`Cần đun nóng đến khoảng ${threshold}°C`;
@@ -948,8 +956,7 @@ function check(){
  if(partial&&showMixWait(partial))return;
  const r=findReaction(st.contents,st.temp,st.heat);
  const pending=findHeatDependentReaction(st.contents,st.temp,st.heat);
- if(preferPendingHeat(r,pending)){updateReactionFeedback();return;}
- if(pending&&(!r||reactionScore(pending)>reactionScore(r))){updateReactionFeedback();return;}
+ if(preferPendingReaction(r,pending,st.contents)||(!r&&pending)){updateReactionFeedback();return;}
  if(r)try{startReaction(r)}catch(e){console.error('Reaction error:',r.id,e)}
 }
 
