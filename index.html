@@ -814,6 +814,8 @@ function clearIdleStatus(){
 function updateReactionFeedback(){
  clearFeedbackTimer();const revision=++feedbackRevision;
  if(st.rx||st.pour||cat.classList.contains('open'))return;
+ // Preserve the last successful equation/products until the user adds another chemical.
+ if(!st.canReact&&eqEl.dataset.state==='equation')return;
  if(performance.now()<st.readyAt){feedbackTimer=setTimeout(()=>{if(revision===feedbackRevision)updateReactionFeedback()},Math.max(25,st.readyAt-performance.now()+30));return;}
  const unique=[...new Set(st.contents)];
  const partial=findIncompletePriorityReaction(st.contents);
@@ -906,7 +908,7 @@ function ripple(x,z){const m=new THREE.Mesh(new THREE.RingGeometry(.9,1,40),new 
  m.rotation.x=-Math.PI/2;m.position.set(x,LIQ_BASE+lv+.02,z);m.scale.setScalar(.1);m.renderOrder=9;S.add(m);rings.push({m,t:0})}
 
 /* ============ state ============ */
-const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null,readyAt:0,addedAt:0};
+const st={contents:[],col:new THREE.Color('#d0d3d8'),ovr:null,heat:false,temp:25,rx:null,fire:0,bub:0,eq:'',stream:0,sc:new THREE.Color(),pour:null,chk:0,hint:0,gasType:null,readyAt:0,addedAt:0,canReact:false};
 
 const rocks=[];
 let sediment=null;
@@ -917,7 +919,8 @@ function liquidTarget(){if(st.ovr)return new THREE.Color(st.ovr);const ls=st.con
  if(ls.every(i=>i==='H2O'))return new THREE.Color('#85d4fa');
  const c=new THREE.Color(0,0,0);ls.forEach(i=>c.add(new THREE.Color(BY[i].c)));return c.multiplyScalar(1/ls.length).lerp(new THREE.Color('#cdd0d5'),.15)}
 function startReaction(r){
- if(st.rx)return;
+ if(st.rx||!st.canReact)return;
+ st.canReact=false;
  clearFeedbackTimer();feedbackRevision++;
  const hadLiquid=st.contents.some(id=>BY[id]&&BY[id].t==='l');
  st.rx={r,t:0,col0:st.col.clone()};st.gasType=r.gas||null;showEquation(r);
@@ -951,7 +954,7 @@ function startReaction(r){
  });
 }
 function check(){
- if(st.rx||st.pour||cat.classList.contains('open')||performance.now()<st.readyAt)return;
+ if(!st.canReact||st.rx||st.pour||cat.classList.contains('open')||performance.now()<st.readyAt)return;
  const partial=findIncompletePriorityReaction(st.contents);
  if(partial&&showMixWait(partial))return;
  const r=findReaction(st.contents,st.temp,st.heat);
@@ -963,13 +966,13 @@ function check(){
 function add(id){const d=BY[id];if(!d)return;st.addedAt=performance.now();st.readyAt=st.addedAt+2100;
  if(!st.rx){clearFeedbackTimer();feedbackRevision++;eqEl.innerHTML='';delete eqEl.dataset.state;}
  if(st.ovr&&!st.rx)st.ovr=null;
- if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.15,lvT+.90);labels();check();updateReactionFeedback()},900)}
+ if(d.t==='l'){st.stream=1.4;st.sc.set(d.c);setTimeout(()=>{st.contents.push(id);st.canReact=true;if(st.ovr&&!st.rx)st.ovr=null;lvT=Math.min(2.15,lvT+.90);labels();check();updateReactionFeedback()},900)}
  else if(d.t==='g'){const c=rgb(d.c);for(let i=0;i<18;i++)setTimeout(()=>grain.emit({x:rnd(.3,1.3),y:5.5,z:rnd(-.3,.3),vx:rnd(-.6,0),vy:-rnd(1,2.5),life:rnd(.8,1.4),size:rnd(.22,.42),c0:c,a:.35,grow:.8}),i*22);
-  setTimeout(()=>{st.contents.push(id);labels();for(let i=0;i<14;i++)bub.emit({x:rnd(-.8,.8),y:.2,z:rnd(-.8,.8),vy:rnd(.6,1),life:6,size:rnd(.08,.16),c0:[1,1,1],a:.7});check();updateReactionFeedback()},1100)}
+  setTimeout(()=>{st.contents.push(id);st.canReact=true;labels();for(let i=0;i<14;i++)bub.emit({x:rnd(-.8,.8),y:.2,z:rnd(-.8,.8),vy:rnd(.6,1),life:6,size:rnd(.08,.16),c0:[1,1,1],a:.7});check();updateReactionFeedback()},1100)}
  else{const m=new THREE.Mesh(new THREE.IcosahedronGeometry(.28,0),new THREE.MeshLambertMaterial({color:d.c,flatShading:true}));
   m.scale.set(rnd(.9,1.3),rnd(.7,1),rnd(.9,1.3));m.position.set(.5,6.2,0);viewRoot.add(m);rocks.push({m,id,vy:0,st:'fall',t:0,dis:false,pushed:false})}}
 
-function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];st.readyAt=0;st.addedAt=0;lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
+function clearAll(){clearFeedbackTimer();feedbackRevision++;st.contents=[];st.readyAt=0;st.addedAt=0;st.canReact=false;lvT=0;st.rx=null;st.fire=0;st.bub=0;st.ovr=null;st.stream=0;st.temp=25;st.gasType=null;clearSediment();eqEl.innerHTML='';delete eqEl.dataset.state;labels();
  rocks.splice(0).forEach(k=>{viewRoot.remove(k.m);k.m.geometry.dispose();k.m.material.dispose()})}
 
 /* ============ main loop ============ */
@@ -992,7 +995,7 @@ function frame(now){requestAnimationFrame(frame);if(document.hidden){last=now;re
   if(k.st==='fall'){k.vy-=16*dt;m.position.y+=k.vy*dt;m.position.x+=(0-m.position.x)*dt*3;m.rotation.x+=dt*5;m.rotation.z+=dt*3;
    if(m.position.y<=LIQ_BASE+lv+.1&&lv>.1){ripple(m.position.x,0);for(let j=0;j<14;j++)grain.emit({x:m.position.x,y:LIQ_BASE+lv,z:0,vx:rnd(-1.2,1.2),vy:rnd(1.5,3),vz:rnd(-1.2,1.2),life:.7,size:.06,c0:[.9,.95,1],g:-9,a:.8});k.st='sink';k.vy=-.4}
    else if(m.position.y<=.3){m.position.y=.27;k.st='rest'}
-   if(k.st!=='fall'&&!k.pushed){k.pushed=true;st.contents.push(k.id);labels();check();updateReactionFeedback()}}
+   if(k.st!=='fall'&&!k.pushed){k.pushed=true;st.contents.push(k.id);st.canReact=true;labels();check();updateReactionFeedback()}}
   else if(k.st==='sink'){m.position.y+=k.vy*dt*1.5;m.rotation.y+=dt;if(m.position.y<=.28){m.position.y=.27;k.st='rest'}}
   else if(k.st==='float'){m.position.y=LIQ_BASE+lv+.1;m.position.x=Math.sin(time*5)*.6*Math.cos(time*1.7);m.position.z=Math.cos(time*4.1)*.5;m.rotation.y+=dt*8}
   if(k.dis&&st.rx){const f=Math.max(0,1-st.rx.t/(st.rx.r.dur*.9));m.scale.setScalar(Math.max(.001,f))}
