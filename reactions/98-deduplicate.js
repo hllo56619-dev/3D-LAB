@@ -10,7 +10,7 @@
   if((raw.out||[]).some(x=>invalidProducts.has(x))||raw.need.some(x=>invalidReactants.has(x))){removedInvalid++;continue;}
   let r=raw;
   if((raw.out||[]).includes('Fe(HCO3)2')&&typeof raw.eq==='string'&&raw.eq.includes('Fe(HCO3)2↓')){
-   const eq=raw.eq.replace(/Fe\\(HCO3\\)2↓/g,'Fe(HCO3)2');
+   const eq=raw.eq.replace(/Fe\(HCO3\)2↓/g,'Fe(HCO3)2');
    const right=eq.split(/[→⇌↔]/)[1]||'';
    if(!right.includes('↓')){removedInvalid++;continue;}
    r={...raw,eq};correctedBicarbonate++;
