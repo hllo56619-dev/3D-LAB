@@ -829,7 +829,7 @@ function updateReactionFeedback(){
  }
  if(unique.length<2){clearIdleStatus();return;}
  feedbackTimer=setTimeout(()=>{
-  if(revision!==feedbackRevision||st.rx||st.pour)return;
+  if(revision!==feedbackRevision||st.rx||st.pour||cat.classList.contains('open'))return;
   const nowPending=findHeatDependentReaction(st.contents,st.temp,st.heat);
   const nowReady=findReaction(st.contents,st.temp,st.heat);
   if(nowReady){check();return;}
