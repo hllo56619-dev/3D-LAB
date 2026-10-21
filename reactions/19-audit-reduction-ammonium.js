@@ -1,4 +1,4 @@
-// Chemistry Lab 3D — reduction and ammonium audit (11 balanced rules).
+// Chemistry Lab 3D — reduction and ammonium audit (10 rules; duplicated carbon/iron-oxide pair removed).
 window.CHEM_RX = (window.CHEM_RX || []).concat([
   {
     "id": "audit_h2_cuo",
@@ -54,24 +54,6 @@ window.CHEM_RX = (window.CHEM_RX || []).concat([
     "heating": true,
     "gas": "CO2",
     "explain": "CO khử sắt(III) oxit trong lò nung."
-  },
-  {
-    "id": "audit_carbon_fe2o3",
-    "need": [
-      "C",
-      "Fe2O3"
-    ],
-    "eq": "3C + Fe2O3 → 2Fe + 3CO",
-    "out": [
-      "Fe",
-      "CO"
-    ],
-    "col": "#e7e8e7",
-    "dur": 7,
-    "bub": 0.06,
-    "heat": 100,
-    "heating": true,
-    "gas": "CO"
   },
   {
     "id": "audit_h2_fe2o3",
