@@ -15,7 +15,12 @@
    if(!right.includes('↓')){removedInvalid++;continue;}
    r={...raw,eq};correctedBicarbonate++;
   }
-  const key=r.need.slice().sort().join('|');
+  const reactants=r.need.slice().sort().join('|');
+  // For two-substance mixes, the current reaction engine displays one rule per pair.
+  // For one- or three-plus-reactant rules, preserve distinct equations/conditions.
+  const key=r.need.length===2
+   ? 'pair:'+reactants
+   : 'rule:'+reactants+'|'+String(r.eq||'').replace(/\\s+/g,' ').trim()+'|'+JSON.stringify(r.out||[]);
   if(ids.has(r.id)||reactantSets.has(key)){removedDuplicate++;continue;}
   ids.add(r.id);reactantSets.add(key);clean.push(r);
  }
