@@ -1,6 +1,9 @@
 // Final reaction-library normalization. Must load after all reaction modules and before the audit helpers.
 (function(){
- const source=Array.isArray(window.CHEM_RX)?window.CHEM_RX:[];
+ // Prioritize curated/specific rules before removing same-reactant duplicates.
+ const source=(Array.isArray(window.CHEM_RX)?window.CHEM_RX:[]).slice().sort((a,b)=>
+  (b.priority||0)-(a.priority||0)||(b.need?.length||0)-(a.need?.length||0)
+ );
  const invalidProducts=new Set(["NH4OH","AgOH","AgHCO3","Cr(HCO3)2","CrCrO4","Fe2(CrO4)3","Al2(CrO4)3","Cr2(CrO4)3","Ga2(CrO4)3"]);
  const invalidReactants=new Set(["AgHCO3","Cr(HCO3)2"]);
  const ids=new Set(), reactantSets=new Set(), clean=[];
