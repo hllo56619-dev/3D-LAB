@@ -1,4 +1,4 @@
-// Chemistry Lab 3D — oxidation-combustion (50 rules).
+// Chemistry Lab 3D — oxidation-combustion (53 rules).
 window.CHEM_RX = (window.CHEM_RX || []).concat([
   {
     "id": "carbon_combustion",
