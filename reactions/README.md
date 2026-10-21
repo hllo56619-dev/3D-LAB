@@ -18,9 +18,9 @@ The website loads reaction data from separate files in this folder. `index.html`
 
 ## Current library snapshot
 
-- 457 compounds/elements in the chemistry inventory.
-- 6,489 reaction records across the data files before runtime duplicate filtering.
-- The direct two-substance records are normalized at startup so the current engine does not choose conflicting equations for the same pair.
+- 459 compounds/elements in the chemistry inventory.
+- 6,492 reaction records across the data files before runtime duplicate filtering.
+- Direct two-substance records are normalized at startup: one rule is retained per pair and condition regime (ambient vs. heated), so heating-dependent outcomes can coexist.
 
 ## Accuracy notes
 
