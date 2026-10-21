@@ -734,38 +734,42 @@ function equationHTML(r){
 }
 let feedbackTimer=0,feedbackRevision=0;
 function clearFeedbackTimer(){if(feedbackTimer){clearTimeout(feedbackTimer);feedbackTimer=0}}
-const MIX_GRACE_MS=12000;
-// Delay matching while a viable 3+ reagent rule is only partially assembled.
-// Do not depend on hand-written flags: every registered multi-reagent rule is eligible.
+const MIX_GRACE_MS=30000;
+// Avoid firing a lower-order reaction before the user finishes assembling a known mixture.
+// Most partial mixes get a 30-second grace period; explicitly deferred recipes stay locked
+// while heating is active, because the intended higher-order reaction requires that setup.
 const findIncompletePriorityReaction=contents=>{
  const present=new Set(contents);
  if(present.size<2)return null;
- const candidates=candidateRules(contents).filter(r=>{
+ const options=candidateRules(contents).filter(r=>{
   if(!Array.isArray(r.need)||r.need.length<3)return false;
-  // Only defer a valid lower-order reaction when at least two of the
-  // higher-order reaction's ingredients are present but one or more are missing.
   const matched=r.need.filter(n=>present.has(n)).length;
   if(matched<2||matched>=r.need.length)return false;
-  return candidateRules(contents).some(lower=>
+  const lowerReady=candidateRules(contents).some(lower=>
    lower.need.length>=2&&lower.need.length<r.need.length&&
    hasAllReactants(lower,contents)&&lower.need.every(n=>r.need.includes(n))
   );
+  return lowerReady;
  });
- candidates.sort((a,b)=>(b.priority||0)-(a.priority||0)||(b.need.length-a.need.length));
- return candidates[0]||null;
+ options.sort((a,b)=>Number(Boolean(b.deferIfPartial))-Number(Boolean(a.deferIfPartial))||
+  (b.priority||0)-(a.priority||0)||(b.need.length-a.need.length));
+ return options[0]||null;
 };
 function showMixWait(r){
  const remaining=st.addedAt+MIX_GRACE_MS-performance.now();
- if(remaining<=0)return false;
+ const holdWhileHeating=!!(st.heat&&r.deferIfPartial);
+ if(!holdWhileHeating&&remaining<=0)return false;
  clearFeedbackTimer();
  const missing=r.need.filter(n=>!st.contents.includes(n));
  eqEl.dataset.state='mixing';
- eqEl.innerHTML='<div class="eq-status info">Đang chờ thêm chất phản ứng</div><div class="eq-note">Có thể cần thêm: '+missing.map(sub).join(' + ')+'. Hãy thêm chất còn thiếu để ưu tiên phản ứng đầy đủ.</div>';
+ const note='Có thể cần thêm: '+missing.map(sub).join(' + ')+'. Hãy thêm chất còn thiếu để ưu tiên phản ứng đầy đủ.'+
+  (holdWhileHeating?' Đang đun nóng nên mô hình sẽ chờ để tránh chạy phản ứng phụ trước.':'');
+ eqEl.innerHTML='<div class="eq-status info">Đang chờ thêm chất phản ứng</div><div class="eq-note">'+note+'</div>';
  const revision=feedbackRevision;
  feedbackTimer=setTimeout(()=>{
   if(revision!==feedbackRevision)return;
   feedbackTimer=0;check();updateReactionFeedback();
- },Math.min(500,remaining));
+ },holdWhileHeating?500:Math.min(500,remaining));
  return true;
 }
 function reactionNote(r){
