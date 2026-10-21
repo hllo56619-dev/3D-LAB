@@ -199,6 +199,8 @@ window.__threeReady = new Promise(resolve => {
 <script src="./reactions/13-hydroxide-precipitation.js"></script>
 <script src="./reactions/14-acid-gas-expanded.js"></script>
 <script src="./reactions/15-redox-thermal-decomposition.js"></script>
+<script src="./reactions/16-audit-metals-halogen.js"></script>
+<script src="./reactions/16-audit-acid-redox.js"></script>
 <script src="./reactions/99-audit.js"></script>
 <script>
 window.__threeReady.then(loaded => {
@@ -638,16 +640,20 @@ Cr(HCO3)2|l|e7e8e7|solution product Cr(HCO3)2 sản phẩm phản ứng
 Ga2(SiO3)3|c|eeeeea|precipitate Ga2(SiO3)3 sản phẩm phản ứng
 CrSiO3|c|eeeeea|precipitate CrSiO3 sản phẩm phản ứng
 CrF2|l|e7e8e7|solution product CrF2 sản phẩm phản ứng
-
 Sn(OH)2|c|eeeeea|precipitate Sn(OH)2 sản phẩm phản ứng
 Ga(OH)3|c|eeeeea|precipitate Ga(OH)3 sản phẩm phản ứng
 Cr(OH)2|c|eeeeea|precipitate Cr(OH)2 sản phẩm phản ứng
 (NH4)3PO4|l|e7e8e7|solution product (NH4)3PO4 sản phẩm phản ứng
 NH4ClO3|l|e7e8e7|solution product NH4ClO3 sản phẩm phản ứng
 NH4ClO4|l|e7e8e7|solution product NH4ClO4 sản phẩm phản ứng
-
 NaNO2|c|e8e8e2|sodium nitrite natri nitrit sản phẩm nhiệt phân natri nitrat
-KNO2|c|e8e8e2|potassium nitrite kali nitrit sản phẩm nhiệt phân kali nitrat`;
+KNO2|c|e8e8e2|potassium nitrite kali nitrit sản phẩm nhiệt phân kali nitrat
+BaO2|c|eeeeea|barium peroxide bari peoxit
+SiF4|g|d8d8d8|silicon tetrafluoride silic tetraflorua khí
+HgS|c|333333|mercury ii sulfide thủy ngân sunfua
+Hg(NO3)2|l|e7e8e7|mercury ii nitrate thủy ngân nitrat
+HgSO4|c|eeeeea|mercury ii sulfate thủy ngân sunfat
+HgCl2|c|eeeeea|mercury ii chloride thủy ngân clorua`;
 const subDigits={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9'};
 const normFormula=s=>String(s).replace(/[₀-₉⁰-⁹]/g,ch=>subDigits[ch]||ch);
 const nz=s=>normFormula(String(s)).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/đ/g,'d');
