@@ -26,4 +26,4 @@ The website loads reaction data from separate files in this folder. `index.html`
 
 This is an educational simulation, not an exhaustive database of every possible reaction under every condition. A missing rule means that the simulation has not classified the pair; it does **not** prove that no reaction occurs. Solubility, concentration, temperature, oxidation state, phase, and catalysts can change the outcome.
 
-New rules should use formulas that are chemically supported under their stated conditions, include products available in the inventory, and have balanced equations. Do not add a rule just to fill a missing pair.
+New rules should use formulas that are chemically supported under their stated conditions, include products available in the inventory, preserve catalysts, and have balanced equations. When two rules share the same ingredients, the condition (for example, cold dilute alkali vs. hot concentrated alkali) must be encoded in the selection logic. Do not add a rule just to fill a missing pair.
