@@ -722,8 +722,9 @@ const preferPendingReaction=(ready,pending,contents)=>{
  // A 3+ substance pathway beats a lower-order reaction only when the beaker
  // contains exactly the full, more-specific mixture required by that pathway.
  const present=new Set(contents||[]);
- return pending.need.length>ready.need.length&&present.size===pending.need.length&&
-  pending.need.every(n=>present.has(n))&&[...present].every(n=>pending.need.includes(n));
+ // Extra products/leftovers in the beaker must not hide a more specific reaction.
+ return pending.need.length>ready.need.length&&pending.need.every(n=>present.has(n))&&
+  ready.need.every(n=>pending.need.includes(n));
 };
 const findReaction=(contents,temp,heatOn)=>candidateRules(contents).find(r=>hasAllReactants(r,contents)&&conditionsMet(r,temp,heatOn));
 const findHeatDependentReaction=(contents,temp,heatOn)=>candidateRules(contents).find(r=>hasAllReactants(r,contents)&&!conditionsMet(r,temp,heatOn));
@@ -740,8 +741,15 @@ const findIncompletePriorityReaction=contents=>{
  const present=new Set(contents);
  if(present.size<2)return null;
  const candidates=candidateRules(contents).filter(r=>{
-  if(!Array.isArray(r.need)||r.need.length<3||r.need.length<=present.size)return false;
-  return r.need.filter(n=>present.has(n)).length===present.size&&[...present].every(n=>r.need.includes(n));
+  if(!Array.isArray(r.need)||r.need.length<3)return false;
+  // Only defer a valid lower-order reaction when at least two of the
+  // higher-order reaction's ingredients are present but one or more are missing.
+  const matched=r.need.filter(n=>present.has(n)).length;
+  if(matched<2||matched>=r.need.length)return false;
+  return candidateRules(contents).some(lower=>
+   lower.need.length>=2&&lower.need.length<r.need.length&&
+   hasAllReactants(lower,contents)&&lower.need.every(n=>r.need.includes(n))
+  );
  });
  candidates.sort((a,b)=>(b.priority||0)-(a.priority||0)||(b.need.length-a.need.length));
  return candidates[0]||null;
